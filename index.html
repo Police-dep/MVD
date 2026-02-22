@@ -813,7 +813,7 @@
       .file-modal-actions { flex-wrap: wrap; }
 
       /* Personnel form modal mobile */
-      .personnel-form-overlay { padding: 0; align-items: flex-end; }
+      .personnel-form-overlay { padding: 16px; align-items: flex-end; }
       .personnel-form-box { border-radius: 20px 20px 0 0; max-width: 100%; }
 
       /* Personnel page */
@@ -1623,25 +1623,111 @@
     .personnel-form-overlay {
       display: none; position: fixed; inset: 0; z-index: 350;
       background: rgba(26,35,64,0.65); backdrop-filter: blur(6px);
-      justify-content: center; align-items: flex-start;
-      padding: 40px 16px; overflow-y: auto;
+      justify-content: center; align-items: center;
+      padding: 32px 16px; overflow-y: auto;
     }
     .personnel-form-overlay.open { display: flex; }
     .personnel-form-box {
-      background: var(--white); border: 1.5px solid var(--grey-light);
-      border-radius: 20px; width: 100%; max-width: 580px;
-      box-shadow: 0 28px 80px rgba(26,35,64,0.25);
-      animation: modalIn 0.28s ease;
+      background: var(--white);
+      border: 1.5px solid var(--grey-light);
+      border-radius: 24px; width: 100%; max-width: 620px;
+      box-shadow: 0 32px 100px rgba(26,35,64,0.3);
+      animation: modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+      overflow: hidden;
+    }
+    .personnel-form-topbar {
+      height: 4px;
+      background: linear-gradient(90deg, var(--navy) 0%, var(--accent) 100%);
     }
     .personnel-form-header {
-      padding: 22px 26px 18px; border-bottom: 1px solid var(--grey-light);
-      display: flex; align-items: center; justify-content: space-between;
+      padding: 28px 32px 22px;
+      border-bottom: 1px solid var(--grey-light);
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 16px;
+    }
+    .personnel-form-header-left {}
+    .personnel-form-eyebrow {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--accent-light); color: #8A6B20;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; padding: 4px 10px; border-radius: 5px;
+      margin-bottom: 10px;
+    }
+    .personnel-form-eyebrow::before {
+      content: ''; width: 5px; height: 5px;
+      background: var(--accent); border-radius: 50%;
     }
     .personnel-form-title {
       font-family: 'Playfair Display', serif;
-      font-size: 20px; font-weight: 700; color: var(--navy);
+      font-size: 24px; font-weight: 700; color: var(--navy);
     }
-    .personnel-form-body { padding: 22px 26px 26px; }
+    .personnel-form-body { padding: 28px 32px 32px; }
+
+    /* Form field styles inside personnel modal */
+    .personnel-form-body .form-group { margin-bottom: 20px; }
+    .personnel-form-body .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .personnel-form-body label {
+      display: block; font-size: 10.5px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-soft); margin-bottom: 8px;
+    }
+    .personnel-form-body label span.req { color: var(--red); margin-left: 2px; }
+    .personnel-form-body input[type="text"],
+    .personnel-form-body input[type="number"] {
+      width: 100%; padding: 11px 14px;
+      border: 1.5px solid var(--grey-light); border-radius: 10px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px;
+      color: var(--text); background: var(--cream);
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s; outline: none;
+    }
+    .personnel-form-body input[type="text"]:focus,
+    .personnel-form-body input[type="number"]:focus {
+      border-color: var(--navy); background: var(--white);
+      box-shadow: 0 0 0 3px rgba(26,35,64,0.07);
+    }
+    .personnel-form-body .form-select {
+      width: 100%; padding: 11px 14px;
+      border: 1.5px solid var(--grey-light); border-radius: 10px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px;
+      color: var(--text); background: var(--cream);
+      transition: border-color 0.2s, box-shadow 0.2s; outline: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238A8F9E' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+    }
+    .personnel-form-body .form-select:focus {
+      border-color: var(--navy); background-color: var(--white);
+      box-shadow: 0 0 0 3px rgba(26,35,64,0.07);
+    }
+    .personnel-form-body .form-divider {
+      border: none; border-top: 1px solid var(--grey-light); margin: 22px 0 0;
+    }
+    .personnel-form-body .submit-btn {
+      width: 100%; padding: 15px;
+      background: var(--navy); color: white; border: none;
+      border-radius: 12px; font-family: 'DM Sans', sans-serif;
+      font-size: 15px; font-weight: 600; cursor: pointer;
+      transition: all 0.25s; letter-spacing: 0.03em; margin-top: 20px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .personnel-form-body .submit-btn::after { content: '→'; }
+    .personnel-form-body .submit-btn:hover {
+      background: var(--navy-mid); transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(26,35,64,0.22);
+    }
+    .pf-section-divider {
+      display: flex; align-items: center; gap: 10px;
+      margin: 6px 0 20px;
+    }
+    .pf-section-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--grey); white-space: nowrap;
+    }
+    .pf-section-line {
+      flex: 1; height: 1px; background: var(--grey-light);
+    }
 
     @media (max-width: 960px) {
       .personnel-intro, .personnel-search-wrap, .personnel-results { padding-left: 16px; padding-right: 16px; }
@@ -1996,6 +2082,78 @@
       background: var(--accent-light); border-left: 3px solid var(--accent);
       border-radius: 0 8px 8px 0; padding: 14px 18px;
       margin: 20px 0; font-size: 14px; color: var(--navy);
+    }
+
+    /* ── УСТАВ — оглавление ── */
+    .article-body .article-toc {
+      background: var(--cream); border: 1.5px solid var(--grey-light);
+      border-radius: 14px; padding: 18px 22px; margin: 24px 0;
+    }
+    .article-body .article-toc-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 14px; font-weight: 700; color: var(--navy);
+      margin-bottom: 10px;
+    }
+    .article-body .article-toc-item {
+      display: block; font-size: 13px; color: var(--text-soft);
+      padding: 4px 0; border-bottom: 1px solid var(--grey-light);
+      text-decoration: none; transition: color 0.15s;
+    }
+    .article-body .article-toc-item:last-child { border-bottom: none; }
+    .article-body .article-toc-item:hover { color: var(--navy); }
+
+    /* ── УСТАВ — пункты ── */
+    .article-body .ustav-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 10px 14px; margin-bottom: 6px;
+      background: var(--white); border: 1px solid var(--grey-light);
+      border-radius: 10px; transition: border-color 0.15s;
+      flex-wrap: wrap;
+    }
+    .article-body .ustav-item:hover { border-color: #C8D0E0; }
+    .article-body .ustav-item--prohibit {
+      border-left: 3px solid #EDD8D8;
+      background: #FDFAFA;
+    }
+    .article-body .ustav-item--prohibit:hover { border-left-color: var(--red); }
+    .article-body .ustav-num {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+      color: var(--accent); background: var(--accent-light);
+      padding: 2px 7px; border-radius: 5px; flex-shrink: 0;
+      margin-top: 1px; font-family: monospace;
+    }
+    .article-body .ustav-text {
+      flex: 1; font-size: 13.5px; color: var(--text-soft);
+      line-height: 1.65; min-width: 0;
+    }
+    .article-body .ustav-nakazanie {
+      width: 100%; margin-top: 6px; margin-left: calc(12px + 2.5em);
+      font-size: 11.5px; font-weight: 600;
+      color: #4A5368; background: var(--grey-light);
+      border-radius: 6px; padding: 4px 10px;
+      display: inline-block;
+    }
+
+    /* ── УСТАВ — блок наказаний (таблица-сетка) ── */
+    .article-body .ustav-penalty-block {
+      background: var(--cream); border: 1.5px solid var(--grey-light);
+      border-radius: 10px; overflow: hidden; margin: 6px 0 14px;
+    }
+    .article-body .penalty-row {
+      display: flex; gap: 12px;
+      padding: 8px 14px; border-bottom: 1px solid var(--grey-light);
+      font-size: 12.5px; align-items: flex-start;
+    }
+    .article-body .penalty-row:last-child { border-bottom: none; }
+    .article-body .penalty-label {
+      font-weight: 700; color: var(--navy); flex-shrink: 0; min-width: 140px;
+    }
+    .article-body .penalty-val { color: var(--text-soft); }
+    @media(max-width: 540px) {
+      .article-body .penalty-label { min-width: 0; }
+      .article-body .penalty-row { flex-direction: column; gap: 2px; }
+      .article-body .ustav-nakazanie { margin-left: 0; }
+      .article-body .article-toc { padding: 14px 16px; }
     }
     .article-body table {
       width: 100%; border-collapse: collapse;
@@ -3679,13 +3837,23 @@
 <!-- Модалка добавления/редактирования личного дела -->
 <div id="modal-personnel-form" class="personnel-form-overlay" onclick="closePersonnelFormOnBg(event)">
   <div class="personnel-form-box">
+    <div class="personnel-form-topbar"></div>
     <div class="personnel-form-header">
-      <div class="personnel-form-title" id="personnel-form-title">Добавить личное дело</div>
-      <button class="modal-close" onclick="document.getElementById('modal-personnel-form').classList.remove('open')" style="width:34px;height:34px;background:var(--cream);border:none;border-radius:8px;cursor:pointer;font-size:18px;color:var(--grey);display:flex;align-items:center;justify-content:center;">✕</button>
+      <div class="personnel-form-header-left">
+        <div class="personnel-form-eyebrow">Личное дело</div>
+        <div class="personnel-form-title" id="personnel-form-title">Добавить личное дело</div>
+      </div>
+      <button class="modal-close" onclick="document.getElementById('modal-personnel-form').classList.remove('open')">✕</button>
     </div>
     <div class="personnel-form-body">
       <form id="personnel-form">
         <input type="hidden" id="pf-editing-id"/>
+
+        <div class="pf-section-divider">
+          <span class="pf-section-label">Основные данные</span>
+          <span class="pf-section-line"></span>
+        </div>
+
         <div class="form-row">
           <div class="form-group">
             <label>Имя и Фамилия <span class="req">*</span></label>
@@ -3713,7 +3881,7 @@
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label>Отдел</label>
+            <label>Отдел <span style="color:var(--grey);font-weight:400;text-transform:none;letter-spacing:0">(опц.)</span></label>
             <input type="text" id="pf-unit" placeholder="Например: ПДД, ОМОн"/>
           </div>
           <div class="form-group">
@@ -3721,6 +3889,12 @@
             <input type="text" id="pf-promoted" placeholder="ДД.ММ.ГГГГ"/>
           </div>
         </div>
+
+        <div class="pf-section-divider">
+          <span class="pf-section-label">Контактная информация</span>
+          <span class="pf-section-line"></span>
+        </div>
+
         <div class="form-group">
           <label>Номер телефона</label>
           <input type="text" id="pf-phone" placeholder="Например: 555-1234"/>
@@ -3740,8 +3914,9 @@
             <input type="text" id="pf-alt-contact" placeholder="@username или ссылка"/>
           </div>
         </div>
+
         <hr class="form-divider"/>
-        <button type="submit" class="submit-btn" style="margin-top:8px;">Сохранить</button>
+        <button type="submit" class="submit-btn">Сохранить</button>
         <div id="pf-success" style="display:none;margin-top:14px;background:var(--green-light);border:1.5px solid #A8D8BC;border-radius:10px;padding:14px;color:var(--green);font-size:13px;text-align:center;">
           ✓ Личное дело сохранено.
         </div>
@@ -4989,35 +5164,693 @@
       meta: 'Автор: meow zanetti · 17 марта 2022',
       eyebrow: 'Основные кодексы',
       body: `
-        <div class="article-highlight">Данный документ является основополагающим нормативным актом Министерства Внутренних Дел и обязателен к изучению всеми сотрудниками.</div>
-        <h2>§1. Общие положения</h2>
-        <p>Министерство Внутренних Дел (МВД) — государственный орган исполнительной власти, осуществляющий функции по выработке и реализации государственной политики в сфере внутренних дел, а также правоприменительные функции по охране общественного порядка.</p>
-        <h2>§2. Структура МВД</h2>
-        <p>МВД включает в себя следующие департаменты:</p>
-        <ul>
-          <li><strong>SFPD</strong> — San Fierro Police Department</li>
-          <li><strong>LVMPD</strong> — Las Venturas Metropolitan Police Department</li>
-          <li><strong>LSCSD</strong> — Los Santos County Sheriff's Department</li>
-        </ul>
-        <h2>§3. Обязанности сотрудника</h2>
-        <p>Каждый сотрудник МВД обязан:</p>
-        <ul>
-          <li>Соблюдать законодательство штата и внутренний устав</li>
-          <li>Поддерживать дисциплину и субординацию</li>
-          <li>Регулярно подавать отчёты о деятельности</li>
-          <li>Проходить обязательные экзамены при повышении</li>
-          <li>Не разглашать служебную информацию</li>
-        </ul>
-        <h2>§4. Права сотрудника</h2>
-        <p>Сотрудник МВД имеет право:</p>
-        <ul>
-          <li>На карьерный рост в соответствии с системой повышения</li>
-          <li>На защиту со стороны командования при неправомерных действиях третьих лиц</li>
-          <li>На отпуск согласно установленному порядку</li>
-          <li>Обжаловать решения командования через установленные каналы</li>
-        </ul>
-        <h2>§5. Дисциплинарные меры</h2>
-        <p>За нарушение устава применяются следующие меры воздействия: устное предупреждение, письменное взыскание, понижение в звании, увольнение.</p>
+        <div class="article-highlight">Данный документ является основополагающим нормативным актом Министерства Внутренних Дел и обязателен к изучению всеми сотрудниками. Незнание устава не освобождает от ответственности.</div>
+
+        <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:14px;padding:20px 24px;margin:24px 0;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--grey);margin-bottom:14px;">Содержание</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+            <a href="#ch01" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">01</span> Основные положения</a>
+            <a href="#ch02" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">02</span> Права и полномочия</a>
+            <a href="#ch03" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">03</span> Обязанности полиции</a>
+            <a href="#ch04" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">04</span> Применение силы и оружия</a>
+            <a href="#ch05" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">05</span> График работы и отпуск</a>
+            <a href="#ch06" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">06</span> Правила поведения в строю</a>
+            <a href="#ch07" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">07</span> В полиции запрещается</a>
+            <a href="#ch08" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">08</span> Дресс-код</a>
+            <a href="#ch09" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">09</span> Использование рации</a>
+            <a href="#ch10" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">10</span> Юрисдикции департаментов</a>
+            <a href="#ch11" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">11</span> Старший состав</a>
+            <a href="#ch12" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">12</span> Система переводов</a>
+            <a href="#ch13" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">13</span> Юридическая ответственность</a>
+            <a href="#ch14" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">14</span> Спец. отряды</a>
+          </div>
+        </div>
+
+        <!-- ═══════════════ 01 ═══════════════ -->
+        <h2 id="ch01">01. Основные положения устава</h2>
+        <div class="ustav-item">
+          <span class="ustav-num">1.1</span>
+          <span class="ustav-text">Устав полиции является основополагающим документом в МВД и обязателен к исполнению всеми сотрудниками. Незнание устава не освобождает от ответственности.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">1.2</span>
+          <span class="ustav-text">Несоблюдение устава карается <strong>предупреждением / беседой / переаттестацией / нарядом</strong> в случае мелких нарушений, <strong>выговором / понижением / увольнением</strong> за грубые и постоянные нарушения. В некоторых случаях наказание может быть вплоть до занесения в чёрный список департамента или МВД. Генерал, Министр или сотрудник старшего состава имеют право изменить вид наказания в зависимости от ситуации.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">1.3</span>
+          <span class="ustav-text">Офицером полиции называется любой гражданин, состоящий на службе в департаменте городов Лос-Сантос, Сан-Фиерро и Лас-Вентурас.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">1.4</span>
+          <span class="ustav-text">Сотрудник полиции, независимо от звания, обязан выполнять приказы Министра Внутренних Дел, если они не выходят за рамки закона.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">1.5</span>
+          <span class="ustav-text">Министр вправе уволить любого сотрудника полицейского департамента, независимо от звания и положения, если того требуют обстоятельства.</span>
+        </div>
+
+        <!-- ═══════════════ 02 ═══════════════ -->
+        <h2 id="ch02">02. Права и полномочия полиции</h2>
+        <div class="ustav-item">
+          <span class="ustav-num">2.1</span>
+          <span class="ustav-text">Офицер полиции имеет право на ношение табельного оружия для защиты жизни, здоровья, прав и свобод граждан, противодействия преступности, обеспечения общественной безопасности, охраны общественного порядка и собственности, а также для защиты своей личности.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">2.2</span>
+          <span class="ustav-text">Офицер имеет право остановить любое транспортное средство с подозреваемым или для проверки документов при нарушении законов штата. Отказ от остановки влечёт уголовную ответственность <em>(исключение: 7.13 УМВД)</em>.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">2.3</span>
+          <span class="ustav-text">Офицер имеет право потребовать документы или проверить по КПК любого гражданина, находящегося в розыске или нарушившего закон <em>(исключение: больницы и прилегающая территория, гетто, 5.2 А.К.)</em>.</span>
+        </div>
+        <div class="ustav-penalty-block">
+          <div class="penalty-row"><span class="penalty-label">1 уровень розыска:</span><span class="penalty-val">выписать квитанцию → после оплаты розыск снимается. Нет денег — везти в КПЗ без добавления розыска.</span></div>
+          <div class="penalty-row"><span class="penalty-label">Выше 1 уровня:</span><span class="penalty-val">доставить в КПЗ.</span></div>
+          <div class="penalty-row"><span class="penalty-label">Ликвидация/посадка с 1★:</span><span class="penalty-val">1-й раз — выговор, повторно — понижение <em>(если статья не разрешает ликвидацию)</em>.</span></div>
+          <div class="penalty-row"><span class="penalty-label">Штраф при розыске &gt;1★:</span><span class="penalty-val">выговор / понижение / увольнение.</span></div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">2.4</span>
+          <span class="ustav-text">Офицер полиции имеет право задержать нарушителя или выписать штраф в связи с нарушением Административного или Уголовного Кодекса.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">2.5</span>
+          <span class="ustav-text">Офицер имеет право подать запрос о помощи, если того требуют обстоятельства. При запросе другие офицеры обязаны выехать на место.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">2.6</span>
+          <span class="ustav-text">Офицер имеет право использовать маску во время несения службы. По просьбе гражданина при проверке документов — обязан снять через отыгровку <code>/я снял маску</code>. <em>Исключение: 14.7 УМВД.</em></span>
+          <div class="ustav-nakazanie">Наказание: беседа.</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">2.7</span>
+          <span class="ustav-text">Офицер вправе перекрывать улицы, дороги, полосы и оцеплять участки местности при необходимости.</span>
+          <div class="ustav-nakazanie">Наказание: наряд.</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">2.8</span>
+          <span class="ustav-text">Офицер вправе доставлять нарушителей в любой полицейский департамент штата, включая пригородные участки.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">2.9</span>
+          <span class="ustav-text">Офицер вправе вернуть «слетевший» розыск с пометкой «вернул» при непосредственном контакте с задержанным, если розыск был выдан полицейским.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">2.10</span>
+          <span class="ustav-text">Офицер имеет право использовать звуковые и световые специальные сигналы: при погоне, транспортировке задержанного/ВИП, выезде на вызов, несении службы на посту, перекрытии дороги, в составе колонны, при выполнении служебного задания.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">2.11</span>
+          <span class="ustav-text">Офицер вправе разогнать несанкционированный митинг, используя дубинку. Водомёт — только при агрессии со стороны толпы.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">2.12</span>
+          <span class="ustav-text">Сотрудник с предыдущим опытом на должности «Лейтенант» [4] и выше (не более 2 месяцев назад, подтверждённым трудовой книжкой) вправе не сдавать экзамены УП и ЗР.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">2.13</span>
+          <span class="ustav-text">Бывший офицер [4]+ уволившийся по собственному желанию вправе один раз в течение месяца восстановиться с потерей одного ранга. Старшему составу — при согласии Генерала и наличии места, иначе на Майора.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">2.14</span>
+          <span class="ustav-text">После заведения дела время на задержание: <strong>1 звезда = 5 мин</strong>, <strong>6 звёзд = 30 мин</strong>. Погрешность 1–2 минуты допускается. По истечении времени ситуация отыгрывается заново.</span>
+        </div>
+
+        <!-- ═══════════════ 03 ═══════════════ -->
+        <h2 id="ch03">03. Обязанности полиции</h2>
+        <div class="ustav-item">
+          <span class="ustav-num">3.1</span>
+          <span class="ustav-text">Офицер обязан беспрекословно выполнять требования старших по званию, если они не выходят за рамки закона.</span>
+          <div class="ustav-nakazanie">Наказание: выговор / понижение; многократно — увольнение.</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">3.2</span>
+          <span class="ustav-text">Офицер обязан пресекать правонарушения по А.К. и У.К. штата.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">3.3</span>
+          <span class="ustav-text">Офицер обязан знать и исполнять законы Штата, Уголовный и Административный Кодексы, Инструкцию действий, транспортный кодекс (включая FF — наказание строже обычного).</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">3.4</span>
+          <span class="ustav-text">При аресте, проверке по КПК/паспорту, выписке штрафа, обыске — представиться и по просьбе задержанного предъявить значок. <em>Исключение: 1.1 (с летальным исходом), 1.2, 2.1, 2.2, 6.1, 6.4, 9.1 У.К., 5.1 А.К., 14.8 УМВД.</em></span>
+          <div class="ustav-nakazanie">Наказание: беседа.</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">3.5</span>
+          <span class="ustav-text">Сразу назвать гражданину причину (статью У.К. или А.К.) ареста или штрафа. Достаточно номера статьи <em>(исключение: ликвидация; 5.2 А.К. — огласить полностью)</em>.</span>
+          <div class="ustav-nakazanie">Наказание: беседа; повторно — наряд.</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">3.6</span>
+          <span class="ustav-text">Желательно фиксировать нарушение до привлечения к ответственности. Доказательства хранить 48 часов после патрулирования, а при наличии жалобы — 2 дня с момента её закрытия.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">3.7</span>
+          <span class="ustav-text">Офицер обязан доставить преступника в участок, предпринимая все возможные действия. При попытке бегства — розыск по 9.1 У.К. и ликвидация. Если ранг не позволяет посадить — через отыгровку. При отказе сесть после отыгровки — ликвидация на месте.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">3.8</span>
+          <span class="ustav-text">Сотрудник в рабочей форме после окончания смены считается при исполнении и обязан выполнять приказы старших. <em>Исключение: тренировки.</em></span>
+          <div class="ustav-nakazanie">Наказание: наряд / выговор / понижение.</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">3.9</span>
+          <span class="ustav-text">Уметь оказывать первую медицинскую помощь. Неоднократные повторные отыгровки падения/травм после оказания помощи — разрешено игнорировать.</span>
+          <div class="ustav-nakazanie">Наказание: наряд / выговор.</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">3.10</span>
+          <span class="ustav-text">Офицер обязан держать рабочий транспорт заправленным и в рабочем состоянии, своевременно возвращать на парковку.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">3.11</span>
+          <span class="ustav-text">Сотрудник МВД, достигший звания «Майор», полностью освобождается от отчётов.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">3.12</span>
+          <span class="ustav-text">Сотрудник обязан предоставить доказательства по жалобе в течение <strong>24 часов</strong>, если того требует проверяющий.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">3.13</span>
+          <span class="ustav-text">Обязанности по должностям: <strong>Капитаны/Майоры</strong> — опрос на наборе, приём экзаменов; <strong>Ст. лейтенанты и выше</strong> — проведение тренировок; <strong>Подполковники/Полковники</strong> — приём в департамент, проверка отчётов, выдача наказаний, повышения.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">3.14</span>
+          <span class="ustav-text">Перед выпиской штрафа — проверить документы/КПК. Если до штрафа уже выдан розыск — необязательно.</span>
+          <div class="ustav-nakazanie">Наказание: наряд.</div>
+        </div>
+
+        <!-- ═══════════════ 04 ═══════════════ -->
+        <h2 id="ch04">04. Применение силы и оружия</h2>
+        <div class="ustav-item">
+          <span class="ustav-num">4.1</span>
+          <span class="ustav-text">Офицер вправе применить физическую силу, электрошокер и огнестрельное оружие, если того требуют обстоятельства.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">4.2</span>
+          <span class="ustav-text">Офицер вправе надеть наручники на преступника или подозреваемого для доставки в КПЗ.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">4.3</span>
+          <span class="ustav-text">Офицер вправе применять дубинку для пресечения сопротивления.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">4.4</span>
+          <span class="ustav-text">Офицер вправе производить задержание в случаях, предусмотренных У.К. и А.К. в статьях с возможностью объявления в розыск.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">4.5</span>
+          <span class="ustav-text">Офицер вправе ликвидировать преступника, ушедшего в AFK во время ареста. Перед ликвидацией — отыграть RP до конца, AFK не менее <strong>15 секунд</strong>.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">4.6</span>
+          <span class="ustav-text"><strong>Рядовым запрещено</strong> брать табельное оружие. <em>Исключение: дубинка.</em></span>
+          <div class="ustav-nakazanie">Наказание: 1-й раз — предупреждение, повторно — увольнение.</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">4.7</span>
+          <span class="ustav-text">Ликвидация преступника — только при непосредственной угрозе жизни/здоровью граждан или сотрудников, либо при попытке скрыться. Без реальной угрозы или при возможности задержания — запрещена.</span>
+          <div class="ustav-nakazanie">Наказание: выговор.</div>
+        </div>
+
+        <!-- ═══════════════ 05 ═══════════════ -->
+        <h2 id="ch05">05. График работы и отпуск</h2>
+        <div class="ustav-item">
+          <span class="ustav-num">5.1</span>
+          <span class="ustav-text">Рабочее время:</span>
+        </div>
+        <table>
+          <thead><tr><th>День</th><th>Часы</th><th>Примечание</th></tr></thead>
+          <tbody>
+            <tr><td>Будни</td><td>09:00 – 22:00</td><td>Обед PD/ст. состав 12–13; спец. отряд 13–14</td></tr>
+            <tr><td>Суббота</td><td>10:00 – 22:00</td><td>—</td></tr>
+            <tr><td>Воскресенье</td><td>Выходной</td><td>—</td></tr>
+          </tbody>
+        </table>
+        <div class="ustav-item">
+          <span class="ustav-num">5.2</span>
+          <span class="ustav-text">Старший состав вправе отпустить сотрудника по личным делам во время рабочего дня — не более <strong>1 часа 1 раз в сутки</strong>. Разрешение обязательно фиксировать.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">5.3</span>
+          <span class="ustav-text"><strong>Запрещено</strong> при исполнении: казино / дайвинг / рыбалка. <em>Исключение: казино — при погоне/проверке/рейде.</em></span>
+          <div class="ustav-nakazanie">Наказание: [1] увольнение; [2–7] понижение; [8–9] выговор.</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">5.4</span>
+          <span class="ustav-text"><strong>Запрещено</strong> при исполнении: алкоголь / наркотические вещества.</span>
+          <div class="ustav-nakazanie">Наказание: [1] увольнение; [2–9] выговор.</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">5.5</span>
+          <span class="ustav-text"><strong>Запрещено</strong> при исполнении: обучение боям в спортзале, оказание любых услуг.</span>
+          <div class="ustav-nakazanie">Наказание: [1] увольнение; [2–9] выговор.</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">5.6</span>
+          <span class="ustav-text">Рядовым на сдачу зачёта — 2 дня с момента принятия, попытки неограничены. Сержантам на сдачу УП — время и попытки не ограничены.</span>
+          <div class="ustav-nakazanie">Наказание: увольнение.</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">5.7</span>
+          <span class="ustav-text">Отпуск доступен со звания «Лейтенант» [4].</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">5.8</span>
+          <span class="ustav-text">Максимальный срок отпуска — <strong>7 дней</strong> в месяц.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">5.9</span>
+          <span class="ustav-text">Одобрение отпуска — за Генералом. При большой нагрузке или чрезмерном сроке Генерал вправе отказать.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">5.10</span>
+          <span class="ustav-text">В отпуске офицер остаётся в том же звании, но обязан снять форму. Надел форму — отпуск автоматически завершён.</span>
+        </div>
+
+        <!-- ═══════════════ 06 ═══════════════ -->
+        <h2 id="ch06">06. Правила поведения в строю</h2>
+        <div class="ustav-item">
+          <span class="ustav-num">6.1</span>
+          <span class="ustav-text">По команде «Построение» — все кроме спец. отряда — быстро занять место.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">6.2</span>
+          <span class="ustav-text">По команде «Общее построение» — строятся все сотрудники, включая спец. отряд.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">6.3</span>
+          <span class="ustav-text">Вызов на построение — от 2 и более раз с интервалом несколько минут.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">6.4</span>
+          <span class="ustav-text">Порядок построения: сначала спец. отряд, затем PD, в конце PA.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">6.5</span>
+          <span class="ustav-text"><strong>В строю запрещено:</strong> самовольно покидать строй; разговаривать (IC, !, !!), использовать телефон/RP-команды; держать оружие, курить, показывать эмоции/анимации; уходить в AFK более 1 минуты.</span>
+          <div class="ustav-nakazanie">Наказание: [1] предупреждение / повторно — увольнение; [2–9] выговор.</div>
+        </div>
+
+        <!-- ═══════════════ 07 ═══════════════ -->
+        <h2 id="ch07">07. В полиции запрещается</h2>
+        <div class="ustav-item ustav-item--prohibit">
+          <span class="ustav-num">7.1</span>
+          <span class="ustav-text">Обсуждать правомерные действия/приказы старшего состава, вопросы о повышении (IC, телефон, !, !!).</span>
+          <div class="ustav-nakazanie">Наказание: [1] предупреждение / повторно — увольнение; [2–9] наряд.</div>
+        </div>
+        <div class="ustav-item ustav-item--prohibit">
+          <span class="ustav-num">7.2</span>
+          <span class="ustav-text">Рядовым покидать департамент без разрешения Капитана и выше.</span>
+          <div class="ustav-nakazanie">Наказание: 1-й раз — предупреждение, повторно — увольнение. Сержантам — выговор.</div>
+        </div>
+        <div class="ustav-item ustav-item--prohibit">
+          <span class="ustav-num">7.3</span>
+          <span class="ustav-text">Спать на постах более 2 минут. Спать в других местах — разрешено, не мешая другим.</span>
+          <div class="ustav-nakazanie">Наказание: выговор.</div>
+        </div>
+        <div class="ustav-item ustav-item--prohibit">
+          <span class="ustav-num">7.4</span>
+          <span class="ustav-text">Оскорбление/хамство к коллегам в любых чатах (IC, OOC, !, !*, !!, !!*, телефон).</span>
+          <div class="ustav-nakazanie">Наказание: выговор; к старшему составу/Генералу/Министру — понижение / увольнение.</div>
+        </div>
+        <div class="ustav-item ustav-item--prohibit">
+          <span class="ustav-num">7.5</span>
+          <span class="ustav-text">Провоцировать коллег на оскорбления (!, !!).</span>
+          <div class="ustav-nakazanie">Наказание: наряд / выговор.</div>
+        </div>
+        <div class="ustav-item ustav-item--prohibit">
+          <span class="ustav-num">7.6</span>
+          <span class="ustav-text">Без основания снимать розыск с гражданских. С офицеров — только при наличии доказательств невиновности.</span>
+          <div class="ustav-nakazanie">Наказание: 1-й раз — выговор, повторно — понижение, многократно — увольнение.</div>
+        </div>
+        <div class="ustav-item ustav-item--prohibit">
+          <span class="ustav-num">7.7</span>
+          <span class="ustav-text">Нарушать субординацию.</span>
+          <div class="ustav-nakazanie">Наказание: [1] к ст. составу/Генералу/Министру — увольнение; [2–9] наряд / выговор.</div>
+        </div>
+        <div class="ustav-item ustav-item--prohibit">
+          <span class="ustav-num">7.8</span>
+          <span class="ustav-text">Превышать должностные полномочия (проверка на наркотики лидеров на проверках; отказ в переоформлении по 14.1 У.К.; проверка в казино/больнице; сотрудничество с преступниками; блат; проверка багажников вне блок-поста; спецсигналы не по назначению).</span>
+          <div class="ustav-nakazanie">Наказание: выговор / понижение.</div>
+        </div>
+        <div class="ustav-item ustav-item--prohibit">
+          <span class="ustav-num">7.9</span>
+          <span class="ustav-text">Требовать водителя покинуть транспорт без весомых причин <em>(исключения: нарушения У.К./А.К.; не касается водителей автобусов, такси, трамваев, поездов, дальнобойщиков, развозчиков хлеба)</em>.</span>
+          <div class="ustav-nakazanie">Наказание: выговор.</div>
+        </div>
+        <div class="ustav-item ustav-item--prohibit">
+          <span class="ustav-num">7.10</span>
+          <span class="ustav-text">Грубое/хамское отношение и оскорбления гражданских и сотрудников госорганизаций (IC, телефон).</span>
+          <div class="ustav-nakazanie">Наказание: наряд / выговор.</div>
+        </div>
+        <div class="ustav-item ustav-item--prohibit">
+          <span class="ustav-num">7.11</span>
+          <span class="ustav-text">Патруль на личном/арендованном транспорте. <em>Исключение: транспорт спец. отряда.</em></span>
+          <div class="ustav-nakazanie">Наказание: выговор.</div>
+        </div>
+        <div class="ustav-item ustav-item--prohibit">
+          <span class="ustav-num">7.12</span>
+          <span class="ustav-text">Выдавать розыск/штраф без оснований или с ошибочной статьёй.</span>
+          <div class="ustav-nakazanie">Наказание: выговор; неверная статья (то же наказание) — наряд; многократно — вплоть до увольнения.</div>
+        </div>
+        <div class="ustav-item ustav-item--prohibit">
+          <span class="ustav-num">7.13</span>
+          <span class="ustav-text">Останавливать водителей автобусов, трамваев, поездов, хлеба, скорой (со спецсигналами), кортеж правительства, сдающих на права, дальнобойщиков, военных на служебном транспорте — только при явном нарушении У.К./А.К. (кроме 5.2 А.К.). При включённых спецсигналах — штрафовать запрещено.</span>
+          <div class="ustav-nakazanie">Наказание: выговор.</div>
+        </div>
+        <div class="ustav-item ustav-item--prohibit">
+          <span class="ustav-num">7.14</span>
+          <span class="ustav-text">Махинации с отчётом.</span>
+          <div class="ustav-nakazanie">Наказание: предупреждение / увольнение.</div>
+        </div>
+        <div class="ustav-item ustav-item--prohibit">
+          <span class="ustav-num">7.15</span>
+          <span class="ustav-text">Патрулировать сотрудникам отдела PA.</span>
+          <div class="ustav-nakazanie">Наказание: [1] увольнение; [2] выговор.</div>
+        </div>
+        <div class="ustav-item ustav-item--prohibit">
+          <span class="ustav-num">7.16</span>
+          <span class="ustav-text">Ликвидация при любой ситуации или нарушении, кроме: 1.1 (с летал. исходом), 1.2, 2.1, 2.2, 6.1, 6.4, 9.2, 9.3 У.К., 10.1 (AFK через меню), 5.1 А.К., AFK при аресте (4.5 УМВД). Запрещена ликвидация обезвреженного; после поимки — сразу ликвидация или КПЗ.</span>
+          <div class="ustav-nakazanie">Наказание: выговор.</div>
+        </div>
+        <div class="ustav-item ustav-item--prohibit">
+          <span class="ustav-num">7.17</span>
+          <span class="ustav-text">Выдавать пропуск без причины или согласия старшего состава. В докладе — указать причину.</span>
+          <div class="ustav-nakazanie">Наказание: выговор.</div>
+        </div>
+        <div class="ustav-item ustav-item--prohibit">
+          <span class="ustav-num">7.18</span>
+          <span class="ustav-text">Заводить дело по запросу Рядового.</span>
+          <div class="ustav-nakazanie">Наказание: выговор.</div>
+        </div>
+        <div class="ustav-item ustav-item--prohibit">
+          <span class="ustav-num">7.19</span>
+          <span class="ustav-text">Вмешиваться в деятельность сотрудника МВД во время погони/ареста с использованием функционала МВД (розыск/штраф) без запроса о помощи.</span>
+          <div class="ustav-nakazanie">Наказание: 1-й раз — выговор, повторно — понижение.</div>
+        </div>
+        <div class="ustav-item ustav-item--prohibit">
+          <span class="ustav-num">7.20</span>
+          <span class="ustav-text">Нецелесообразная трата патронов.</span>
+          <div class="ustav-nakazanie">Наказание: [1] увольнение; [2–9] выговор.</div>
+        </div>
+        <div class="ustav-item ustav-item--prohibit">
+          <span class="ustav-num">7.21</span>
+          <span class="ustav-text">Выписывать штраф или проверять на наркотики нарушителей, проживающих в штате менее 3 лет. 1-й раз — предупреждение, повторно — разрешено штрафовать/задерживать.</span>
+          <div class="ustav-nakazanie">Наказание: выговор.</div>
+        </div>
+        <div class="ustav-item ustav-item--prohibit">
+          <span class="ustav-num">7.22</span>
+          <span class="ustav-text">Стрелять из винтовки в людей или по транспорту с намерением взорвать. Назначение винтовки — прикрепить маячок.</span>
+          <div class="ustav-nakazanie">Наказание: выговор.</div>
+        </div>
+        <div class="ustav-item ustav-item--prohibit">
+          <span class="ustav-num">7.23</span>
+          <span class="ustav-text">Проверять документы/КПК у игроков в маске. Сначала попросить снять, не снял — снять через отыгровку <code>/я снял маску с [ник]</code> (игрок не обязан снимать через инвентарь).</span>
+          <div class="ustav-nakazanie">Наказание: наряд.</div>
+        </div>
+        <div class="ustav-item ustav-item--prohibit">
+          <span class="ustav-num">7.24</span>
+          <span class="ustav-text">Халатное отношение к работе (допуск неподходящего по рангу на тренировку; неправильная форма на КБ; нарушение правил приёма экзаменов).</span>
+          <div class="ustav-nakazanie">Наказание: наряд / выговор.</div>
+        </div>
+        <div class="ustav-item ustav-item--prohibit">
+          <span class="ustav-num">7.25</span>
+          <span class="ustav-text">Обман или попытка обмана Генерала или старшего состава.</span>
+          <div class="ustav-nakazanie">Наказание: выговор / понижение; неоднократно — увольнение.</div>
+        </div>
+        <div class="ustav-item ustav-item--prohibit">
+          <span class="ustav-num">7.26</span>
+          <span class="ustav-text">Выписка штрафа спустя 7 минут после совершения нарушения А.К.</span>
+          <div class="ustav-nakazanie">Наказание: выговор.</div>
+        </div>
+        <div class="ustav-item ustav-item--prohibit">
+          <span class="ustav-num">7.27</span>
+          <span class="ustav-text">Применение тактических манёвров в условиях угрозы гражданским или участникам погони.</span>
+          <div class="ustav-nakazanie">Наказание: наряд; повторно — выговор.</div>
+        </div>
+
+        <!-- ═══════════════ 08 ═══════════════ -->
+        <h2 id="ch08">08. Дресс-код</h2>
+        <div class="ustav-item">
+          <span class="ustav-num">8.1</span>
+          <span class="ustav-text">Каждый сотрудник МВД обязан соблюдать дресс-код.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">8.2</span>
+          <span class="ustav-text">Сотрудники старшего состава вправе переодеваться в форму PD для патрулирования и форму спец. отряда для спецопераций.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">8.3</span>
+          <span class="ustav-text">Запрещено носить форму не по дресс-коду <em>(исключение: командные тренировки, спецоперации)</em>. Женщина-Генерал вправе носить форму ст. состава, PA и PD ввиду отсутствия женского скина лидера.</span>
+          <div class="ustav-nakazanie">Наказание: [1–6] беседа; [7–9] наряд.</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">8.4</span>
+          <span class="ustav-text">Запрещено оставлять сотрудника в форме не по рангу после смены для тренировки/спецопераций.</span>
+          <div class="ustav-nakazanie">Наказание: беседа.</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">8.5</span>
+          <span class="ustav-text">Запрещено носить головной убор/маску в рабочее время <em>(исключение: маска скрывает клист; кепка чёрного/синего/тёмно-синего цвета для всех отделов; в спец. отряде кепка разрешена только женщинам)</em>.</span>
+          <div class="ustav-nakazanie">Наказание: [1] предупреждение / повторно — увольнение; [2–9] наряд.</div>
+        </div>
+
+        <!-- ═══════════════ 09 ═══════════════ -->
+        <h2 id="ch09">09. Использование рации</h2>
+        <div class="ustav-item">
+          <span class="ustav-num">9.1</span>
+          <span class="ustav-text">Федеральная рация (!!) — со звания «Старший сержант» [3] <em>(исключение: 9.4 УМВД)</em>.</span>
+          <div class="ustav-nakazanie">Наказание: [1] предупреждение / повторно — увольнение; [2] наряд.</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">9.2</span>
+          <span class="ustav-text">На федеральной волне — указывать свой департамент; на внутренней — свой отдел.</span>
+          <div class="ustav-nakazanie">Наказание: [1] предупреждение / повторно — увольнение; [2–7] предупреждение / повторно — наряд; [8–9] наряд.</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">9.3</span>
+          <span class="ustav-text">Запрещено использовать рацию как рекламу.</span>
+          <div class="ustav-nakazanie">Наказание: [1] предупреждение / повторно — увольнение; [2–9] выговор.</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">9.4</span>
+          <span class="ustav-text">Любой сотрудник, независимо от звания, вправе сообщить в федеральную рацию о: теракте, похищении, ЧС; просьбе завести дело или принять экзамен (если в своём департаменте игнорируют или нет сотрудников на смене).</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">9.5</span>
+          <span class="ustav-text">Офицер обязан ответить в рацию в течение <strong>2 минут</strong> при вызове старшего по званию, если не AFK и вне департамента.</span>
+          <div class="ustav-nakazanie">Наказание: наряд / выговор.</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">9.6</span>
+          <span class="ustav-text">При заведении дела — зафиксировать доклад, объявить в розыск и сообщить о заведении дела. Сержанты указывают инициалы: <code>/розыск 782 2.1 У.К. by H.C.</code><br>Доклад: <code>![ТЭГ] Прошу завести дело №ИД. Причина: 2.1 У.К.</code></span>
+        </div>
+
+        <!-- ═══════════════ 10 ═══════════════ -->
+        <h2 id="ch10">10. Юрисдикции департаментов</h2>
+        <div class="ustav-item">
+          <span class="ustav-num">10.1</span>
+          <span class="ustav-text">Со звания «Старший сержант» [3] офицер вправе патрулировать территорию других юрисдикций без запросов в федеральную рацию.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">10.2</span>
+          <span class="ustav-text">Границы юрисдикции определяются и могут изменяться только Министром.</span>
+        </div>
+
+        <!-- ═══════════════ 11 ═══════════════ -->
+        <h2 id="ch11">11. Старший состав</h2>
+        <div class="ustav-item">
+          <span class="ustav-num">11.1</span>
+          <span class="ustav-text">Генерал вправе назначать/снимать сотрудников старшего состава на своё усмотрение.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">11.2</span>
+          <span class="ustav-text">Перед повышением на «Подполковник» [8] — Майор обязан погасить все наказания, прослужить в звании <strong>1 день</strong> и иметь отчёт о проделанной работе.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">11.3</span>
+          <span class="ustav-text">Для «Полковник» [9] — Подполковник: прослужить <strong>1 день</strong>, погасить наказания, иметь отчёт о проделанной работе.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">11.4</span>
+          <span class="ustav-text">Принятие неподходящего игрока или повышение с плохим отчётом/действующим наказанием — выговор.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">11.5</span>
+          <span class="ustav-text">Увольнение без причины/доказательств/по ошибке — выговор.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">11.6</span>
+          <span class="ustav-text">Отсутствие отчёта или невыполнение минимума у старшего состава — выговор. Норма устанавливается Генералом в виде таблицы или темы в конце недели.</span>
+        </div>
+
+        <!-- ═══════════════ 12 ═══════════════ -->
+        <h2 id="ch12">12. Организация системы переводов</h2>
+        <div class="ustav-item">
+          <span class="ustav-num">12.1</span>
+          <span class="ustav-text">Система переводов включает требования для перевода между департаментами МВД или из МО/Мэрии.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">12.2</span>
+          <span class="ustav-text">Для перевода — подать заявление в специальной теме департамента назначения. Требуется: ксерокопия паспорта и трудовой книжки, проживание от 4 лет (+30 законопослушности), отсутствие судимостей.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">12.3</span>
+          <span class="ustav-text">Заявления проверяют: Министр, Генерал, старший состав.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">12.4</span>
+          <span class="ustav-text">После одобрения — <strong>48 часов</strong> на осуществление перевода.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">12.5</span>
+          <span class="ustav-text">Перевод запрещён при действующем наказании или незакрытых жалобах.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">12.6</span>
+          <span class="ustav-text">Если сотрудник пришёл по резюме/на набор и принят — перевод аннулируется, повышение по обычной системе. Запрещено увольняться до получения результата опроса.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">12.7</span>
+          <span class="ustav-text">Переводы между департаментами МВД — без потери ранга (старший состав — на 7 ранг). Экзамены не требуются, проверяются только документы. Интервал между переводами — 48 часов.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">12.8</span>
+          <span class="ustav-text">Перевод из МО/Мэрии — с потерей двух рангов. Обязательно ЗР и УП. <em>Исключение: трудовая подтверждает [4]+ в МВД за последние 2 месяца.</em></span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">12.9</span>
+          <span class="ustav-text">Перевод из МО/Мэрии — с 4-го ранга. Перевод между МВД — со 2-го ранга (Сержант).</span>
+        </div>
+
+        <h3>Таблица переводов из МВД в МВД</h3>
+        <table>
+          <thead><tr><th>Ранг</th><th>На какой ранг</th></tr></thead>
+          <tbody>
+            <tr><td>Подполковник [8]</td><td>Майор [7]</td></tr>
+            <tr><td>Полковник [9]</td><td>Майор [7]</td></tr>
+            <tr><td>Остальные</td><td>Без потери ранга</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Таблица переводов из Мэрии в МВД</h3>
+        <table>
+          <thead><tr><th>Звание в Мэрии</th><th>Звание в МВД</th></tr></thead>
+          <tbody>
+            <tr><td>Помощник [1] – Ст. охранник [3]</td><td>Перевод невозможен</td></tr>
+            <tr><td>Младший лицензёр [4]</td><td>Сержант [2]</td></tr>
+            <tr><td>Лицензёр [5]</td><td>Старший сержант [3]</td></tr>
+            <tr><td>Старший лицензёр [6]</td><td>Лейтенант [4]</td></tr>
+            <tr><td>Заместитель депутата [7]</td><td>Старший лейтенант [5]</td></tr>
+            <tr><td>Депутат [8]</td><td>Майор [7]</td></tr>
+            <tr><td>Заместитель Мэра [9]</td><td>Майор [7]</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Таблица переводов из МО в МВД</h3>
+        <table>
+          <thead><tr><th>Звание в МО</th><th>Звание в МВД</th></tr></thead>
+          <tbody>
+            <tr><td>Рядовой/Матрос [1] – Ст. Сержант/Старшина 2 ст. [3]</td><td>Перевод невозможен</td></tr>
+            <tr><td>Старшина/Старшина 1 статьи [4]</td><td>Сержант [2]</td></tr>
+            <tr><td>Лейтенант/Мичман [5]</td><td>Старший сержант [3]</td></tr>
+            <tr><td>Капитан/Лейтенант [6]</td><td>Лейтенант [4]</td></tr>
+            <tr><td>Майор/Капитан 3 ранга [7]</td><td>Старший лейтенант [5]</td></tr>
+            <tr><td>Подполковник/Капитан 2 ранга [8]</td><td>Майор [7]</td></tr>
+            <tr><td>Полковник/Капитан 1 ранга [9]</td><td>Майор [7]</td></tr>
+          </tbody>
+        </table>
+
+        <!-- ═══════════════ 13 ═══════════════ -->
+        <h2 id="ch13">13. Юридическая ответственность и неприкосновенность</h2>
+        <div class="ustav-item">
+          <span class="ustav-num">13.1</span>
+          <span class="ustav-text">Каждый житель штата несёт юридическую ответственность — обязанность быть наказанным за правонарушение в соответствии с законом.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">13.2</span>
+          <span class="ustav-text">Юридически неприкосновенные лица: <strong>Мэры, Министры, Генералы/Адмирал МО</strong>.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">13.3</span>
+          <span class="ustav-text">Неприкосновенные лица имеют право на полицейское сопровождение при выездах на проверки и обычном перемещении.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">13.4</span>
+          <span class="ustav-text">Офицерам запрещено останавливать неприкосновенных лиц. <em>Исключение: нарушение ПДД.</em> При наличии сопровождения запрещена остановка по: 2.1, 2.3, 2.5, 2.11 А.К., 4.2 А.К. и 10.2 У.К.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">13.5</span>
+          <span class="ustav-text">На блок-посту офицер вправе потребовать паспорт у неприкосновенных лиц; они обязаны предъявить. Досмотр багажника — не проводится.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">13.6</span>
+          <span class="ustav-text">При отказе предъявить паспорт — неприкосновенность снимается, проводится выяснение личности/арест.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">13.7</span>
+          <span class="ustav-text">У.К. распространяется на неприкосновенных по всем статьям. <em>Исключение: Часть 4 — Законы об армии (кроме 4.2); Часть 5 — Огнестрельное оружие (кроме 5.2 и 5.3).</em></span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">13.8</span>
+          <span class="ustav-text">Министр ВД полностью неприкосновенен — офицеры не вправе применять к нему какой-либо функционал МВД.</span>
+          <div class="ustav-nakazanie">Наказание: выговор / понижение.</div>
+        </div>
+
+        <!-- ═══════════════ 14 ═══════════════ -->
+        <h2 id="ch14">14. Спец. отряды</h2>
+        <div class="ustav-item">
+          <span class="ustav-num">14.1</span>
+          <span class="ustav-text">Командиром спец. отряда — сотрудник от «Майор» [7] до «Полковник» [9]. Генерал является начальником всего департамента.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">14.2</span>
+          <span class="ustav-text">Заместитель командира — «Капитан» [6] и выше. Не может быть равного командиру ранга или выше.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">14.3</span>
+          <span class="ustav-text">Сотрудники старшего состава не могут быть участниками отряда.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">14.4</span>
+          <span class="ustav-text">Спец. отряд вправе патрулировать на зарегистрированном личном транспорте (7.11 УМВД).</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">14.5</span>
+          <span class="ustav-text">Транспорт спец. отряда регистрирует командир или Генерал департамента.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">14.6</span>
+          <span class="ustav-text">Личные дела спец. отряда могут быть скрыты по инициативе Генерала (пометка <code>[спец. отряд]</code> в заголовке). При уходе из отряда — дело восстанавливается.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">14.7</span>
+          <span class="ustav-text">Сотрудники спец. отряда не обязаны снимать маску по просьбе гражданских (2.6 УМВД).</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">14.8</span>
+          <span class="ustav-text">Сотрудники спец. отряда используют сокращённое приветствие: название отряда, звание и департамент (3.4 УМВД).</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">14.9</span>
+          <span class="ustav-text">Сотрудники одного департамента вправе подавать заявления в спец. отряды других департаментов при наличии разрешения от своего Генерала.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">14.10</span>
+          <span class="ustav-text">Командир и зам. вправе проводить СО: «Торговец», «Рейд опасного района», «Рейд по точкам», «Рейд Города», «Казино». СО «Искра» — при любом количестве бандитов (разрешение базы требуется). СО «Освобождение заложников» — при отсутствие Генерала.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">14.11</span>
+          <span class="ustav-text">У каждого спец. отряда — собственная тема с: требованиями приёма, составом, описанием отряда, формой заявлений.</span>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">14.12</span>
+          <span class="ustav-text">Командирам запрещено копировать темы других спец. отрядов (плагиат). При нарушении — тема может быть удалена.</span>
+        </div>
+
+        <p style="margin-top:28px;font-size:12px;color:var(--grey);text-align:center;"><em>Иные исключения для спец. отрядов обсуждаются с руководством МВД.</em></p>
       `
     },
     ugk: {
@@ -5025,21 +5858,318 @@
       meta: 'Автор: meow zanetti · 3 апреля 2022',
       eyebrow: 'Основные кодексы',
       body: `
-        <div class="article-highlight">Уголовный кодекс определяет составы преступлений и соответствующие меры наказания на территории штата.</div>
-        <h2>Категории преступлений</h2>
-        <table>
-          <thead><tr><th>Статья</th><th>Преступление</th><th>Наказание</th></tr></thead>
-          <tbody>
-            <tr><td>УК-101</td><td>Нападение на сотрудника МВД</td><td>Арест 15–30 мин</td></tr>
-            <tr><td>УК-102</td><td>Ограбление с оружием</td><td>Арест 20–40 мин</td></tr>
-            <tr><td>УК-103</td><td>Хранение незарегистрированного оружия</td><td>Штраф / Арест</td></tr>
-            <tr><td>УК-104</td><td>Угон транспортного средства</td><td>Арест 10–20 мин</td></tr>
-            <tr><td>УК-105</td><td>Убийство</td><td>Арест 30–60 мин</td></tr>
-          </tbody>
-        </table>
-        <h2>Порядок задержания</h2>
-        <p>Сотрудник вправе произвести задержание при наличии достаточных оснований полагать, что лицо совершило или готовится совершить преступление. Задержанному разъясняются его права.</p>
-        <p><em>Полный текст документа будет добавлен позднее.</em></p>
+        <div class="article-highlight">Уголовный кодекс определяет составы преступлений и соответствующие меры наказания на территории штата. Обязателен к изучению всеми сотрудниками МВД.</div>
+
+        <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:14px;padding:20px 24px;margin:24px 0;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--grey);margin-bottom:14px;">Содержание</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+            <a href="#ugk-01" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">01</span> Угроза жизни гражданских</a>
+            <a href="#ugk-02" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">02</span> Покушение на жизнь офицеров</a>
+            <a href="#ugk-03" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">03</span> Незаконные действия с ТС</a>
+            <a href="#ugk-04" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">04</span> Законы об армиях</a>
+            <a href="#ugk-05" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">05</span> Огнестрельное оружие</a>
+            <a href="#ugk-06" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">06</span> Общественная безопасность</a>
+            <a href="#ugk-07" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">07</span> Бандитизм</a>
+            <a href="#ugk-08" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">08</span> Соучастие в преступлении</a>
+            <a href="#ugk-09" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">09</span> Неподчинение офицеру</a>
+            <a href="#ugk-10" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">10</span> Охраняемые территории</a>
+            <a href="#ugk-11" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">11</span> Хулиганство</a>
+            <a href="#ugk-12" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">12</span> Запрещённые препараты</a>
+            <a href="#ugk-13" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">13</span> Гос. предметы и удостоверения</a>
+            <a href="#ugk-14" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">14</span> Неординарные нарушения</a>
+            <a href="#ugk-15" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">15</span> Коррупция</a>
+          </div>
+        </div>
+
+        <!-- ═══════════════ 01 ═══════════════ -->
+        <h2 id="ugk-01">01. Угроза жизни и здоровью гражданских лиц или сотрудников гос. организации</h2>
+        <div class="ustav-item">
+          <span class="ustav-num">1.1</span>
+          <span class="ustav-text"><strong>Нападение на гражданское лицо или сотрудника гос. организации.</strong> Нанесение урона кулаками/транспортом/намеренный таран транспорта с гражданским. В данном случае 11.1 У.К. выдавать не нужно! Если была установлена вина пешехода или наезд был случайным, водитель освобождается от ответственности.</span>
+          <div class="ustav-nakazanie">Наказание: 3 уровень розыска (в случае летального исхода — 6 уровень розыска)</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">1.2</span>
+          <span class="ustav-text"><strong>Вооружённое нападение на гражданское лицо или сотрудника гос. организации.</strong> Стрельба по игроку/нацеливание оружием; сюда же относится любое холодное оружие.</span>
+          <div class="ustav-nakazanie">Наказание: 6 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">1.3</span>
+          <span class="ustav-text"><strong>Домогательство в любом виде.</strong> Перед выдачей розыска нужно обязательно выяснить, по согласию это было или нет.</span>
+          <div class="ustav-nakazanie">Наказание: 1 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">1.4</span>
+          <span class="ustav-text"><strong>Угрозы гражданину убийством или причинением тяжкого вреда здоровью.</strong></span>
+          <div class="ustav-nakazanie">Наказание: 1 уровень розыска</div>
+        </div>
+
+        <!-- ═══════════════ 02 ═══════════════ -->
+        <h2 id="ugk-02">02. Покушение на жизнь и здоровье офицеров полиции</h2>
+        <div class="ustav-item">
+          <span class="ustav-num">2.1</span>
+          <span class="ustav-text"><strong>Угроза жизни офицера полиции 1-ой степени.</strong> Нанесение урона кулаками/транспортом/преднамеренный таран транспорта, в котором находится офицер. В данном случае 11.1 У.К. выдавать не нужно! Если в результате наезда установлена вина офицера — водитель освобождается от ответственности.</span>
+          <div class="ustav-nakazanie">Наказание: 3 уровень розыска (в случае летального исхода — 6 уровень розыска)</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">2.2</span>
+          <span class="ustav-text"><strong>Угроза жизни офицера полиции 2-ой степени.</strong> Стрельба/нацеливание оружием; сюда же относится любое холодное оружие.</span>
+          <div class="ustav-nakazanie">Наказание: 6 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">2.3</span>
+          <span class="ustav-text"><strong>Угрозы в любом виде (личное общение, телефон) в адрес офицера полиции.</strong> Исключение: угроза жалобой и подобное этому.</span>
+          <div class="ustav-nakazanie">Наказание: 1 уровень розыска</div>
+        </div>
+
+        <!-- ═══════════════ 03 ═══════════════ -->
+        <h2 id="ugk-03">03. Незаконные действия с транспортными средствами</h2>
+        <div class="ustav-item">
+          <span class="ustav-num">3.1</span>
+          <span class="ustav-text"><strong>Угон транспортного средства.</strong></span>
+          <div class="ustav-nakazanie">Наказание: 2 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">3.2</span>
+          <span class="ustav-text"><strong>Попытка угона транспортного средства.</strong> Исключение: если игрок случайно сел на водительское место. Если игроки пытаются «угнать» друг у друга транспорт начальных работ из мэрии на месте их спавна — наказывать не нужно.</span>
+          <div class="ustav-nakazanie">Наказание: 1 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">3.3</span>
+          <span class="ustav-text"><strong>Попытка вытеснения водителя без цели угона.</strong> Намеренное вмешательство в чужое транспортное средство с целью выброса водителя. <em>Пример: гражданин нажимает F, выбрасывает водителя и при этом сам не садится в авто, целенаправленно препятствует вождению.</em></span>
+          <div class="ustav-nakazanie">Наказание: 1 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">3.4</span>
+          <span class="ustav-text"><strong>Незаконное проникновение в полицейский транспорт.</strong> Игрок самовольно садится в служебное транспортное средство без разрешения и не покидает его по требованию офицера. Сначала приказываете покинуть транспорт, если поступает игнорирование или отказ — проводим арест по данной статье.</span>
+          <div class="ustav-nakazanie">Наказание: 1 уровень розыска</div>
+        </div>
+
+        <!-- ═══════════════ 04 ═══════════════ -->
+        <h2 id="ugk-04">04. Законы об армиях</h2>
+        <div class="ustav-item">
+          <span class="ustav-num">4.1</span>
+          <span class="ustav-text"><strong>Военнослужащим запрещена стрельба из огнестрельного оружия за пределами военных баз.</strong> Исключение: ответный огонь/погоня за бандитом/мафиози в зоне погони.</span>
+          <div class="ustav-nakazanie">Наказание: 3 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">4.2</span>
+          <span class="ustav-text"><strong>Военнослужащим запрещена продажа военной собственности/имущества.</strong> <em>Пример: продажа патронов, рассказ о том, что на базе никого нет.</em></span>
+          <div class="ustav-nakazanie">Наказание: 5 уровень розыска</div>
+        </div>
+
+        <!-- ═══════════════ 05 ═══════════════ -->
+        <h2 id="ugk-05">05. Огнестрельное оружие</h2>
+        <div class="ustav-item">
+          <span class="ustav-num">5.1</span>
+          <span class="ustav-text"><strong>Ношение огнестрельного оружия без наличия лицензии.</strong> Исключение: игроки на полигонах, военные и работники мэрии.</span>
+          <div class="ustav-nakazanie">Наказание: 2 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">5.2</span>
+          <span class="ustav-text"><strong>Ненадлежащее применение огнестрельного оружия.</strong> Стрельба по стенам, в небо и т. д.</span>
+          <div class="ustav-nakazanie">Наказание: 1 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">5.3</span>
+          <span class="ustav-text"><strong>Сбыт (передача, попытка продажи/покупки/реклама) нелегального оружия или боеприпасов.</strong> Наказывать только за фразы: «дай/передай/продай ган/патроны» (смс/ООС чат/чат других работ не учитывается). Лицензию на оружие требовать не нужно. Исключение: если продажа замаскирована под макеты оружия.</span>
+          <div class="ustav-nakazanie">Наказание: 4 уровень розыска</div>
+        </div>
+
+        <!-- ═══════════════ 06 ═══════════════ -->
+        <h2 id="ugk-06">06. Общественная безопасность</h2>
+        <div class="ustav-item">
+          <span class="ustav-num">6.1</span>
+          <span class="ustav-text"><strong>Планирование или исполнение теракта.</strong></span>
+          <div class="ustav-nakazanie">Наказание: 6 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">6.2</span>
+          <span class="ustav-text"><strong>Публичные призывы или пропаганда терроризма.</strong></span>
+          <div class="ustav-nakazanie">Наказание: 6 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">6.3</span>
+          <span class="ustav-text"><strong>Заведомо ложное сообщение об акте терроризма.</strong></span>
+          <div class="ustav-nakazanie">Наказание: 2 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">6.4</span>
+          <span class="ustav-text"><strong>Организация преступной группы, а также участие в ней.</strong> Группой считается от 3 и более человек.</span>
+          <div class="ustav-nakazanie">Наказание: 6 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">6.5</span>
+          <span class="ustav-text"><strong>Взятие в заложники одного или группы лиц.</strong></span>
+          <div class="ustav-nakazanie">Наказание: 6 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">6.6</span>
+          <span class="ustav-text"><strong>Продажа секретной государственной информации.</strong> Сколько военных на базе / где проводятся спец. операции / количество участников спец. операций.</span>
+          <div class="ustav-nakazanie">Наказание: 6 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">6.7</span>
+          <span class="ustav-text"><strong>Организация или участие в массовых беспорядках.</strong> Проведение несанкционированных митингов, акций протеста.</span>
+          <div class="ustav-nakazanie">Наказание: организаторам и злостным нарушителям — 4 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">6.8</span>
+          <span class="ustav-text"><strong>Планирование преступления.</strong> Планирование теракта, подстрекательство и угрозы сюда не относятся. <em>Примеры: если игрок сказал, что убьёт кого-то; мафиози договариваются о похищении; игроки об ограблении и т. д.</em></span>
+          <div class="ustav-nakazanie">Наказание: 2 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">6.9</span>
+          <span class="ustav-text"><strong>Подстрекательство, вербовка или другое вовлечение в терроризм или преступную группировку/синдикат.</strong> Исключение: вербовка/попытка вербовки преступной группировкой/синдикатом гражданского лица на их территории (гетто или главный дом/двор мафий).</span>
+          <div class="ustav-nakazanie">Наказание: 3 уровня розыска</div>
+        </div>
+
+        <!-- ═══════════════ 07 ═══════════════ -->
+        <h2 id="ugk-07">07. Бандитизм</h2>
+        <div class="ustav-item">
+          <span class="ustav-num">7.1</span>
+          <span class="ustav-text"><strong>Ограбление или попытка ограбления гражданина.</strong> Обязательно иметь доказательства ограбления/попытки ограбления.</span>
+          <div class="ustav-nakazanie">Наказание: 2 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">7.2</span>
+          <span class="ustav-text"><strong>Вымогательство в любом виде средств, предметов или действий.</strong></span>
+          <div class="ustav-nakazanie">Наказание: 2 уровень розыска</div>
+        </div>
+
+        <!-- ═══════════════ 08 ═══════════════ -->
+        <h2 id="ugk-08">08. Соучастие в преступлении</h2>
+        <div class="ustav-item">
+          <span class="ustav-num">8.1</span>
+          <span class="ustav-text"><strong>Соучастие в преступлении.</strong> Подъехать к задержанному и открыть дверь с целью чтобы он сел; пассажир надел маску вместе с водителем в процессе погони чтобы скрыться.</span>
+          <div class="ustav-nakazanie">Наказание: 2 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">8.2</span>
+          <span class="ustav-text"><strong>Соучастие в преступлении с тяжкими последствиями.</strong> Водитель возит игрока, который стреляет по другим игрокам.</span>
+          <div class="ustav-nakazanie">Наказание: 4 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">8.3</span>
+          <span class="ustav-text"><strong>Подстрекательство к совершению преступления.</strong> <em>Примеры: «ударь его», «не показывай паспорт менту», «убей мента».</em> В случае, если водитель в розыске, офицер просит остановить машину, а тот пытается скрыться — пассажиры данного транспорта не являются соучастниками.</span>
+          <div class="ustav-nakazanie">Наказание: 2 уровень розыска</div>
+        </div>
+
+        <!-- ═══════════════ 09 ═══════════════ -->
+        <h2 id="ugk-09">09. Неподчинение офицеру полиции</h2>
+        <div class="ustav-item">
+          <span class="ustav-num">9.1</span>
+          <span class="ustav-text"><strong>Неподчинение офицеру полиции.</strong> Отказ гражданина выполнять законные указания сотрудника полиции, без применения физической силы и без попытки скрыться. <em>Примеры: гражданин игнорирует приказ выйти из авто; грубо отказывается выполнить просьбу; спорит, хамит и не выполняет команды, оставаясь на месте.</em> В случае отказа предоставления документов — пробиваете по КПК.</span>
+          <div class="ustav-nakazanie">Наказание: 1 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">9.2</span>
+          <span class="ustav-text"><strong>Сопротивление аресту.</strong> Физическое противодействие действиям полиции при задержании/аресте. <em>Примеры: сбивает анимацию ведения в наручниках (прыжками); целенаправленно падает в наручниках; ударяет или отталкивает офицера во время ареста (2.1 У.К. в этом случае не выдаётся); зацепляется за объекты, пытаясь оттянуть арест.</em></span>
+          <div class="ustav-nakazanie">Наказание: 2 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">9.3</span>
+          <span class="ustav-text"><strong>Уклонение от ареста.</strong> Активная попытка скрыться от задержания или полицейского преследования. <em>Примеры: гражданин уезжает при попытке остановки (трафик-стоп); водитель продолжает движение после знака остановки; гражданин уезжает/убегает после попытки его остановки.</em> Если просто не выполняет команды, но не убегает — 9.1; если сопротивление при объявлении задержания — 9.2.</span>
+          <div class="ustav-nakazanie">Наказание: 3 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">9.4</span>
+          <span class="ustav-text"><strong>Отказ или невозможность оплаты штрафа или компенсации.</strong> Отказ выплаты компенсации виновником ДТП; у нарушителя нет денег для оплаты (убедитесь, что он не обманывает). За отказ от оплаты 5.2 А.К. (просроченный штраф) данная статья не выдаётся.</span>
+          <div class="ustav-nakazanie">Наказание: 1 уровень розыска (1 от выписки штрафа системный, второй выдаёте при отказе оплаты)</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">9.5</span>
+          <span class="ustav-text"><strong>Рецидив нарушения Административного Кодекса.</strong> Повторное нарушение того же самого А.К. сразу после оплаты штрафа. Распространяется на статьи А.К., имеющие в плане наказания только штраф.</span>
+          <div class="ustav-nakazanie">Наказание: 2 уровень розыска</div>
+        </div>
+
+        <!-- ═══════════════ 10 ═══════════════ -->
+        <h2 id="ugk-10">10. Охраняемые территории</h2>
+        <div class="ustav-item">
+          <span class="ustav-num">10.1</span>
+          <span class="ustav-text"><strong>Проникновение на охраняемую правоохранительными органами территорию.</strong> Перед объявлением в розыск офицер обязан предупредить нарушителя. Если на наборе в полицию гражданин не прошёл опрос и отказывается покинуть территорию — выдаётся 9.1 У.К. Исключение: игроки пришедшие по экскурсии (дневные квесты).</span>
+          <div class="ustav-nakazanie">Наказание: 3 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">10.2</span>
+          <span class="ustav-text"><strong>Нахождение у охраняемых правоохранительными органами объектов.</strong> Офицер обязан предупредить гражданина отойти. К таким объектам относятся КПП департаментов, блок-посты.</span>
+          <div class="ustav-nakazanie">Наказание: 2 уровень розыска</div>
+        </div>
+
+        <!-- ═══════════════ 11 ═══════════════ -->
+        <h2 id="ugk-11">11. Хулиганство</h2>
+        <div class="ustav-item">
+          <span class="ustav-num">11.1</span>
+          <span class="ustav-text"><strong>Порча или уничтожение имущества гражданских лиц/государственных организаций.</strong> Преднамеренный таран пустого транспорта, бить кулаками/расстреливать; использование отыгровок на эту тему.</span>
+          <div class="ustav-nakazanie">Наказание: 1 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">11.2</span>
+          <span class="ustav-text"><strong>Ложный вызов сотрудников государственных организаций.</strong></span>
+          <div class="ustav-nakazanie">Наказание: 2 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">11.3</span>
+          <span class="ustav-text"><strong>Оскорбление офицера полиции.</strong> Исключение: ООС чат/чаты работ.</span>
+          <div class="ustav-nakazanie">Наказание: 2 уровень розыска</div>
+        </div>
+
+        <!-- ═══════════════ 12 ═══════════════ -->
+        <h2 id="ugk-12">12. Запрещённые препараты</h2>
+        <div class="ustav-item">
+          <span class="ustav-num">12.1</span>
+          <span class="ustav-text"><strong>Употребление или хранение наркотических веществ.</strong> Запрещено отыгрывать подкидывание наркотиков. Запрещено проверять на наркотики за любое MG. В случае употребления в общественном месте — можно провести обыск на наличие наркотиков. Запрещено проверять граждан без причин — вы должны увидеть сами. Если гражданин отыграл, что выпил таблетки от боли — проверять запрещено. Запрещено проверять игроков 1–2 уровня.</span>
+          <div class="ustav-nakazanie">Наказание: 3 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">12.2</span>
+          <span class="ustav-text"><strong>Пропаганда или склонение к употреблению запрещённых веществ.</strong> Фразы по типу «юзай препы», «схавай нарко» и т. д.</span>
+          <div class="ustav-nakazanie">Наказание: 2 уровень розыска</div>
+        </div>
+
+        <!-- ═══════════════ 13 ═══════════════ -->
+        <h2 id="ugk-13">13. Использование государственных предметов и ложное представление сотрудником</h2>
+        <div class="ustav-item">
+          <span class="ustav-num">13.1</span>
+          <span class="ustav-text"><strong>Подделка документов, удостоверений, значков государственных организаций, а также ложное представление себя сотрудником государственной организации.</strong> Предоставление поддельной лицензии/паспорта через команду /я, /фд и т. д. Если гражданин не является работником гос. организации, но использует отыгровку этой организации.</span>
+          <div class="ustav-nakazanie">Наказание: 2 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">13.2</span>
+          <span class="ustav-text"><strong>Использование предметов государственного назначения в личных целях, а равно их покупка, продажа или кража.</strong> Касается служебной формы, боеприпасов армии.</span>
+          <div class="ustav-nakazanie">Наказание: 4 уровень розыска</div>
+        </div>
+
+        <!-- ═══════════════ 14 ═══════════════ -->
+        <h2 id="ugk-14">14. Неординарные нарушения</h2>
+        <div class="ustav-item">
+          <span class="ustav-num">14.1</span>
+          <span class="ustav-text"><strong>Добровольная сдача властям.</strong> Статья не распространяется на тех, у кого был 1 уровень розыска и тех, кто сознался после обращения сотрудника полиции. Игрокам с 2+ звёздами — снимаете одну звезду и отправляете в КПЗ. Игрокам с 1 звездой: если говорит о преступлении — просто садим в КПЗ с 1 звездой; если о просроченном штрафе — выписываем штраф и снимаем розыск. Если нет денег или 1–2 уровень — просто садим в КПЗ с 1 звездой.</span>
+          <div class="ustav-nakazanie">Смягчение наказания за содеянное на 1 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">14.2</span>
+          <span class="ustav-text"><strong>Предложение/оказание платных интимных услуг.</strong></span>
+          <div class="ustav-nakazanie">Наказание: 2 уровень розыска</div>
+        </div>
+
+        <!-- ═══════════════ 15 ═══════════════ -->
+        <h2 id="ugk-15">15. Коррупция</h2>
+        <div class="ustav-item">
+          <span class="ustav-num">15.1</span>
+          <span class="ustav-text"><strong>Попытка дать взятку, или же подкуп должностного лица.</strong></span>
+          <div class="ustav-nakazanie">Наказание: 2 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">15.2</span>
+          <span class="ustav-text"><strong>Получение взятки должностным лицом.</strong></span>
+          <div class="ustav-nakazanie">Наказание: 4 уровень розыска</div>
+        </div>
+        <div class="ustav-item">
+          <span class="ustav-num">15.3</span>
+          <span class="ustav-text"><strong>Дача ложных показаний.</strong> Относится к нарушителю, потерпевшему и свидетелю. Ситуации RP-процесса в игре. Клевета в жалобах на сотрудников полиции на форуме (гражданский написал жалобу, заведомо зная, что офицер не нарушал, и ожидал наказания сотрудника).</span>
+          <div class="ustav-nakazanie">Наказание: 2 уровень розыска</div>
+        </div>
       `
     },
     kody: {
