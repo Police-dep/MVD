@@ -7356,17 +7356,639 @@
       meta: 'Автор: meow zanetti · 12 апреля 2022',
       eyebrow: 'Правила и инструкции',
       body: `
-        <div class="article-highlight">Специальные операции — плановые или экстренные действия МВД по нейтрализации угроз общественному порядку.</div>
-        <h2>Типы операций</h2>
-        <ul>
-          <li><strong>Захват</strong> — задержание разыскиваемого лица</li>
-          <li><strong>Зачистка</strong> — операция по вытеснению преступных группировок</li>
-          <li><strong>Сопровождение</strong> — охрана VIP-персон или грузов</li>
-          <li><strong>Антитеррор</strong> — реагирование на захват заложников</li>
-        </ul>
-        <h2>Порядок санкционирования</h2>
-        <p>Операция санкционируется Подполковником или выше. Все участники получают инструктаж. После завершения — обязательный разбор.</p>
-        <p><em>Полный текст документа будет добавлен позднее.</em></p>
+        <div class="article-highlight">
+          Специальные операции — плановые действия МВД по нейтрализации угроз общественному порядку. Все доклады производятся в <strong>федеральную рацию (!!)</strong>.
+        </div>
+
+        <!-- ═══ СОДЕРЖАНИЕ ═══ -->
+        <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:14px;padding:20px 24px;margin:24px 0;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--grey);margin-bottom:14px;">Содержание</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+            <a href="#so-ugon"     style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">01</span> Угонщик</a>
+            <a href="#so-zalozhnik" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">02</span> Освобождение заложников</a>
+            <a href="#so-karer"    style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">03</span> Карьер</a>
+            <a href="#so-iskra"    style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">04</span> Искра</a>
+            <a href="#so-reid"     style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">05</span> Рейд</a>
+            <a href="#so-kazino"   style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">06</span> Рейд «Казино»</a>
+            <a href="#so-reidgoroda" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">07</span> Рейд города</a>
+            <a href="#so-dezertir" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">08</span> Дезертир</a>
+            <a href="#so-oop-air"  style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">09</span> Задержание ООП — воздушная поддержка</a>
+            <a href="#so-oop-mil"  style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">10</span> Задержание ООП — военная поддержка</a>
+            <a href="#so-torgovets" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">11</span> Торговец</a>
+            <a href="#so-opraion"  style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'"><span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;">12</span> Опасный район</a>
+          </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════
+             01. УГОНЩИК
+        ══════════════════════════════════════════════ -->
+        <h2 id="so-ugon">01. СО «Угонщик»</h2>
+        <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 18px;margin:12px 0;font-size:13px;color:var(--text-soft);line-height:1.7;">
+          Выявление и поимка угонщиков автомобилей. Доступны два плана проведения.
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;">
+          <!-- План 1 -->
+          <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:16px 18px;">
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);margin-bottom:12px;">План №1 — Засада</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;align-items:center;gap:10px;"><div style="background:var(--accent-light);border:1.5px solid #D4B870;border-radius:8px;padding:8px 12px;flex:1;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:#8A6B20;margin-bottom:3px;">Звание</div><div style="font-size:14px;font-weight:700;color:var(--navy);">Капитан [6]+</div></div></div>
+              <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:8px;padding:8px 12px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--grey);margin-bottom:3px;">Мин. состав</div><div style="font-size:14px;font-weight:700;color:var(--navy);">4 офицера</div><div style="font-size:12px;color:var(--text-soft);">от Ст. сержанта [3], вкл. проводящего</div></div>
+              <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:8px;padding:8px 12px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--grey);margin-bottom:3px;">Мин. время</div><div style="font-size:14px;font-weight:700;color:var(--navy);">10 минут</div><div style="font-size:12px;color:var(--text-soft);">Исключение: если преступник найден</div></div>
+            </div>
+          </div>
+          <!-- План 2 -->
+          <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:16px 18px;">
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);margin-bottom:12px;">План №2 — Поиск по системе</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="background:var(--accent-light);border:1.5px solid #D4B870;border-radius:8px;padding:8px 12px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:#8A6B20;margin-bottom:3px;">Звание</div><div style="font-size:14px;font-weight:700;color:var(--navy);">Капитан [6]+</div></div>
+              <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:8px;padding:8px 12px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--grey);margin-bottom:3px;">Мин. состав</div><div style="font-size:14px;font-weight:700;color:var(--navy);">2 офицера</div><div style="font-size:12px;color:var(--text-soft);">от Ст. сержанта [3], вкл. проводящего</div></div>
+              <div style="background:var(--red-light);border:1.5px solid #EDD8D8;border-radius:8px;padding:8px 12px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--red);margin-bottom:3px;">Провал</div><div style="font-size:13px;font-weight:600;color:var(--navy);">Если преступника не нашли — операция провалена</div></div>
+            </div>
+          </div>
+        </div>
+
+        <h3>Запреты</h3>
+        <div class="ustav-item ustav-item--prohibit"><span class="ustav-text">Запрещено проводить операцию возле спавнов игроков.</span></div>
+
+        <div class="note-accordion" style="border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;margin:14px 0;">
+          <div class="note-acc-item" id="acc-so-ugon-plan1" style="border-bottom:1px solid var(--grey-light);">
+            <button class="note-acc-trigger" onclick="toggleAcc('acc-so-ugon-plan1')" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--cream);border:none;cursor:pointer;font-weight:600;font-size:13px;color:var(--navy);">
+              План №1 — Порядок действий <span class="note-acc-arrow">▼</span>
+            </button>
+            <div class="note-acc-body">
+              <div style="padding:14px 0;font-size:13px;color:var(--text-soft);line-height:1.9;">
+                1. Находим небыструю машину и ставим её возле мест массового скопления людей.<br>
+                2. Проводящий сидит в засаде в маске и наблюдает. Машину можно поставить ближе к засаде — чтобы у преступника было меньше времени уйти.<br>
+                3. Два грузовика/патрульные машины стоят по сторонам от машины-приманки.<br>
+                4. После того как преступник сел — доклад в рацию, объявить розыск по <strong>3.1 или 3.2 У.К.</strong><br>
+                5. Грузовики/патрульные перекрывают дорогу автомобилю — начинаем захват.<br>
+                6. Если отказался выйти — дело по <strong>9.1 У.К.</strong>; при дальнейшем сопротивлении — ликвидация.
+              </div>
+            </div>
+          </div>
+          <div class="note-acc-item" id="acc-so-ugon-plan2" style="border-bottom:1px solid var(--grey-light);">
+            <button class="note-acc-trigger" onclick="toggleAcc('acc-so-ugon-plan2')" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--cream);border:none;cursor:pointer;font-weight:600;font-size:13px;color:var(--navy);">
+              План №2 — Порядок действий <span class="note-acc-arrow">▼</span>
+            </button>
+            <div class="note-acc-body">
+              <div style="padding:14px 0;font-size:13px;color:var(--text-soft);line-height:1.9;">
+                1. Ждём доклад в федеральную рацию по системе автоугонов.<br>
+                2. После нахождения потенциального преступника — выезжаем на поиск.<br>
+                3. Останавливаем, проверяем документы. Просим покинуть транспорт; при отказе — выталкиваем.<br>
+                4. Отправляем запрос в федеральную рацию о проверке ТС по госномеру.<br>
+                5. Если угонщик подтверждён — КПЗ по <strong>3.1 У.К.</strong> (+ <strong>9.1 У.К.</strong> при попытке скрыться).<br>
+                6. Если не подтверждён — отпускаем и извиняемся.
+              </div>
+            </div>
+          </div>
+          <div class="note-acc-item" id="acc-so-ugon-reports" style="border-bottom:none;">
+            <button class="note-acc-trigger" onclick="toggleAcc('acc-so-ugon-reports')" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--cream);border:none;cursor:pointer;font-weight:600;font-size:13px;color:var(--navy);">
+              Доклады — оба плана <span class="note-acc-arrow">▼</span>
+            </button>
+            <div class="note-acc-body">
+              <div style="padding:14px 0;">
+                <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--grey);margin-bottom:6px;">План №1</p>
+                <p style="font-family:monospace;font-size:13px;background:var(--cream);padding:10px 14px;border-radius:8px;line-height:2.2;color:var(--text-soft);">
+                  !![ТЭГ] Построение в холле/гараже департамента для проведения СО "Угонщик".<br>
+                  !![ТЭГ] Начинаю проводить СО "Угонщик". Состав — Х.<br>
+                  !![ТЭГ] Выезжаем на место. Состав — Х.<br>
+                  !![ТЭГ] Автомобиль-приманка установлен. Ожидаем сигнала.<br>
+                  !![ТЭГ] Подозреваемый сел в автомобиль, задерживаем! Код — 2.<br>
+                  <span style="color:var(--grey);">Найден:</span> !![ТЭГ] Преступник посажен в тюрьму/ликвидирован. СО окончена, спасибо за содействие.<br>
+                  <span style="color:var(--grey);">Не найден:</span> !![ТЭГ] Нарушителей не найдено. СО окончена, спасибо за содействие.
+                </p>
+                <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--grey);margin:14px 0 6px;">План №2</p>
+                <p style="font-family:monospace;font-size:13px;background:var(--cream);padding:10px 14px;border-radius:8px;line-height:2.2;color:var(--text-soft);">
+                  !![ТЭГ] Построение в холле/гараже департамента для проведения СО "Угонщик".<br>
+                  !![ТЭГ] Начинаю проводить СО "Угонщик". Состав — Х.<br>
+                  !![ТЭГ] Потенциальный угонщик найден, выдвигаемся в ЛС/ЛВ/СФ.<br>
+                  !![ТЭГ] Проводим траффик-стоп. Машина подходит под описание.<br>
+                  !![ТЭГ] Запрашиваю проверку ТС с гос. номером #ID.<br>
+                  <span style="color:var(--grey);">Угонщик:</span> !![ТЭГ] СО "Угонщик" — задержание. CODE — 5.<br>
+                  !![ТЭГ] Преступник посажен в тюрьму/ликвидирован. СО окончена, спасибо за содействие.<br>
+                  <span style="color:var(--grey);">Не угонщик:</span> !![ТЭГ] Гражданин не оказался угонщиком. Продолжаем поиски.<br>
+                  <span style="color:var(--grey);">Не найден:</span> !![ТЭГ] Угонщика не найдено. СО окончена, спасибо за содействие.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════
+             02. ОСВОБОЖДЕНИЕ ЗАЛОЖНИКОВ
+        ══════════════════════════════════════════════ -->
+        <h2 id="so-zalozhnik" style="margin-top:32px;">02. СО «Освобождение заложников»</h2>
+        <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 18px;margin:12px 0;font-size:13px;color:var(--text-soft);line-height:1.7;">
+          Освобождение заложников в закрытом здании под контролем террористов.
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:16px 0;">
+          <div style="background:var(--accent-light);border:1.5px solid #D4B870;border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#8A6B20;margin-bottom:6px;">Проводит</div><div style="font-size:15px;font-weight:700;color:var(--navy);">Генерал [10]</div><div style="font-size:12px;color:var(--text-soft);margin-top:2px;">Искл. 14.10 УМВД</div></div>
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;">Мин. состав</div><div style="font-size:15px;font-weight:700;color:var(--navy);">6 офицеров</div><div style="font-size:12px;color:var(--text-soft);margin-top:2px;">от Ст. сержанта [3], вкл. Генерала</div></div>
+          <div style="background:var(--red-light);border:1.5px solid #EDD8D8;border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--red);margin-bottom:6px;">Выкуп</div><div style="font-size:14px;font-weight:700;color:var(--navy);">Макс. 200 000$</div></div>
+        </div>
+
+        <h3>Ключевые правила</h3>
+        <div class="ustav-item"><span class="ustav-text">Присутствие Генерала на операции — <strong>обязательно</strong>.</span></div>
+        <div class="ustav-item"><span class="ustav-text">Если мафиози просят переговорщика — обязательно к исполнению. Переговорщик выслушивает требования и докладывает в рацию с RP-пометкой акцента.</span></div>
+        <div class="ustav-item"><span class="ustav-text">Разрешено идти на штурм при наличии убитых заложников или невыполнимых требований мафии.</span></div>
+        <div class="ustav-item"><span class="ustav-text">Обязательна полная запись операции (минимум 2 участника/главы).</span></div>
+        <div class="ustav-item"><span class="ustav-text">Разрешено игнорировать свой тег в рацию во время операции.</span></div>
+        <div class="ustav-item"><span class="ustav-text">Если мафиози сдаются сами — меньший срок по <strong>14.1 У.К.</strong></span></div>
+        <div class="ustav-item ustav-item--prohibit"><span class="ustav-text">Запрещено применять функционал МВД к мафиози (тазер, розыск и т.п.).</span></div>
+        <div class="ustav-item ustav-item--prohibit"><span class="ustav-text">Запрещено выдвигать требование выкупа более 200 000$.</span></div>
+
+        <div class="note-accordion" style="border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;margin:14px 0;">
+          <div class="note-acc-item" id="acc-so-zal-tasks" style="border-bottom:1px solid var(--grey-light);">
+            <button class="note-acc-trigger" onclick="toggleAcc('acc-so-zal-tasks')" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--cream);border:none;cursor:pointer;font-weight:600;font-size:13px;color:var(--navy);">
+              Задачи офицеров и Генерала <span class="note-acc-arrow">▼</span>
+            </button>
+            <div class="note-acc-body">
+              <div style="padding:14px 0;">
+                <div class="ak-general-notes">
+                  <div class="ak-general-notes-title">Офицеры полиции</div>
+                  <div class="ak-note-item">Сократить число пострадавших до минимума.</div>
+                  <div class="ak-note-item">Составить план освобождения без стрельбы.</div>
+                  <div class="ak-note-item">Попытаться выйти на контакт с террористами, выслушать требования.</div>
+                  <div class="ak-note-item">Следовать указаниям главы операции — никакой самодеятельности.</div>
+                </div>
+                <div class="ak-general-notes" style="margin-top:12px;">
+                  <div class="ak-general-notes-title">Генерал</div>
+                  <div class="ak-note-item">Получить гарантии от террористов, что заложники будут целы.</div>
+                  <div class="ak-note-item">Обеспечить переговорщика из числа опытных офицеров.</div>
+                  <div class="ak-note-item">Отдавать чёткие приказы офицерам, участвующим в операции.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="note-acc-item" id="acc-so-zal-plan" style="border-bottom:none;">
+            <button class="note-acc-trigger" onclick="toggleAcc('acc-so-zal-plan')" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--cream);border:none;cursor:pointer;font-weight:600;font-size:13px;color:var(--navy);">
+              План проведения операции и доклады <span class="note-acc-arrow">▼</span>
+            </button>
+            <div class="note-acc-body">
+              <div style="padding:14px 0;font-size:13px;color:var(--text-soft);line-height:1.9;">
+                1. Перекрыть дорогу к захваченной мэрии. Уведомить в гос. новостях:<br>
+                <code style="display:block;background:var(--cream);padding:8px 12px;border-radius:6px;margin:6px 0;font-size:12.5px;">/g Мэрия г. *город* временно прекратила работу. Проходят учения полиции!</code>
+                2. Расположить группы у главного входа и у крыши (офицерам не входить до команды).<br>
+                3. Переговоры. При успехе — вывести заложников, доставить в больницу, снять оцепление.<br>
+                4. При провале переговоров — штурм: ликвидация вооружённых лиц → вывод заложников → больница.<br>
+                5. По завершении оповестить граждан:<br>
+                <code style="display:block;background:var(--cream);padding:8px 12px;border-radius:6px;margin:6px 0;font-size:12.5px;">/g Мэрия г. *город* возобновила работу. Учения прошли успешно.</code>
+                <div style="background:var(--red-light);border-radius:8px;padding:10px 14px;margin-top:10px;font-size:12.5px;color:var(--red);">Если террористы подорвали устройство и убили заложников — операция провалена, дальнейших действий не предпринимается. Санкции к проводящему.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════
+             03. КАРЬЕР
+        ══════════════════════════════════════════════ -->
+        <h2 id="so-karer" style="margin-top:32px;">03. СО «Карьер»</h2>
+        <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 18px;margin:12px 0;font-size:13px;color:var(--text-soft);line-height:1.7;">
+          Устранение беспорядка на карьере: контроль очереди, предотвращение ДТП, соблюдение порядка проезда к месту загрузки бетона.
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:16px 0;">
+          <div style="background:var(--accent-light);border:1.5px solid #D4B870;border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#8A6B20;margin-bottom:6px;">Звание</div><div style="font-size:15px;font-weight:700;color:var(--navy);">Майор [7]+</div></div>
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;">Мин. состав</div><div style="font-size:15px;font-weight:700;color:var(--navy);">3 офицера</div><div style="font-size:12px;color:var(--text-soft);margin-top:2px;">от Ст. сержанта [3]</div></div>
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;">Транспорт</div><div style="font-size:14px;font-weight:700;color:var(--navy);">1 грузовик + 1 патрульная</div></div>
+        </div>
+        <h3>Правила</h3>
+        <div class="ustav-item"><span class="ustav-text">Разрешено выписывать штраф по <strong>2.9 А.К.</strong> только при игнорировании просьбы соблюдать очерёдность.</span></div>
+        <div class="ustav-item"><span class="ustav-text">Разрешено объявлять розыск по <strong>9.2 У.К.</strong> и проводить арест при отказе от оплаты штрафа.</span></div>
+        <div class="ustav-item"><span class="ustav-text">Разрешено объявлять розыск по <strong>9.3 У.К.</strong>, если после оплаты штрафа нарушения продолжаются.</span></div>
+        <div class="ustav-item ustav-item--prohibit"><span class="ustav-text">Запрещено мешать дальнобойщикам, затруднять им передвижение или намеренно перекрывать дорогу.</span></div>
+        <div class="ustav-item ustav-item--prohibit"><span class="ustav-text">Запрещено просить показать паспорт (только при выписке штрафа), даже если у дальнобойщика много звёзд.</span></div>
+        <div class="note-accordion" style="border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;margin:14px 0;">
+          <div class="note-acc-item" id="acc-so-karer" style="border-bottom:none;">
+            <button class="note-acc-trigger" onclick="toggleAcc('acc-so-karer')" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--cream);border:none;cursor:pointer;font-weight:600;font-size:13px;color:var(--navy);">
+              Доклады <span class="note-acc-arrow">▼</span>
+            </button>
+            <div class="note-acc-body">
+              <div style="padding:14px 0;">
+                <p style="font-family:monospace;font-size:13px;background:var(--cream);padding:10px 14px;border-radius:8px;line-height:2.2;color:var(--text-soft);">
+                  !![ТЭГ] Построение в холле/гараже для проведения СО «Карьер».<br>
+                  !![ТЭГ] Выезжаем на место проведения СО «Карьер». Состав — Х.<br>
+                  !![ТЭГ] Заступили на пост «Карьер». Состав — Х. Код — 1.<br>
+                  !![ТЭГ] Пост «Карьер». Состав — Х. Код — 1. <span style="color:var(--grey);">(каждые 10 мин)</span><br>
+                  !![ТЭГ] Закончили СО «Карьер». Состав — Х.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════
+             04. ИСКРА
+        ══════════════════════════════════════════════ -->
+        <h2 id="so-iskra" style="margin-top:32px;">04. СО «Искра»</h2>
+        <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 18px;margin:12px 0;font-size:13px;color:var(--text-soft);line-height:1.7;">
+          Помощь военным базам и Авианосцу при массовом нападении бандитов. Проведение разрешено <strong>только после просьбы старшего состава базы</strong>.
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:16px 0;">
+          <div style="background:var(--accent-light);border:1.5px solid #D4B870;border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#8A6B20;margin-bottom:6px;">Разрешение</div><div style="font-size:13px;font-weight:700;color:var(--navy);">Ст. состав базы / Генерал / Адмирал [8+]</div></div>
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;">Мин. состав</div><div style="font-size:15px;font-weight:700;color:var(--navy);">3 офицера</div><div style="font-size:12px;color:var(--text-soft);margin-top:2px;">форма спец. отряда обязательна</div></div>
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;">Порог</div><div style="font-size:15px;font-weight:700;color:var(--navy);">7+ нападающих</div><div style="font-size:12px;color:var(--text-soft);margin-top:2px;">Спец. отряд — при любом кол-ве</div></div>
+        </div>
+        <h3>Разрешено / Запрещено</h3>
+        <div class="ustav-item"><span class="ustav-text">Разрешено отправляться без старших офицеров — при наличии разрешения.</span></div>
+        <div class="ustav-item"><span class="ustav-text">При 15+ нападающих правило минимального состава не действует.</span></div>
+        <div class="ustav-item"><span class="ustav-text">Разрешено использовать маску.</span></div>
+        <div class="ustav-item"><span class="ustav-text">Каждый офицер обязан сделать RP-отыгровку оружия перед открытием огня.</span></div>
+        <div class="ustav-item ustav-item--prohibit"><span class="ustav-text">Запрещено использовать функционал МВД (наручники, розыск и т.п.) на военной базе.</span></div>
+        <div class="ustav-item ustav-item--prohibit"><span class="ustav-text">Запрещено оставаться на базе после снятия кода опасности или по просьбе Генерала/Адмирала.</span></div>
+        <div class="ustav-item ustav-item--prohibit"><span class="ustav-text">Нахождение на базе без запроса о помощи — запрещено. Военные вправе открыть огонь.</span></div>
+        <div class="note-accordion" style="border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;margin:14px 0;">
+          <div class="note-acc-item" id="acc-so-iskra" style="border-bottom:none;">
+            <button class="note-acc-trigger" onclick="toggleAcc('acc-so-iskra')" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--cream);border:none;cursor:pointer;font-weight:600;font-size:13px;color:var(--navy);">
+              Доклады <span class="note-acc-arrow">▼</span>
+            </button>
+            <div class="note-acc-body">
+              <div style="padding:14px 0;">
+                <p style="font-family:monospace;font-size:13px;background:var(--cream);padding:10px 14px;border-radius:8px;line-height:2.2;color:var(--text-soft);">
+                  !![ТЭГ] Построение в холле/гараже ЛС/СФ/ЛВ для проведения СО "Искра" через 5 минут.<br>
+                  !![ТЭГ] Выезжаем на СО "Искра". База: СВ/ВВС/ВМФ/Авианосец. Состав — Х.<br>
+                  !![ТЭГ] Прибыли на место проведения СО "Искра". Состав — Х.<br>
+                  !![ТЭГ] СО "Искра" завершена. Всем спасибо за содействие.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════
+             05. РЕЙД
+        ══════════════════════════════════════════════ -->
+        <h2 id="so-reid" style="margin-top:32px;">05. СО «Рейд»</h2>
+        <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 18px;margin:12px 0;font-size:13px;color:var(--text-soft);line-height:1.7;">
+          Проверка документов по точкам, задержание подозреваемых с доставкой в департамент.
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin:16px 0;">
+          <div style="background:var(--accent-light);border:1.5px solid #D4B870;border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#8A6B20;margin-bottom:6px;">Звание</div><div style="font-size:14px;font-weight:700;color:var(--navy);">Подполковник [8]+</div><div style="font-size:11px;color:var(--text-soft);margin-top:2px;">Искл. 14.10 УМВД</div></div>
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;">Мин. состав</div><div style="font-size:14px;font-weight:700;color:var(--navy);">3 офицера</div><div style="font-size:11px;color:var(--text-soft);margin-top:2px;">от Ст. сержанта [3]</div></div>
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;">Продолж.</div><div style="font-size:14px;font-weight:700;color:var(--navy);">≥ 20 мин</div><div style="font-size:11px;color:var(--text-soft);margin-top:2px;">На точке: 2–5 мин</div></div>
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;">Транспорт</div><div style="font-size:13px;font-weight:700;color:var(--navy);">1 грузовик + 1 патрульная</div></div>
+        </div>
+        <div class="ak-general-notes">
+          <div class="ak-general-notes-title">Примерные точки по городам</div>
+          <div class="ak-note-item"><strong>LSPD:</strong> Мэрия ЛС, Вокзал (Санта-Мария), Рыбалка ЛС, Ферма.</div>
+          <div class="ak-note-item"><strong>SFPD:</strong> Автосалон, Вокзал, Автошкола, Мэрия СФ, Шахта.</div>
+          <div class="ak-note-item"><strong>LVPD:</strong> Мэрия ЛВ, Казино 4 дракона, Казино Калигула, Въезд в карьер, 24/7 возле СВ, Рыбалка ЛВ.</div>
+          <div class="ak-note-item">Генерал каждого департамента вправе составить свой список точек.</div>
+          <div class="ak-note-item">Форма докладов устанавливается Генералом департамента.</div>
+        </div>
+        <div class="note-accordion" style="border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;margin:14px 0;">
+          <div class="note-acc-item" id="acc-so-reid" style="border-bottom:none;">
+            <button class="note-acc-trigger" onclick="toggleAcc('acc-so-reid')" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--cream);border:none;cursor:pointer;font-weight:600;font-size:13px;color:var(--navy);">
+              Доклады <span class="note-acc-arrow">▼</span>
+            </button>
+            <div class="note-acc-body">
+              <div style="padding:14px 0;">
+                <p style="font-family:monospace;font-size:13px;background:var(--cream);padding:10px 14px;border-radius:8px;line-height:2.2;color:var(--text-soft);">
+                  !![ТЭГ] Построение в холле/гараже для проведения СО "Рейд" по точкам.<br>
+                  !![ТЭГ] Выезжаем на первое место рейда — <em>место</em>.<br>
+                  !![ТЭГ] Прибыли на первое место рейда.<br>
+                  !![ТЭГ] Выезжаем на второе место рейда — <em>место</em>.<br>
+                  !![ТЭГ] Прибыли на второе место рейда.<br>
+                  <span style="color:var(--grey);">... (по аналогии) ...</span><br>
+                  !![ТЭГ] СО "Рейд" окончена. Выявлено нарушителей: Х. Все свободны.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════
+             06. РЕЙД «КАЗИНО»
+        ══════════════════════════════════════════════ -->
+        <h2 id="so-kazino" style="margin-top:32px;">06. Рейд «Казино»</h2>
+        <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 18px;margin:12px 0;font-size:13px;color:var(--text-soft);line-height:1.7;">
+          Проверка документов в казино, выявление преступных личностей и доставка в КПЗ.
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin:16px 0;">
+          <div style="background:var(--accent-light);border:1.5px solid #D4B870;border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#8A6B20;margin-bottom:6px;">Звание</div><div style="font-size:14px;font-weight:700;color:var(--navy);">Подполковник [8]+</div></div>
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;">Мин. состав</div><div style="font-size:14px;font-weight:700;color:var(--navy);">3 офицера</div><div style="font-size:11px;color:var(--text-soft);margin-top:2px;">от Ст. сержанта [3]</div></div>
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;">Продолж.</div><div style="font-size:14px;font-weight:700;color:var(--navy);">≥ 15 мин</div></div>
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;">Место</div><div style="font-size:13px;font-weight:700;color:var(--navy);">Калигула или 4 Дракона</div></div>
+        </div>
+        <h3>Особые правила</h3>
+        <div class="ustav-item"><span class="ustav-text">Служебный транспорт парковать на стоянке казино.</span></div>
+        <div class="ustav-item"><span class="ustav-text">Рейд проводится в одном казино. Преступников доставлять в КПЗ при первой возможности.</span></div>
+        <div class="note-accordion" style="border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;margin:14px 0;">
+          <div class="note-acc-item" id="acc-so-kazino" style="border-bottom:none;">
+            <button class="note-acc-trigger" onclick="toggleAcc('acc-so-kazino')" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--cream);border:none;cursor:pointer;font-weight:600;font-size:13px;color:var(--navy);">
+              Доклады <span class="note-acc-arrow">▼</span>
+            </button>
+            <div class="note-acc-body">
+              <div style="padding:14px 0;">
+                <p style="font-family:monospace;font-size:13px;background:var(--cream);padding:10px 14px;border-radius:8px;line-height:2.2;color:var(--text-soft);">
+                  !![ТЭГ] Построение в холле/гараже для проведения рейда "Казино".<br>
+                  !![ТЭГ] Выезжаем на место проведения рейда "Казино".<br>
+                  !![ТЭГ] Прибыли на место проведения рейда "Казино".<br>
+                  !![ТЭГ] Начали рейд "Казино". Выходим в ХХ:ХХ.<br>
+                  !![ТЭГ] Сворачиваем рейд "Казино", едем в департамент.<br>
+                  !![ТЭГ] Рейд "Казино" окончен.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════
+             07. РЕЙД ГОРОДА
+        ══════════════════════════════════════════════ -->
+        <h2 id="so-reidgoroda" style="margin-top:32px;">07. СО «Рейд города»</h2>
+        <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 18px;margin:12px 0;font-size:13px;color:var(--text-soft);line-height:1.7;">
+          Комплексный патруль города с выявлением нарушителей порядка.
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin:16px 0;">
+          <div style="background:var(--accent-light);border:1.5px solid #D4B870;border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#8A6B20;margin-bottom:6px;">Звание</div><div style="font-size:14px;font-weight:700;color:var(--navy);">Подполковник [8]+</div></div>
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;">Мин. состав</div><div style="font-size:14px;font-weight:700;color:var(--navy);">4 офицера</div><div style="font-size:11px;color:var(--text-soft);margin-top:2px;">от Ст. сержанта [3]</div></div>
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;">Продолж.</div><div style="font-size:14px;font-weight:700;color:var(--navy);">≥ 20 мин</div><div style="font-size:11px;color:var(--text-soft);margin-top:2px;">Доклад каждые 5 мин</div></div>
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;">Транспорт</div><div style="font-size:13px;font-weight:700;color:var(--navy);">2 патрульные машины</div></div>
+        </div>
+        <h3>Зоны патрулирования</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:14px 0;">
+          <div><div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);margin-bottom:8px;">LSPD</div><img src="https://i.imgur.com/9SgqOkZ.png" style="width:100%;height:auto;display:block;border-radius:10px;border:1.5px solid var(--grey-light);" alt="Зона LSPD"/></div>
+          <div><div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);margin-bottom:8px;">LVPD</div><img src="https://i.imgur.com/uDF1OP6.png" style="width:100%;height:auto;display:block;border-radius:10px;border:1.5px solid var(--grey-light);" alt="Зона LVPD"/></div>
+          <div><div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);margin-bottom:8px;">SFPD</div><img src="https://i.imgur.com/NCCm2nW.png" style="width:100%;height:auto;display:block;border-radius:10px;border:1.5px solid var(--grey-light);" alt="Зона SFPD"/></div>
+        </div>
+        <div class="note-accordion" style="border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;margin:14px 0;">
+          <div class="note-acc-item" id="acc-so-reidgoroda" style="border-bottom:none;">
+            <button class="note-acc-trigger" onclick="toggleAcc('acc-so-reidgoroda')" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--cream);border:none;cursor:pointer;font-weight:600;font-size:13px;color:var(--navy);">
+              Доклады <span class="note-acc-arrow">▼</span>
+            </button>
+            <div class="note-acc-body">
+              <div style="padding:14px 0;">
+                <p style="font-family:monospace;font-size:13px;background:var(--cream);padding:10px 14px;border-radius:8px;line-height:2.2;color:var(--text-soft);">
+                  !![ТЭГ] Построение в холле/гараже для проведения СО "Рейд Города".<br>
+                  !![ТЭГ] Начали проведение СО "Рейд Города".<br>
+                  !![ТЭГ] СО "Рейд Города". Экипаж — 1. Код — 1.<br>
+                  !![ТЭГ] СО "Рейд Города". Экипаж — 2. Код — 1.<br>
+                  <span style="color:var(--grey);">(каждые 5 минут)</span><br>
+                  !![ТЭГ] СО "Рейд Города" окончена. Выявлено нарушителей: Х. Все свободны.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════
+             08. ДЕЗЕРТИР
+        ══════════════════════════════════════════════ -->
+        <h2 id="so-dezertir" style="margin-top:32px;">08. СО «Дезертир»</h2>
+        <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 18px;margin:12px 0;font-size:13px;color:var(--text-soft);line-height:1.7;">
+          Выявление военнослужащих, продающих государственную информацию. Офицер работает под прикрытием.
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:16px 0;">
+          <div style="background:var(--accent-light);border:1.5px solid #D4B870;border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#8A6B20;margin-bottom:6px;">Звание</div><div style="font-size:15px;font-weight:700;color:var(--navy);">Капитан [6]+</div></div>
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;">Мин. состав</div><div style="font-size:15px;font-weight:700;color:var(--navy);">4 офицера</div><div style="font-size:12px;color:var(--text-soft);margin-top:2px;">от Ст. сержанта [3]</div></div>
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;">На базе мин.</div><div style="font-size:15px;font-weight:700;color:var(--navy);">5 минут</div><div style="font-size:12px;color:var(--text-soft);margin-top:2px;">если нет военного на КПП</div></div>
+        </div>
+        <h3>Правила</h3>
+        <div class="ustav-item"><span class="ustav-text">Разрешено использовать маски. Разрешено не предлагать вознаграждение с первого раза.</span></div>
+        <div class="ustav-item ustav-item--prohibit"><span class="ustav-text">Запрещено работать более чем с <strong>3 военнослужащими</strong> за одну операцию.</span></div>
+        <div class="ustav-item ustav-item--prohibit"><span class="ustav-text">Запрещено заходить за КПП без разрешения военнослужащего.</span></div>
+        <div class="ustav-item ustav-item--prohibit"><span class="ustav-text">Запрещено игнорировать приказы военнослужащих.</span></div>
+        <div class="note-accordion" style="border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;margin:14px 0;">
+          <div class="note-acc-item" id="acc-so-dez-plan" style="border-bottom:1px solid var(--grey-light);">
+            <button class="note-acc-trigger" onclick="toggleAcc('acc-so-dez-plan')" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--cream);border:none;cursor:pointer;font-weight:600;font-size:13px;color:var(--navy);">
+              План проведения <span class="note-acc-arrow">▼</span>
+            </button>
+            <div class="note-acc-body">
+              <div style="padding:14px 0;font-size:13px;color:var(--text-soft);line-height:1.9;">
+                1. Определяем офицера, который работает «под прикрытием» — снимает форму.<br>
+                2. Остальные прячутся в засаде так, чтобы их не было видно с КПП.<br>
+                3. Офицер под прикрытием просит военнослужащего раскрыть гос. информацию за вознаграждение (количество людей на базе, фото боеприпасов и т.п.).<br>
+                4. Если согласился: <code>!![ТЭГ] Преступник обнаружен. Прошу завести дело №ИД по 6.6 У.К. Код — 10 *место*.</code><br>
+                5. Арест, правило Миранды, КПЗ.<br>
+                6. Если отказался — переезжаем на другую базу. Если на всех базах отказ — операция завершена.
+              </div>
+            </div>
+          </div>
+          <div class="note-acc-item" id="acc-so-dez-reports" style="border-bottom:none;">
+            <button class="note-acc-trigger" onclick="toggleAcc('acc-so-dez-reports')" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--cream);border:none;cursor:pointer;font-weight:600;font-size:13px;color:var(--navy);">
+              Доклады <span class="note-acc-arrow">▼</span>
+            </button>
+            <div class="note-acc-body">
+              <div style="padding:14px 0;">
+                <p style="font-family:monospace;font-size:13px;background:var(--cream);padding:10px 14px;border-radius:8px;line-height:2.2;color:var(--text-soft);">
+                  !![ТЭГ] Построение в гараже/холле для проведения СО "Дезертир".<br>
+                  !![ТЭГ] СО "Дезертир". Выезжаем на базу X. Состав — Х.<br>
+                  !![ТЭГ] СО "Дезертир". База X. Состав — Х. Офицер под прикрытием — <em>ник</em>.<br>
+                  <span style="color:var(--grey);">Нет на базе:</span> !![ТЭГ] СО "Дезертир". Нарушителя не обнаружено, выдвигаемся на базу X.<br>
+                  <span style="color:var(--grey);">Задержан:</span> !![ТЭГ] СО "Дезертир" завершена. Состав — Х. Выявлен нарушитель <em>ник</em>. Доставлен в участок.<br>
+                  <span style="color:var(--grey);">Не найден:</span> !![ТЭГ] СО "Дезертир" завершена. Состав — Х. Нарушителей не обнаружено.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════
+             09. ЗАДЕРЖАНИЕ ООП — ВОЗДУШНАЯ ПОДДЕРЖКА
+        ══════════════════════════════════════════════ -->
+        <h2 id="so-oop-air" style="margin-top:32px;">09. СО «Задержание ООП — воздушная поддержка»</h2>
+        <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 18px;margin:12px 0;font-size:13px;color:var(--text-soft);line-height:1.7;">
+          Патрулирование районов, поиск и задержание особо опасного преступника с использованием вертолёта.
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:16px 0;">
+          <div style="background:var(--accent-light);border:1.5px solid #D4B870;border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#8A6B20;margin-bottom:6px;">Звание</div><div style="font-size:15px;font-weight:700;color:var(--navy);">Подполковник [8]+</div></div>
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;">Мин. состав</div><div style="font-size:15px;font-weight:700;color:var(--navy);">4 офицера</div><div style="font-size:12px;color:var(--text-soft);margin-top:2px;">от Ст. сержанта [3]</div></div>
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;">Транспорт</div><div style="font-size:13px;font-weight:700;color:var(--navy);">≥ 1 патрульная + ≥ 1 вертолёт</div></div>
+        </div>
+        <h3>Правила</h3>
+        <div class="ustav-item"><span class="ustav-text">Рекомендуется использовать маски. Обязательно иметь доказательства погони.</span></div>
+        <div class="ustav-item ustav-item--prohibit"><span class="ustav-text">Если преступник скрылся в главном доме мафии или на военной базе — следовать и ждать нельзя. Фиксируйте погоню и подавайте репорт на nonRP.</span></div>
+        <div class="ustav-item ustav-item--prohibit"><span class="ustav-text">Если во время погони преступник взорвался с машиной — жалоба на nonRP или следуете в больницу. При отказе лечиться — розыск по 9.1 У.К., затем ликвидация.</span></div>
+        <div class="note-accordion" style="border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;margin:14px 0;">
+          <div class="note-acc-item" id="acc-so-oop-air-rp" style="border-bottom:1px solid var(--grey-light);">
+            <button class="note-acc-trigger" onclick="toggleAcc('acc-so-oop-air-rp')" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--cream);border:none;cursor:pointer;font-weight:600;font-size:13px;color:var(--navy);">
+              Обязательная RP-отыгровка <span class="note-acc-arrow">▼</span>
+            </button>
+            <div class="note-acc-body">
+              <div style="padding:14px 0;">
+                <p style="font-family:monospace;font-size:13px;background:var(--cream);padding:10px 14px;border-radius:8px;line-height:2.2;color:var(--text-soft);">
+                  /я включает бортовой компьютер<br>
+                  /де Бортовой компьютер активен<br>
+                  /я загружает фотографию нарушителя на сервер<br>
+                  /де Просмотрел полученную информацию из базы данных нарушителей<br>
+                  /я ввёл координаты местоположения нарушителя в бортовой компьютер<br>
+                  /фд Последний раз нарушитель был замечен здесь, выезжаем *указывая на навигатор*<br><br>
+                  <span style="color:var(--grey);">После нахождения преступника:</span><br>
+                  /я заметил человека, подходящего по описанию<br>
+                  /фд Начинаем захват *доложив в рацию ситуацию*
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="note-acc-item" id="acc-so-oop-air-reports" style="border-bottom:none;">
+            <button class="note-acc-trigger" onclick="toggleAcc('acc-so-oop-air-reports')" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--cream);border:none;cursor:pointer;font-weight:600;font-size:13px;color:var(--navy);">
+              Доклады <span class="note-acc-arrow">▼</span>
+            </button>
+            <div class="note-acc-body">
+              <div style="padding:14px 0;">
+                <p style="font-family:monospace;font-size:13px;background:var(--cream);padding:10px 14px;border-radius:8px;line-height:2.2;color:var(--text-soft);">
+                  !![ТЭГ] Начинаю проводить СО по поимке ООП. Состав — Х.<br>
+                  !![ТЭГ] Выдвигаемся в г. <em>город</em> для поимки ООП. Состав — Х.<br>
+                  !![ТЭГ] Прибыли в г. <em>город</em> для патрулирования по поиску ООП. Состав — Х.<br>
+                  !![ТЭГ] Начинаем преследовать нарушителя!<br>
+                  !![ТЭГ] Преступник посажен в тюрьму/ликвидирован/скрылся. СО окончена, спасибо за содействие.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════
+             10. ЗАДЕРЖАНИЕ ООП — ВОЕННАЯ ПОДДЕРЖКА
+        ══════════════════════════════════════════════ -->
+        <h2 id="so-oop-mil" style="margin-top:32px;">10. СО «Задержание ООП — военная поддержка»</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;">
+          <div style="background:var(--accent-light);border:1.5px solid #D4B870;border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#8A6B20;margin-bottom:6px;">Звание</div><div style="font-size:15px;font-weight:700;color:var(--navy);">Подполковник [8]+</div></div>
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;">Мин. состав</div><div style="font-size:13px;font-weight:700;color:var(--navy);">2 офицера [3+] + 2 военных</div><div style="font-size:11px;color:var(--text-soft);margin-top:3px;">ВМФ — Старшина 2ст [3] / ВВС, СВ — Ст.Сержант [3]</div></div>
+        </div>
+        <h3>Обязанности офицеров и военных</h3>
+        <div class="ak-general-notes">
+          <div class="ak-general-notes-title">Офицеры полиции</div>
+          <div class="ak-note-item">Объяснить военнослужащим их обязанности и координировать их действия, включая команду на открытие огня.</div>
+          <div class="ak-note-item">Военнослужащего можно арестовать за систематическое нарушение правил (кроме стрельбы по команде или в самооборону).</div>
+        </div>
+        <div class="ak-general-notes" style="margin-top:12px;">
+          <div class="ak-general-notes-title">Военнослужащие</div>
+          <div class="ak-note-item">Разрешено стрелять без команды только в самооборону (1.2 и 2.2 У.К.).</div>
+          <div class="ak-note-item">Запрещено нападать кулаками на вооружённого и стрелять по безоружному.</div>
+          <div class="ak-note-item">Основная задача: ПМП офицеру, помощь в сложных ситуациях.</div>
+          <div class="ak-note-item">Если ликвидировал преступника — можно поехать в больницу. При отказе от лечения — ликвидация по 9.1 У.К.</div>
+        </div>
+        <h3>Особые запреты</h3>
+        <div class="ustav-item ustav-item--prohibit"><span class="ustav-text">Если преступник скрылся в главном доме мафии — следовать нельзя.</span></div>
+        <div class="ustav-item ustav-item--prohibit"><span class="ustav-text">Если скрылся на военной базе — офицерам следовать нельзя (исключение: военные).</span></div>
+
+        <!-- ══════════════════════════════════════════════
+             11. ТОРГОВЕЦ
+        ══════════════════════════════════════════════ -->
+        <h2 id="so-torgovets" style="margin-top:32px;">11. СО «Торговец»</h2>
+        <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 18px;margin:12px 0;font-size:13px;color:var(--text-soft);line-height:1.7;">
+          Внедрение агента в банду/мафию для поимки торговца оружием, наркотиками или патронами.
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:16px 0;">
+          <div style="background:var(--accent-light);border:1.5px solid #D4B870;border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#8A6B20;margin-bottom:6px;">Звание</div><div style="font-size:15px;font-weight:700;color:var(--navy);">Подполковник [8]+</div><div style="font-size:11px;color:var(--text-soft);">Искл. 14.10 УМВД</div></div>
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;">Мин. состав</div><div style="font-size:15px;font-weight:700;color:var(--navy);">4 офицера</div><div style="font-size:12px;color:var(--text-soft);margin-top:2px;">форма спец. отряда</div></div>
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 16px;"><div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;">Если 2 чел. с продавцом</div><div style="font-size:13px;font-weight:700;color:var(--navy);">Состав от 5 офицеров</div></div>
+        </div>
+        <h3>Правила</h3>
+        <div class="ustav-item"><span class="ustav-text">Агент снимает форму и один отправляется в места торговли. Договаривается о встрече <strong>вне Ghetto и домов мафий</strong>.</span></div>
+        <div class="ustav-item"><span class="ustav-text">Спец. отряд прибывает на место в масках, занимает позиции не покидая машины.</span></div>
+        <div class="ustav-item"><span class="ustav-text">По задержанию одного помощника продавца можно доставить по <strong>8.1 У.К.</strong> (если он понимал, зачем там).</span></div>
+        <div class="ustav-item ustav-item--prohibit"><span class="ustav-text">Если агента прогоняют с территории — он обязан уйти.</span></div>
+        <div class="note-accordion" style="border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;margin:14px 0;">
+          <div class="note-acc-item" id="acc-so-torg" style="border-bottom:none;">
+            <button class="note-acc-trigger" onclick="toggleAcc('acc-so-torg')" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--cream);border:none;cursor:pointer;font-weight:600;font-size:13px;color:var(--navy);">
+              Доклады <span class="note-acc-arrow">▼</span>
+            </button>
+            <div class="note-acc-body">
+              <div style="padding:14px 0;">
+                <p style="font-family:monospace;font-size:13px;background:var(--cream);padding:10px 14px;border-radius:8px;line-height:2.2;color:var(--text-soft);">
+                  !![ТЭГ] Построение в гараже/холле для проведения СО "Торговец".<br>
+                  !![ТЭГ] Выезжаем на место сделки — <em>место</em>. Состав — Х.<br>
+                  !![ТЭГ] Прибыли на место сделки. Состав — Х. Офицер под прикрытием — <em>ник</em>.<br>
+                  <span style="color:var(--grey);">Задержан:</span> !![ТЭГ] СО "Торговец" завершена. Состав — Х. Выявлен торговец <em>ник</em>. Доставлен в участок.<br>
+                  <span style="color:var(--grey);">Не задержан:</span> !![ТЭГ] СО "Торговец" завершена. Состав — Х. Торговца задержать не удалось.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════
+             12. ОПАСНЫЙ РАЙОН (+ ПРИ ПОДДЕРЖКЕ ВОЕННЫХ)
+        ══════════════════════════════════════════════ -->
+        <h2 id="so-opraion" style="margin-top:32px;">12. СО «Опасный район»</h2>
+        <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 18px;margin:12px 0;font-size:13px;color:var(--text-soft);line-height:1.7;">
+          Арест участников преступных группировок, контроль порядка. Проводится по 8 точкам. Не более <strong>2 раз в неделю</strong>.
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;">
+          <!-- Без военных -->
+          <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:16px 18px;">
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);margin-bottom:12px;">Стандартный</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="background:var(--accent-light);border:1.5px solid #D4B870;border-radius:8px;padding:8px 12px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:#8A6B20;margin-bottom:3px;">Звание</div><div style="font-size:14px;font-weight:700;color:var(--navy);">Подполковник [8]+</div></div>
+              <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:8px;padding:8px 12px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--grey);margin-bottom:3px;">Мин. состав</div><div style="font-size:14px;font-weight:700;color:var(--navy);">5 офицеров [3+]</div></div>
+              <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:8px;padding:8px 12px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--grey);margin-bottom:3px;">Транспорт</div><div style="font-size:13px;font-weight:700;color:var(--navy);">1 грузовик + 2 патрульные</div></div>
+            </div>
+          </div>
+          <!-- При поддержке военных -->
+          <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:16px 18px;">
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);margin-bottom:12px;">При военной поддержке</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="background:var(--accent-light);border:1.5px solid #D4B870;border-radius:8px;padding:8px 12px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:#8A6B20;margin-bottom:3px;">Звание</div><div style="font-size:14px;font-weight:700;color:var(--navy);">Подполковник [8]+</div></div>
+              <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:8px;padding:8px 12px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--grey);margin-bottom:3px;">Мин. состав</div><div style="font-size:13px;font-weight:700;color:var(--navy);">3 офицера [3+] + 2 военных</div><div style="font-size:11px;color:var(--text-soft);">ВМФ — Старшина 2ст [3] / ВВС, СВ — Ст.Сержант [3]</div></div>
+              <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:8px;padding:8px 12px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--grey);margin-bottom:3px;">Транспорт</div><div style="font-size:12px;font-weight:700;color:var(--navy);">1 грузовик + 2 патрульные / 2 военных авто</div></div>
+            </div>
+          </div>
+        </div>
+
+        <h3>Общие правила</h3>
+        <div class="ustav-item"><span class="ustav-text">На каждой точке находиться <strong>от 2 минут</strong>. Доклады — по форме Генерала.</span></div>
+        <div class="ustav-item ustav-item--prohibit"><span class="ustav-text">Запрещено въезжать на территорию обстрела/капта/стрелы и прилегающую к ним. Если встретился — объезжайте.</span></div>
+
+        <h3>8 точек маршрута и карта</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0;">
+          <div>
+            <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 16px;margin-bottom:12px;">
+              <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);margin-bottom:10px;">Стандартный маршрут</div>
+              <img src="https://i.imgur.com/ZItqLlM.png" style="width:100%;height:auto;display:block;border-radius:8px;border:1.5px solid var(--grey-light);" alt="Маршрут Опасный район"/>
+            </div>
+          </div>
+          <div>
+            <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 16px;margin-bottom:12px;">
+              <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);margin-bottom:10px;">При военной поддержке</div>
+              <img src="https://i.imgur.com/YwmlYAH.png" style="width:100%;height:auto;display:block;border-radius:8px;border:1.5px solid var(--grey-light);" alt="Маршрут при военной поддержке"/>
+            </div>
+          </div>
+        </div>
+        <div class="ak-general-notes">
+          <div class="ak-general-notes-title">Точки маршрута</div>
+          <div class="ak-note-item"><strong>1.</strong> Клуб «Альхамбра»</div>
+          <div class="ak-note-item"><strong>2.</strong> Больница</div>
+          <div class="ak-note-item"><strong>3.</strong> Мотель «Джефферсон»</div>
+          <div class="ak-note-item"><strong>4.</strong> Клуб «The Pig Pen»</div>
+          <div class="ak-note-item"><strong>5.</strong> Мойка</div>
+          <div class="ak-note-item"><strong>6.</strong> Стадион</div>
+          <div class="ak-note-item"><strong>7.</strong> Магазин хиппи</div>
+          <div class="ak-note-item"><strong>8.</strong> Вокзал</div>
+        </div>
+
+        <div class="note-accordion" style="border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;margin:14px 0;">
+          <div class="note-acc-item" id="acc-so-opraion" style="border-bottom:none;">
+            <button class="note-acc-trigger" onclick="toggleAcc('acc-so-opraion')" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--cream);border:none;cursor:pointer;font-weight:600;font-size:13px;color:var(--navy);">
+              Доклады — оба варианта <span class="note-acc-arrow">▼</span>
+            </button>
+            <div class="note-acc-body">
+              <div style="padding:14px 0;">
+                <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--grey);margin-bottom:6px;">Стандартный</p>
+                <p style="font-family:monospace;font-size:13px;background:var(--cream);padding:10px 14px;border-radius:8px;line-height:2.2;color:var(--text-soft);">
+                  !![ТЭГ] Построение в холле/гараже для проведения СО "Опасный район".<br>
+                  !![ТЭГ] Выезжаем к первой точке "Клуб Альхамбра".<br>
+                  !![ТЭГ] Прибыли на первую точку "Клуб Альхамбра".<br>
+                  !![ТЭГ] Выезжаем ко второй точке — <em>место</em>. / Прибыли на вторую точку.<br>
+                  <span style="color:var(--grey);">(по аналогии для всех 8 точек)</span><br>
+                  !![ТЭГ] Закончили рейд опасного района. Задержано нарушителей: Х.
+                </p>
+                <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--grey);margin:14px 0 6px;">При военной поддержке</p>
+                <p style="font-family:monospace;font-size:13px;background:var(--cream);padding:10px 14px;border-radius:8px;line-height:2.2;color:var(--text-soft);">
+                  !![ТЭГ] Построение в холле/гараже для проведения СО "Опасный район при военной поддержке".<br>
+                  !![ТЭГ] Выезжаем к первой точке "Клуб Альхамбра".<br>
+                  !![ТЭГ] Прибыли на первую точку "Клуб Альхамбра".<br>
+                  !![ТЭГ] Выезжаем ко второй точке — <em>место</em>. / Прибыли на вторую точку.<br>
+                  <span style="color:var(--grey);">(по аналогии для всех 8 точек)</span><br>
+                  !![ТЭГ] Закончили рейд опасного района при военной поддержке. Задержано нарушителей: Х.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       `
     },
     admk: {
@@ -7726,10 +8348,10 @@
           ⓘ Мы понимаем, что выучить всё невозможно — держите под рукой телефон и пользуйтесь разделами справочника. С примерными вопросами можно ознакомиться ниже в разделе «Экзамен среднего состава».
         </div>
         <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;">
-          <a href="#" onclick="openArticle('ustav');return false;" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:var(--white);border:1.5px solid var(--grey-light);border-radius:8px;text-decoration:none;color:var(--navy);font-size:12.5px;font-weight:600;transition:all 0.2s;" onmouseover="this.style.background='var(--cream)'" onmouseout="this.style.background='var(--white)'">Устав МВД</a>
-          <a href="#" onclick="openArticle('admk');return false;" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:var(--white);border:1.5px solid var(--grey-light);border-radius:8px;text-decoration:none;color:var(--navy);font-size:12.5px;font-weight:600;transition:all 0.2s;" onmouseover="this.style.background='var(--cream)'" onmouseout="this.style.background='var(--white)'">А.К. — Адм. правонарушения</a>
-          <a href="#" onclick="openArticle('ugk');return false;" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:var(--white);border:1.5px solid var(--grey-light);border-radius:8px;text-decoration:none;color:var(--navy);font-size:12.5px;font-weight:600;transition:all 0.2s;" onmouseover="this.style.background='var(--cream)'" onmouseout="this.style.background='var(--white)'">У.К. — Уголовный кодекс</a>
-          <a href="#" onclick="openArticle('kody');return false;" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:var(--white);border:1.5px solid var(--grey-light);border-radius:8px;text-decoration:none;color:var(--navy);font-size:12.5px;font-weight:600;transition:all 0.2s;" onmouseover="this.style.background='var(--cream)'" onmouseout="this.style.background='var(--white)'">Коды и аббревиатуры</a>
+          <a href="#" onclick="openArticle('ustav');return false;" style="display:inline-flex;align-items:center;gap:6px;padding:7px 18px;background:var(--navy);border:1.5px solid var(--navy);border-radius:8px;text-decoration:none;color:var(--accent);font-size:13px;font-weight:700;letter-spacing:0.06em;transition:all 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">УСТАВ</a>
+          <a href="#" onclick="openArticle('ugk');return false;" style="display:inline-flex;align-items:center;gap:6px;padding:7px 18px;background:var(--navy);border:1.5px solid var(--navy);border-radius:8px;text-decoration:none;color:var(--accent);font-size:13px;font-weight:700;letter-spacing:0.06em;transition:all 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">УК</a>
+          <a href="#" onclick="openArticle('admk');return false;" style="display:inline-flex;align-items:center;gap:6px;padding:7px 18px;background:var(--navy);border:1.5px solid var(--navy);border-radius:8px;text-decoration:none;color:var(--accent);font-size:13px;font-weight:700;letter-spacing:0.06em;transition:all 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">АК</a>
+          <a href="#" onclick="openArticle('kody');return false;" style="display:inline-flex;align-items:center;gap:6px;padding:7px 18px;background:var(--navy);border:1.5px solid var(--navy);border-radius:8px;text-decoration:none;color:var(--accent);font-size:13px;font-weight:700;letter-spacing:0.06em;transition:all 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">КОДЫ</a>
         </div>
 
         <!-- ══════════════════════════════════════════════
@@ -8427,7 +9049,419 @@
       title: '[МВД] RP отыгровки и команды для сотрудников',
       meta: 'Автор: meow zanetti · 23 апреля 2022',
       eyebrow: 'Справочные материалы',
-      body: `<div class="article-highlight">Список команд и RP-отыгровок для сотрудников МВД в игровых ситуациях.</div><p><em>Содержание будет добавлено позднее.</em></p>`
+      body: `
+        <div class="article-highlight">
+          Представленные отыгровки служат примером — вы можете отыгрывать так, как желаете сами, добавлять или изменять элементы на близкие по смыслу, не нарушая логическую последовательность действий.
+        </div>
+
+        <!-- ═══════════════════════════════
+             01. ПАТРУЛИРОВАНИЕ ГОРОДА
+        ═══════════════════════════════ -->
+        <h2>01. RP отыгровки при патрулировании города</h2>
+
+        <h3>1. Наручники</h3>
+        <p>Для сотрудников <strong>4+ ранга</strong> — системные наручники, для остальных — полностью по RP.</p>
+        <div class="note-accordion" style="border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;margin:12px 0;">
+          <div class="note-acc-item" id="acc-rp-cuffs" style="border-bottom:none;">
+            <button class="note-acc-trigger" onclick="toggleAcc('acc-rp-cuffs')" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--cream);border:none;cursor:pointer;font-weight:600;font-size:13px;color:var(--navy);">
+              Показать отыгровку наручников <span class="note-acc-arrow">▼</span>
+            </button>
+            <div class="note-acc-body">
+              <div style="padding:14px 0;font-size:13px;color:var(--text-soft);line-height:2.2;">
+                <code style="display:block;background:var(--cream);padding:10px 14px;border-left:2px solid var(--accent);border-radius:0 8px 8px 0;font-size:12.5px;color:var(--navy);font-family:monospace;margin-bottom:8px;">/я снял с пояса наручники</code>
+                <p style="margin:4px 0;">Надеваете с помощью команды <code style="background:var(--cream);padding:2px 7px;border-radius:4px;">/наручники ид</code> или через меню игрока.</p>
+                <code style="display:block;background:var(--cream);padding:10px 14px;border-left:2px solid var(--accent);border-radius:0 8px 8px 0;font-size:12.5px;color:var(--navy);font-family:monospace;margin-top:8px;">/и ид — Вести за собой</code>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ul>
+          <li>Если ранг не позволяет — отыгрываем наручники полностью по RP.</li>
+          <li>Если наручники не выдаются системой (нарушитель играет с телефона) — вместо системного надевания отыгрываем по RP.</li>
+          <li>Если игрок отказывается от RP — зафиксировать факт отказа (скрин/фрапс), отыграть оружие и ликвидировать на месте. Сообщить в рацию о <strong>Коде 7</strong>.</li>
+          <li>Отыгровки наручников <strong>не являются обязательными</strong> для 4+ рангов.</li>
+        </ul>
+
+        <h3>2. КПЗ</h3>
+        <div class="note-accordion" style="border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;margin:12px 0;">
+          <div class="note-acc-item" id="acc-rp-kpz" style="border-bottom:none;">
+            <button class="note-acc-trigger" onclick="toggleAcc('acc-rp-kpz')" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--cream);border:none;cursor:pointer;font-weight:600;font-size:13px;color:var(--navy);">
+              Показать отыгровку посадки в КПЗ <span class="note-acc-arrow">▼</span>
+            </button>
+            <div class="note-acc-body">
+              <div style="padding:14px 0;">
+                <p style="font-family:monospace;font-size:12.5px;background:var(--cream);padding:10px 14px;border-radius:8px;line-height:2.2;color:var(--navy);">
+                  /я завел преступника в участок<br>
+                  /я ведет преступника к КПЗ<br>
+                  /я открыл решетку<br>
+                  /я завел преступника в камеру<br>
+                  <span style="color:var(--grey);font-size:11px;">▸ Ликвидация / посадка после этой строки</span><br>
+                  /я закрыл решетку<br>
+                  /я вышел из участка
+                </p>
+                <div style="margin-top:12px;background:var(--accent-light);border-radius:8px;padding:10px 14px;font-size:12px;color:#8A6B20;">
+                  Ранг <strong>Капитан [6]+</strong>: используйте <code>/arest</code> или <code>/и ид → Посадить в тюрьму</code>.<br>
+                  Ниже 6-го ранга — убиваем оружием без RP отыгровки посадки.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:12.5px;color:var(--text-soft);">⚠ Если полицейский сажает нарушителя в самом интерьере участка — отыгрывать заход и выход не нужно.</p>
+
+        <h3>3. Взаимодействие с гражданскими</h3>
+
+        <div style="display:flex;flex-direction:column;gap:10px;margin:12px 0;">
+
+          <!-- 3.1 -->
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
+            <div style="background:var(--cream);padding:9px 16px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);border-bottom:1px solid var(--grey-light);">3.1 — Представление и паспорт</div>
+            <div style="padding:14px 16px;">
+              <code style="display:block;background:var(--cream);padding:10px 14px;border-left:2px solid var(--accent);border-radius:0 8px 8px 0;font-size:12.5px;color:var(--navy);font-family:monospace;line-height:1.8;">/фд Здравия желаю, Имя Фамилия, LSPD/LVPD/SFPD, звание *показав жетон [Номер аккаунта]*<br>Покажите Ваш паспорт и оставайтесь на месте.</code>
+              <p style="font-size:12px;color:var(--text-soft);margin-top:8px;">Обязательно: имя и фамилия, звание, департамент, номер аккаунта.</p>
+            </div>
+          </div>
+
+          <!-- 3.2 -->
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
+            <div style="background:var(--cream);padding:9px 16px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);border-bottom:1px solid var(--grey-light);">3.2 — При согласии предъявить документы</div>
+            <div style="padding:14px 16px;font-size:13px;color:var(--text-soft);line-height:1.8;">
+              <p><strong>Розыска нет:</strong> Вы не находитесь в списке розыска. Извините за беспокойство.</p>
+              <p style="margin-top:8px;"><strong>Розыск есть:</strong></p>
+              <code style="display:block;background:var(--cream);padding:10px 14px;border-left:2px solid var(--red);border-radius:0 8px 8px 0;font-size:12.5px;color:var(--navy);font-family:monospace;margin-top:4px;">/фд Вы подозреваетесь в преступлении *передав ордер на арест Имя Фамилия нарушителя*</code>
+              <p style="font-size:12px;color:var(--text-soft);margin-top:6px;">→ Надеваете наручники, сажаете в машину, везёте в участок, отыгрываете КПЗ.</p>
+            </div>
+          </div>
+
+          <!-- 3.3 -->
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
+            <div style="background:var(--cream);padding:9px 16px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);border-bottom:1px solid var(--grey-light);">3.3 — При невозможности предъявить документы</div>
+            <div style="padding:14px 16px;">
+              <code style="display:block;background:var(--cream);padding:10px 14px;border-left:2px solid var(--accent);border-radius:0 8px 8px 0;font-size:12.5px;color:var(--navy);font-family:monospace;line-height:2;">/я достал КПК из кармана, сфотографировал лицо гражданина и отправил запрос на сервер<br>/я просмотрел ответ от сервера и установил личность человека напротив<br>/я убрал КПК в карман</code>
+              <p style="font-size:12px;color:var(--text-soft);margin-top:8px;">Далее действуем по ситуации — смотрим в розыске или нет.</p>
+            </div>
+          </div>
+
+          <!-- 3.4 -->
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
+            <div style="background:var(--cream);padding:9px 16px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);border-bottom:1px solid var(--grey-light);">3.4 — Выписка штрафа</div>
+            <div style="padding:14px 16px;font-size:13px;color:var(--text-soft);">
+              <code style="display:block;background:var(--cream);padding:10px 14px;border-left:2px solid var(--accent);border-radius:0 8px 8px 0;font-size:12.5px;color:var(--navy);font-family:monospace;line-height:2;margin-bottom:8px;">/фд Вы нарушили А.К Х.Х, штраф составляет х.ххх $ *выписывая штраф*<br>/фд В случае отказа оплатить штраф, Вы будете арестованы *выдавая квитанцию "id*</code>
+              <p><strong>Штраф оплатили:</strong> Всего доброго. Не нарушайте!</p>
+              <p style="margin-top:6px;"><strong>Отказ / невозможность оплатить:</strong> заводите дело по <strong>9.2 У.К.</strong> (1 звезда если уже есть от штрафа, иначе 2). Садите в ТС, везёте в участок, отыгрываете КПЗ.</p>
+              <p style="font-size:12px;color:var(--text-soft);margin-top:6px;">⚠ Обязательно представьтесь перед выпиской и попросите паспорт. Если А.К. влечёт доп. розыск — выдайте его сразу.</p>
+            </div>
+          </div>
+
+          <!-- 3.5 -->
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
+            <div style="background:var(--cream);padding:9px 16px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);border-bottom:1px solid var(--grey-light);">3.5 — Посадка в транспортное средство</div>
+            <div style="padding:14px 16px;">
+              <code style="display:block;background:var(--cream);padding:10px 14px;border-left:2px solid var(--accent);border-radius:0 8px 8px 0;font-size:12.5px;color:var(--navy);font-family:monospace;line-height:2;">/я открыл дверь патрульного транспорта<br>/putpl ид &nbsp;или&nbsp; /и ид — Посадить в полицейский транспорт<br>/я закрыл дверь патрульного транспорта</code>
+              <p style="font-size:12px;color:var(--text-soft);margin-top:8px;">⚠ Для мотоцикла отыгровка не нужна — просто садим.</p>
+            </div>
+          </div>
+
+          <!-- 3.6 -->
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
+            <div style="background:var(--cream);padding:9px 16px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);border-bottom:1px solid var(--grey-light);">3.6 — Явка с повинной (14.1 У.К.)</div>
+            <div style="padding:14px 16px;font-size:13px;color:var(--text-soft);line-height:1.8;">
+              <p>Прошу Вас предъявить паспорт.</p>
+              <code style="display:block;background:var(--cream);padding:10px 14px;border-left:2px solid var(--accent);border-radius:0 8px 8px 0;font-size:12.5px;color:var(--navy);font-family:monospace;margin:8px 0;line-height:2;">/срозыск ид<br>/розыск ид 14.1 У.К.</code>
+              <p>Отыгрываете КПЗ. 14.1 У.К. означает снятие 1 уровня розыска — выдаём на 1 звезду меньше.</p>
+              <div style="margin-top:10px;background:var(--red-light);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--red);">⚠ При 14.1 У.К. правило «Миранды» <strong>не зачитывается</strong>!</div>
+            </div>
+          </div>
+
+          <!-- 3.7 -->
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
+            <div style="background:var(--cream);padding:9px 16px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);border-bottom:1px solid var(--grey-light);">3.7 — Проверка на алкоголь и наркотики</div>
+            <div style="padding:14px 16px;">
+              <p style="font-size:13px;color:var(--text-soft);margin-bottom:8px;"><strong>Алкоголь:</strong></p>
+              <code style="display:block;background:var(--cream);padding:10px 14px;border-left:2px solid var(--accent);border-radius:0 8px 8px 0;font-size:12.5px;color:var(--navy);font-family:monospace;line-height:2;">/фд Сейчас я проведу проверку на алкоголь *доставая алкотестер*<br>/я сбил предыдущие показатели алкотестера<br>/фд Выдыхайте в течение 5 секунд *дожидаясь звукового сигнала*<br>/пр Концентрация спирта в крови выше 0.3 промилле</code>
+              <p style="font-size:12px;color:var(--text-soft);margin-top:8px;">Поводы для проверки: нечёткая речь, неустойчивость позы, странное поведение, резкие заносы ТС.</p>
+              <p style="font-size:13px;color:var(--text-soft);margin:14px 0 8px;"><strong>Наркотики (обыск):</strong></p>
+              <code style="display:block;background:var(--cream);padding:10px 14px;border-left:2px solid var(--accent);border-radius:0 8px 8px 0;font-size:12.5px;color:var(--navy);font-family:monospace;line-height:2;">/фд Я обыщу вас на наличие наркотиков *показав ордер на обыск*<br>/я начал обыск "ид<br>/я проверяет карманы подозреваемого<br>/пр обнаружил пакетик с запрещенным веществом у "ид</code>
+              <p style="font-size:12px;color:var(--text-soft);margin-top:8px;">При обнаружении — розыск по <strong>12.1 У.К.</strong></p>
+            </div>
+          </div>
+
+          <!-- 3.8 -->
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
+            <div style="background:var(--cream);padding:9px 16px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);border-bottom:1px solid var(--grey-light);">3.8 — Проверка на употребление наркотических веществ</div>
+            <div style="padding:14px 16px;">
+              <p style="font-size:12.5px;color:var(--text-soft);margin-bottom:8px;">Проводится только при жалобе от граждан или если вы лично заметили употребление.</p>
+              <code style="display:block;background:var(--cream);padding:10px 14px;border-left:2px solid var(--accent);border-radius:0 8px 8px 0;font-size:12.5px;color:var(--navy);font-family:monospace;line-height:2;">/фд Сейчас я проверю Вас на наркотики *доставая пипетку для сбора слюны*<br>/я взял образец слюны у подозреваемого<br>/я начал проводить трехступенчатый тест<br>/де Полоски засветились, указывая на положительный результат<br>/розыск ид 12.1 У.К.</code>
+              <p style="font-size:12px;color:var(--text-soft);margin-top:8px;">→ Проводим задержание, сажаем в КПЗ за употребление.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <h3>4. RP отыгровки при погоне</h3>
+        <table>
+          <thead><tr><th>Ситуация</th><th>Команды и действия</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>4.1 Остановка ТС</strong></td>
+              <td>
+                <code style="display:block;font-size:12px;background:var(--cream);padding:6px 10px;border-radius:6px;margin-bottom:4px;">/гв Внимание водитель! Прижмитесь к обочине, проверка документов!</code>
+                <code style="display:block;font-size:12px;background:var(--cream);padding:6px 10px;border-radius:6px;">/гв Повторяю, прижмитесь к обочине или я открою огонь!</code>
+                <span style="font-size:12px;color:var(--text-soft);">Продолжает движение → <code>/розыск ид 9.1 У.К.</code> + стреляем по шинам.</span>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>4.2 Пешее преследование</strong></td>
+              <td>
+                <code style="display:block;font-size:12px;background:var(--cream);padding:6px 10px;border-radius:6px;margin-bottom:4px;">/к (/гв) Гражданин, оставайтесь на месте! Полиция штата!</code>
+                <code style="display:block;font-size:12px;background:var(--cream);padding:6px 10px;border-radius:6px;">/к (/гв) В случае неподчинения будет открыт огонь!</code>
+                <span style="font-size:12px;color:var(--text-soft);">Даём 10–15 секунд. После второго предупреждения → <code>/розыск ид 9.1 У.К.</code> (обязательно иметь доказательства).</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>5. Проверка багажника</h3>
+        <p>Проверяется <strong>только на блок-постах</strong>. Обязательно представиться и спросить паспорт перед осмотром.</p>
+        <div class="note-accordion" style="border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;margin:12px 0;">
+          <div class="note-acc-item" id="acc-rp-trunk" style="border-bottom:none;">
+            <button class="note-acc-trigger" onclick="toggleAcc('acc-rp-trunk')" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--cream);border:none;cursor:pointer;font-weight:600;font-size:13px;color:var(--navy);">
+              Показать отыгровку осмотра багажника <span class="note-acc-arrow">▼</span>
+            </button>
+            <div class="note-acc-body">
+              <div style="padding:14px 0;">
+                <code style="display:block;background:var(--cream);padding:10px 14px;border-radius:8px;font-size:12.5px;color:var(--navy);font-family:monospace;line-height:2;">/фд Будьте добры, откройте багажник *аккуратно обходя машину*<br>/я начал осмотр багажника<br>/пр обнаружил все комплектующие</code>
+                <div style="margin-top:12px;background:var(--accent-light);border-radius:8px;padding:10px 14px;font-size:12px;color:#8A6B20;">
+                  В случае отказа открыть: <code>/я нажал на кнопку багажника</code>.<br>
+                  Два неудачных проверочных броска → штраф по <strong>4.1 А.К.</strong><br>
+                  Если игрок сам отыгрывает нахождение предмета в салоне до команды <code>/пр</code> — штраф не выписывается.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════
+             02. ЗАКРЫТАЯ ТЕРРИТОРИЯ
+        ═══════════════════════════════ -->
+        <h2>02. Проникновение на закрытую территорию (участок)</h2>
+        <div class="note-accordion" style="border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;margin:12px 0;">
+          <div class="note-acc-item" id="acc-rp-territory" style="border-bottom:none;">
+            <button class="note-acc-trigger" onclick="toggleAcc('acc-rp-territory')" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--cream);border:none;cursor:pointer;font-weight:600;font-size:13px;color:var(--navy);">
+              Показать порядок действий <span class="note-acc-arrow">▼</span>
+            </button>
+            <div class="note-acc-body">
+              <div style="padding:14px 0;">
+                <code style="display:block;background:var(--cream);padding:10px 14px;border-radius:8px;font-size:12.5px;color:var(--navy);font-family:monospace;line-height:2.2;">/к Покиньте территорию участка. Даю 10 секунд!<br>/к Один&nbsp;&nbsp; /к Три&nbsp;&nbsp; /к Шесть&nbsp;&nbsp; /к Восемь&nbsp;&nbsp; /к Десять!</code>
+                <p style="font-size:13px;color:var(--text-soft);margin-top:10px;">Если убегает — даёте убежать.</p>
+                <code style="display:block;background:var(--cream);padding:10px 14px;border-radius:8px;font-size:12.5px;color:var(--navy);font-family:monospace;margin:8px 0;">/к Повторяю, покиньте территорию или я применю силу!</code>
+                <p style="font-size:13px;color:var(--text-soft);">Отказывается / не уходит → <code>/розыск ид 10.1 У.К.</code> → посадка в КПЗ.</p>
+                <div style="margin-top:12px;background:var(--accent-light);border-radius:8px;padding:10px 14px;font-size:12px;color:#8A6B20;">
+                  ⚠ Если просят показать выход — обязательно покажите.<br>
+                  Во время набора разрешается объявлять розыск по <strong>9.1 У.К.</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════
+             03. БЛОК-ПОСТ
+        ═══════════════════════════════ -->
+        <h2>03. Проникновение на территорию блок-поста</h2>
+        <p>Игроки могут находиться перед и на блоках, но <strong>за ними — нет</strong>.</p>
+        <div class="note-accordion" style="border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;margin:12px 0;">
+          <div class="note-acc-item" id="acc-rp-block" style="border-bottom:none;">
+            <button class="note-acc-trigger" onclick="toggleAcc('acc-rp-block')" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--cream);border:none;cursor:pointer;font-weight:600;font-size:13px;color:var(--navy);">
+              Показать порядок действий <span class="note-acc-arrow">▼</span>
+            </button>
+            <div class="note-acc-body">
+              <div style="padding:14px 0;">
+                <code style="display:block;background:var(--cream);padding:10px 14px;border-radius:8px;font-size:12.5px;color:var(--navy);font-family:monospace;line-height:2.2;">/к Покиньте территорию блок-поста. Считаю до трёх!<br>/к Один&nbsp;&nbsp; /к Два&nbsp;&nbsp; /к Три</code>
+                <p style="font-size:13px;color:var(--text-soft);margin-top:10px;">Если убегает — даёте убежать.</p>
+                <code style="display:block;background:var(--cream);padding:10px 14px;border-radius:8px;font-size:12.5px;color:var(--navy);font-family:monospace;margin:8px 0;">/к Повторяю, покиньте территорию блок-поста или я применю силу!</code>
+                <p style="font-size:13px;color:var(--text-soft);">Отказывается → <code>/розыск ид 10.2 У.К.</code> или <code>4.2 А.К.</code> → посадка в КПЗ.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════
+             04. ВЗЛОМ ДВЕРИ
+        ═══════════════════════════════ -->
+        <h2>04. Взлом двери</h2>
+        <p>Функционально доступно от <strong>Старшего лейтенанта [5]</strong>. Два варианта взлома:</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0;">
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
+            <div style="background:var(--cream);padding:9px 16px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);border-bottom:1px solid var(--grey-light);">🔨 Ручной таран</div>
+            <div style="padding:14px 16px;">
+              <code style="display:block;font-family:monospace;font-size:12px;background:var(--cream);padding:10px 14px;border-radius:8px;color:var(--navy);line-height:2;">/я достал ручной таран из-за спины<br>/я бьет ручным тараном в дверь<br>/я выбил дверь<br>/я убрал ручной таран за спину</code>
+            </div>
+          </div>
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
+            <div style="background:var(--cream);padding:9px 16px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);border-bottom:1px solid var(--grey-light);">🔫 Выстрел в замок</div>
+            <div style="padding:14px 16px;">
+              <code style="display:block;font-family:monospace;font-size:12px;background:var(--cream);padding:10px 14px;border-radius:8px;color:var(--navy);line-height:2;">/я достал пистолет "Desert Eagle" и снял с предохранителя<br>/я навелся на дверной замок и произвел выстрел<br>/я выбил дверь</code>
+              <p style="font-size:12px;color:var(--text-soft);margin-top:6px;">Если пистолет уже был отыгран ранее — повторно не отыгрывать.</p>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--text-soft);">После отыгровки — взламываем дверь через <strong>меню дома</strong> и заходим.</p>
+        <table style="margin-top:14px;">
+          <thead><tr><th>Разрешено</th><th>Запрещено</th></tr></thead>
+          <tbody>
+            <tr><td>В доме скрывается преступник / группа</td><td>Взламывать без IC-причины</td></tr>
+            <tr><td>В доме находятся заложники</td><td>Взламывать без RP отыгровки</td></tr>
+          </tbody>
+        </table>
+
+        <!-- ═══════════════════════════════
+             05. ВОДНАЯ ПОДУШКА
+        ═══════════════════════════════ -->
+        <h2>05. Установка водной подушки и ликвидация на воде</h2>
+        <p>Функционально доступно от <strong>Лейтенанта [4]</strong>.</p>
+        <div class="note-accordion" style="border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;margin:12px 0;">
+          <div class="note-acc-item" id="acc-rp-water" style="border-bottom:none;">
+            <button class="note-acc-trigger" onclick="toggleAcc('acc-rp-water')" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--cream);border:none;cursor:pointer;font-weight:600;font-size:13px;color:var(--navy);">
+              Показать порядок действий на воде <span class="note-acc-arrow">▼</span>
+            </button>
+            <div class="note-acc-body">
+              <div style="padding:14px 0;font-size:13px;color:var(--text-soft);line-height:1.9;">
+                <ol style="padding-left:20px;">
+                  <li>Если преступник убегает в воду — по возможности догоняем и набрасываем тазер.</li>
+                  <li>Отыгрываем водную подушку: <code>/я установил водную подушку, ухватившись за неё</code></li>
+                  <li>Ставим дорожный блок: <strong>Y → Дорожные блоки</strong>, выбираем любой удобный блок.</li>
+                  <li>Ликвидируем и убираем блок: <code>/я убрал водную подушку</code></li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════
+             06. ОТЫГРОВКИ ОРУЖИЯ
+        ═══════════════════════════════ -->
+        <h2>06. RP отыгровки оружия</h2>
+        <table>
+          <thead><tr><th>Тип оружия</th><th>Достать</th><th>Убрать</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Пистолет</strong></td>
+              <td><code>/я достал пистолет "Desert Eagle" из кобуры</code></td>
+              <td><code>/я убрал пистолет "Desert Eagle" в кобуру</code></td>
+            </tr>
+            <tr>
+              <td><strong>Автомат</strong></td>
+              <td><code>/я достал автомат "MP5A5" из-за спины</code></td>
+              <td><code>/я убрал автомат "MP5A5" за спину</code></td>
+            </tr>
+            <tr>
+              <td><strong>Дробовик</strong></td>
+              <td><code>/я достал дробовик "Shotgun" из-за спины</code></td>
+              <td><code>/я убрал дробовик "Shotgun" за спину</code></td>
+            </tr>
+            <tr>
+              <td><strong>Винтовка</strong></td>
+              <td><code>/я достал винтовку "Tracker Rifle" из-за спины</code></td>
+              <td><code>/я убрал винтовку "Tracker Rifle" за спину</code></td>
+            </tr>
+            <tr>
+              <td><strong>Дубинка</strong></td>
+              <td><code>/я снял с пояса дубинку</code></td>
+              <td><code>/я повесил дубинку на пояс</code></td>
+            </tr>
+            <tr>
+              <td><strong>Пейнтбол (тренировки)</strong></td>
+              <td><code>/я снял пейнтбольное оружие с плеча и перезарядил</code></td>
+              <td><code>/я повесил пейнтбольное оружие на плечо</code></td>
+            </tr>
+          </tbody>
+        </table>
+        <ul style="margin-top:12px;">
+          <li>Обязательно прописывать <strong>название оружия</strong> (не просто «пистолет» и т.д.).</li>
+          <li>Обязательно указывать <strong>откуда вы достаёте</strong> оружие.</li>
+          <li>Согласно правилу сервера <strong>6.1</strong>, отыгровки оружия выполняются <em>по желанию</em>.</li>
+        </ul>
+
+        <!-- ═══════════════════════════════
+             07. МИРАНДА
+        ═══════════════════════════════ -->
+        <h2>07. Правило «Миранды»</h2>
+        <p>Каждый офицер при задержании обязан зачитать права гражданина. <strong>Исключение: 14.1 У.К.</strong></p>
+        <div class="article-highlight" style="font-style:italic;line-height:2;">
+          Вы задержаны. Вы имеете право хранить молчание.<br>
+          Всё что вы скажите, может и будет использовано против вас.<br>
+          Не пытайтесь убежать — любая попытка побега расценивается как неподчинение,<br>
+          вследствие чего вы будете ликвидированы.<br>
+          <strong>Вы понимаете свои права?</strong>
+        </div>
+
+        <!-- ═══════════════════════════════
+             08. ИНСТРУКТАЖ РЯДОВЫХ
+        ═══════════════════════════════ -->
+        <h2>08. Инструктаж для рядовых</h2>
+        <p>Рекомендуемая последовательность проведения инструктажа после приёма новобранцев.</p>
+        <div class="note-accordion" style="border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;margin:12px 0;">
+          <div class="note-acc-item" id="acc-rp-instr-start">
+            <button class="note-acc-trigger" onclick="toggleAcc('acc-rp-instr-start')" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--cream);border:none;cursor:pointer;font-weight:600;font-size:13px;color:var(--navy);">
+              Шаг 1 — Начало инструктажа (гараж) <span class="note-acc-arrow">▼</span>
+            </button>
+            <div class="note-acc-body">
+              <div style="padding:14px 0;font-size:13px;color:var(--text-soft);line-height:1.9;">
+                <p>Доклад в рацию: <code>![ТЭГ] Начал инструктаж для Рядовых академии</code></p>
+                <p style="margin-top:10px;">Обращение к новобранцам (в гараже):</p>
+                <ul style="padding-left:20px;margin-top:6px;">
+                  <li>Приветствую Вас! Поздравляю, вы прошли набор в полицейскую академию департамента.</li>
+                  <li>Вы можете звать меня (звание, фамилия). Я проведу краткий инструктаж и экскурсию.</li>
+                  <li>Кто покинет инструктаж до окончания — будет исключён из академии.</li>
+                  <li>Форму и рацию брать запрещено (кроме запроса на сдачу ЗР).</li>
+                  <li>Вопросы — после инструктажа.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="note-acc-item" id="acc-rp-instr-excurs">
+            <button class="note-acc-trigger" onclick="toggleAcc('acc-rp-instr-excurs')" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--cream);border:none;cursor:pointer;font-weight:600;font-size:13px;color:var(--navy);">
+              Шаг 2 — Экскурсия по департаменту <span class="note-acc-arrow">▼</span>
+            </button>
+            <div class="note-acc-body">
+              <div style="padding:14px 0;font-size:13px;color:var(--text-soft);line-height:1.9;">
+                <ol style="padding-left:20px;">
+                  <li><strong>Парковка для сотрудников</strong> — ведём на парковку. «Если увижу ваш транспорт в ином месте — будете наказаны».</li>
+                  <li><strong>Посты КПП (1-2)</strong> — «Вам будет необходимо отдежурить на данном посту. Подробнее — на портале штата».</li>
+                  <li><strong>Холл участка</strong> — «При команде "Общее построение" — строиться здесь согласно званиям справа налево».</li>
+                  <li><strong>Комната отдыха</strong> — «Нигде кроме этой комнаты отдыхать нельзя. Нарушение — наказание».</li>
+                  <li><strong>Экзаменационная комната</strong> — «Первый экзамен ЗР — Зачёт Рядового. На сдачу — сутки. Не успеете — простимся».</li>
+                  <li><strong>Арсеналы</strong> — «Оружие — только в случаях, предусмотренных нормативными актами или для самообороны, с отыгровкой».</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="note-acc-item" id="acc-rp-instr-radio" style="border-bottom:none;">
+            <button class="note-acc-trigger" onclick="toggleAcc('acc-rp-instr-radio')" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--cream);border:none;cursor:pointer;font-weight:600;font-size:13px;color:var(--navy);">
+              Шаг 3 — Рация и правила <span class="note-acc-arrow">▼</span>
+            </button>
+            <div class="note-acc-body">
+              <div style="padding:14px 0;font-size:13px;color:var(--text-soft);line-height:1.9;">
+                <p>Ваш позывной в рацию: <strong>PA — Полицейская академия</strong>. Пишем <code>![PA] текст</code>.</p>
+                <p style="margin-top:8px;">Отыгрываем выдачу раций: <code>/я выдал рации курсантам</code> → запрос:</p>
+                <code style="display:block;background:var(--cream);padding:8px 12px;border-left:2px solid var(--accent);border-radius:0 6px 6px 0;font-size:12px;color:var(--navy);margin:8px 0;">![ТЭГ] Курсанты, прием...</code>
+                <p style="font-size:12px;color:var(--grey);">После правильных ответов <code>![PA] Прием</code> — продолжаем.</p>
+                <p style="margin-top:10px;"><strong>Ключевые правила для новобранцев:</strong></p>
+                <ul style="padding-left:20px;margin-top:6px;">
+                  <li>Посещение казино в рабочей форме — <strong>запрещено</strong>.</li>
+                  <li>Полиция — военизированная структура. Субординация контролируется жёстко.</li>
+                  <li>Обращение к старшим по званию: «Вы», «Офицер Фамилия» или «Сэр».</li>
+                  <li>Офицеры обязаны соблюдать кодексы, ПДД и конституцию штата.</li>
+                </ul>
+                <p style="margin-top:12px;">После ответов на вопросы:</p>
+                <code style="display:block;background:var(--cream);padding:8px 12px;border-left:2px solid var(--accent);border-radius:0 6px 6px 0;font-size:12px;color:var(--navy);margin-top:6px;">![ТЭГ] Инструктаж для курсанта(ов) закончен</code>
+                <p style="margin-top:8px;">Забираем рации: <code>/я забрал рации у курсантов</code></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      `
     },
     oruzh: {
       title: '[МВД] Оружейный кодекс',
@@ -9552,7 +10586,7 @@
         </div>
 
         <!-- БЫСТРАЯ НАВИГАЦИЯ -->
-        <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:14px;padding:20px 24px;margin:24px 0;">
+        <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:14px;padding:20px 24px;margin:24px 0;">
           <div style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--grey);margin-bottom:14px;">Быстрая навигация</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
             <a href="#react-01" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'">
@@ -9862,14 +10896,14 @@
         <!-- ═══════════════════ 16 ═══════════════════ -->
         <h2 id="react-16">16. Умышленный таран</h2>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;">
-          <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:16px;">
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;padding:16px;">
             <div style="font-weight:700;color:var(--navy);margin-bottom:10px;">При попытке скрыться</div>
             <ol style="padding-left:18px;font-size:13px;color:var(--text-soft);line-height:1.9;">
               <li>Зафиксируйте таран (фрапс/скрин), объявите в розыск по <strong>2.1 У.К.</strong> (офицер в ТС) / <strong>1.1 У.К.</strong> (гражданский) / <strong>11.1 У.К.</strong> (пустое ТС).</li>
               <li>Попросите остановиться. При отказе — <strong>9.3 У.К.</strong>, огонь по колёсам. Если ТС уничтожено и нарушитель не вылазил — сообщите в рацию или отправьте патруль к больнице.</li>
             </ol>
           </div>
-          <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:16px;">
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;padding:16px;">
             <div style="font-weight:700;color:var(--navy);margin-bottom:10px;">Без попытки скрыться</div>
             <ol style="padding-left:18px;font-size:13px;color:var(--text-soft);line-height:1.9;">
               <li>Выбросьте нарушителя из ТС, если он в нём.</li>
