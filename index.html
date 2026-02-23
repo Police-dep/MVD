@@ -1902,38 +1902,134 @@
       .lead-card { max-width:100%; }
     }
     /* ════════ PROMOTION SYSTEM ════════ */
-    .promo-header {
-      font-size: 11px; font-weight: 800; letter-spacing: 0.12em;
-      text-transform: uppercase; padding: 10px 18px; border-radius: 7px;
-      margin-bottom: 22px; color: white;
+    /* ════════ RANK PROMOTION SYSTEM ════════ */
+    .promo-dept-header {
+      display: flex; align-items: center; gap: 16px;
+      padding: 18px 24px;
+      background: var(--navy);
+      border-left: 3px solid var(--accent);
+      margin-bottom: 28px;
     }
-    .promo-green { background: #2A6040; }
-    .promo-blue  { background: #1A3060; }
-    .promo-navy  { background: #1E3A6A; }
-
-    .promo-step {
-      margin-bottom: 24px; padding-bottom: 24px;
-      border-bottom: 1px dashed var(--grey-light);
-      text-align: center;
+    .promo-dept-header.promo-green { border-left-color: #4A9E6E; }
+    .promo-dept-header.promo-blue  { border-left-color: #5A84C0; }
+    .promo-dept-header.promo-navy  { border-left-color: var(--accent); }
+    .promo-dept-info { flex: 1; }
+    .promo-dept-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px; font-weight: 700; color: #fff;
     }
-    .promo-step:last-child { border-bottom: none; }
+    .promo-dept-sub {
+      font-size: 10px; color: rgba(255,255,255,0.35);
+      text-transform: uppercase; letter-spacing: 0.14em; margin-top: 3px;
+    }
+    .promo-dept-badge {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+      color: var(--accent); text-transform: uppercase;
+      padding: 4px 12px; border: 1px solid rgba(200,168,75,0.35);
+    }
 
-    .promo-badge {
-      display: inline-block; background: var(--accent);
-      color: var(--navy); font-size: 12px; font-weight: 800;
+    /* section dividers */
+    .promo-section-label {
+      font-size: 10px; font-weight: 800; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--grey);
+      display: flex; align-items: center; gap: 12px;
+      margin: 32px 0 20px;
+    }
+    .promo-section-label::before, .promo-section-label::after {
+      content: ''; flex: 1; height: 1px; background: var(--grey-light);
+    }
+
+    /* cards */
+    .promo-step-new {
+      margin-bottom: 16px;
+      border: 1.5px solid var(--grey-light);
+      overflow: hidden;
+    }
+
+    .promo-step-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 11px 18px;
+      background: #2A3655;
+      gap: 12px;
+    }
+    .promo-step-new.hc .promo-step-head { background: #2A3655; }
+
+    .promo-step-transition {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .promo-rank-from {
+      font-size: 11px; font-weight: 600;
+      color: rgba(255,255,255,0.4);
       letter-spacing: 0.07em; text-transform: uppercase;
-      padding: 5px 16px; border-radius: 6px; margin-bottom: 12px;
+    }
+    .promo-divider {
+      width: 18px; height: 1px; background: var(--accent); flex-shrink: 0;
+    }
+    .promo-rank-to {
+      font-size: 12px; font-weight: 800; color: #fff;
+      letter-spacing: 0.07em; text-transform: uppercase;
+    }
+    .promo-step-tags { display: flex; gap: 6px; align-items: center; }
+    .promo-tag-hc {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+      color: var(--accent); border: 1px solid rgba(200,168,75,0.45);
+      padding: 2px 9px; text-transform: uppercase;
+    }
+    .promo-tag-cd {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.45); border: 1px solid rgba(255,255,255,0.2);
+      padding: 2px 9px; text-transform: uppercase;
     }
 
-    .promo-list {
-      list-style: none; padding: 0; margin: 0;
-      display: inline-block; text-align: left;
+    .promo-step-body {
+      background: var(--cream);
     }
-    .promo-list li {
-      font-size: 14px; color: var(--text-soft); line-height: 1.7;
-      padding-left: 0;
+    .promo-req-row {
+      display: flex; align-items: baseline; gap: 12px;
+      padding: 9px 18px;
+      border-bottom: 1px solid var(--grey-light);
+      font-size: 13px; color: var(--text-soft); line-height: 1.5;
     }
-    .promo-list strong { color: var(--navy); }
+    .promo-req-row:last-child { border-bottom: none; }
+    .promo-req-dot {
+      width: 4px; height: 4px; border-radius: 50%;
+      background: var(--accent); flex-shrink: 0; margin-top: 7px;
+    }
+    .promo-req-row strong { color: var(--navy); }
+
+    .promo-notice {
+      padding: 9px 18px;
+      border-top: 1px solid var(--grey-light);
+      font-size: 13px; color: var(--text-soft); line-height: 1.5;
+    }
+    .promo-notice.cd-notice {
+      background: var(--cream);
+      display: flex; align-items: baseline; gap: 12px;
+    }
+    .promo-notice.cd-notice strong { color: var(--navy); }
+    .promo-notice.hc-notice {
+      background: var(--cream);
+      display: flex; align-items: baseline; gap: 12px;
+    }
+    .promo-notice.hc-notice strong { color: var(--navy); }
+    .promo-notice.mvd-notice {
+      background: var(--cream);
+      display: flex; align-items: baseline; gap: 12px;
+    }
+    .promo-notice.mvd-notice strong { color: var(--navy); }
+    .promo-notice-dot {
+      width: 4px; height: 4px; border-radius: 50%;
+      background: var(--accent); flex-shrink: 0; margin-top: 7px;
+    }
+
+    /* legacy */
+    .promo-header, .promo-step, .promo-badge, .promo-list,
+    .promo-dept-icon, .promo-dot-wrap, .promo-dot,
+    .promo-timeline, .promo-card, .promo-num,
+    .promo-body, .promo-body-head,
+    .promo-reqs, .promo-req-item,
+    .promo-cooldown-bar, .promo-hc-bar,
+    .promo-mvd-card, .promo-mvd-line { display: none; }
 
     /* ════════ LOCKED DECISION PANEL ════════ */
     .decision-locked {
@@ -2558,79 +2654,145 @@
     <!-- ══ LSCSD ══ -->
     <div id="ranks-LSCSD" class="dept-ranks-block" style="display:none;">
 
-      <div class="promo-header promo-green">СИСТЕМА ПОВЫШЕНИЯ ДЛЯ МЛАДШЕГО ОТДЕЛА — SHERIFF ACADEMY [SA]</div>
-
-      <div class="promo-step">
-        <div class="promo-badge">РЯДОВОЙ → СЕРЖАНТ</div>
-        <ul class="promo-list">
-          <li>Сдать экзамен <strong>Зачёта Рядового</strong> (ЗР)</li>
-        </ul>
+      <div class="promo-dept-header promo-green">
+        <div class="promo-dept-info">
+          <div class="promo-dept-title">Los Santos County Sheriff's Department</div>
+          <div class="promo-dept-sub">Система карьерного роста · 9 рангов</div>
+        </div>
+        <div class="promo-dept-badge">LSCSD</div>
       </div>
 
-      <div class="promo-step">
-        <div class="promo-badge">СЕРЖАНТ → СТ. СЕРЖАНТ</div>
-        <ul class="promo-list">
-          <li>Сдать экзамен <strong>Учебный Патруль</strong> (УП)</li>
-          <li>Сдать <strong>Физические Нормативы</strong></li>
-          <li>Создать личное дело под разделом Los Santos County Sheriff's Department</li>
-        </ul>
+      <div class="promo-section-label">Sheriff Academy</div>
+
+      <div class="promo-step-new">
+        <div class="promo-step-head">
+          <div class="promo-step-transition">
+            <span class="promo-rank-from">Cadet I</span>
+            <span class="promo-divider"></span>
+            <span class="promo-rank-to">Cadet II</span>
+          </div>
+          <div class="promo-step-tags"></div>
+        </div>
+        <div class="promo-step-body">
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Сдать экзамен <strong>Зачёт Рядового</strong> (ЗР)</span></div>
+        </div>
       </div>
 
-      <div class="promo-header promo-green" style="margin-top:28px;">СИСТЕМА ПОВЫШЕНИЯ ДЛЯ СРЕДНЕГО ОТДЕЛА — SHERIFF DEPARTMENT [SD]</div>
-
-      <div class="promo-step">
-        <div class="promo-badge">СТ. СЕРЖАНТ → ЛЕЙТЕНАНТ</div>
-        <ul class="promo-list">
-          <li>Патруль города 20 минут</li>
-          <li>Принять участие в любой тренировке</li>
-        </ul>
+      <div class="promo-step-new">
+        <div class="promo-step-head">
+          <div class="promo-step-transition">
+            <span class="promo-rank-from">Cadet II</span>
+            <span class="promo-divider"></span>
+            <span class="promo-rank-to">Deputy Sheriff I</span>
+          </div>
+          <div class="promo-step-tags"></div>
+        </div>
+        <div class="promo-step-body">
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Сдать экзамен <strong>Учебный Патруль</strong> (УП)</span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Сдать <strong>Физические Нормативы</strong></span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Иметь личное дело под разделом LSCSD</span></div>
+        </div>
       </div>
 
-      <div class="promo-step">
-        <div class="promo-badge">ЛЕЙТЕНАНТ → СТ. ЛЕЙТЕНАНТ</div>
-        <ul class="promo-list">
-          <li>Патруль города 30 минут</li>
-          <li>Принять участие в блок-посте / спец. операции</li>
-          <li>Принять участие в любой тренировке</li>
-        </ul>
+      <div class="promo-section-label">Sheriff Department</div>
+
+      <div class="promo-step-new">
+        <div class="promo-step-head">
+          <div class="promo-step-transition">
+            <span class="promo-rank-from">Deputy Sheriff I</span>
+            <span class="promo-divider"></span>
+            <span class="promo-rank-to">Deputy Sheriff II</span>
+          </div>
+          <div class="promo-step-tags"></div>
+        </div>
+        <div class="promo-step-body">
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Патруль города <strong>20 минут</strong></span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Принять участие в любой тренировке</span></div>
+        </div>
       </div>
 
-      <div class="promo-step">
-        <div class="promo-badge">СТ. ЛЕЙТЕНАНТ → КАПИТАН</div>
-        <ul class="promo-list">
-          <li>Патруль города 30 минут</li>
-          <li>Сдать экзамен <strong>Среднего Состава</strong> (ЭСС)</li>
-          <li>Принять участие в спец. операции / блок-посте</li>
-          <li>Принять участие в 2 тренировках</li>
-        </ul>
+      <div class="promo-step-new">
+        <div class="promo-step-head">
+          <div class="promo-step-transition">
+            <span class="promo-rank-from">Deputy Sheriff II</span>
+            <span class="promo-divider"></span>
+            <span class="promo-rank-to">Lieutenant</span>
+          </div>
+          <div class="promo-step-tags"></div>
+        </div>
+        <div class="promo-step-body">
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Патруль города <strong>30 минут</strong></span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Принять участие в блок-посте / спец. операции</span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Принять участие в любой тренировке</span></div>
+        </div>
       </div>
 
-      <div class="promo-step">
-        <div class="promo-badge">КАПИТАН → МАЙОР</div>
-        <ul class="promo-list">
-          <li>Патруль города 40 минут</li>
-          <li>Проведение блок-поста</li>
-          <li>Проведение 2 тренировок</li>
-          <li>Проведение спец. операции</li>
-        </ul>
+      <div class="promo-step-new cooldown-step">
+        <div class="promo-step-head">
+          <div class="promo-step-transition">
+            <span class="promo-rank-from">Lieutenant</span>
+            <span class="promo-divider"></span>
+            <span class="promo-rank-to">Captain</span>
+          </div>
+          <div class="promo-step-tags"><span class="promo-tag-cd">Кулдаун</span></div>
+        </div>
+        <div class="promo-step-body">
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Патруль города <strong>30 минут</strong></span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Сдать экзамен <strong>Среднего Состава</strong> (ЭСС)</span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Принять участие в спец. операции / блок-посте</span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Принять участие в <strong>2 тренировках</strong></span></div>
+        </div>
+        <div class="promo-notice cd-notice"><span class="promo-notice-dot"></span><span>Отстоять на текущей должности не менее <strong>1 суток</strong> с момента предыдущего повышения</span></div>
       </div>
 
-      <div class="promo-header promo-green" style="margin-top:28px;">СИСТЕМА ПОВЫШЕНИЯ ДЛЯ СТАРШЕГО ОТДЕЛА — HIGH COMMAND [HC]</div>
-
-      <div class="promo-step">
-        <div class="promo-badge">МАЙОР → ПОДПОЛКОВНИК</div>
-        <ul class="promo-list">
-          <li>Решение командования по итогам служебной аттестации</li>
-          <li>Проведение не менее 3 тренировок за последний месяц</li>
-          <li>Отсутствие активных взысканий</li>
-        </ul>
+      <div class="promo-step-new cooldown-step">
+        <div class="promo-step-head">
+          <div class="promo-step-transition">
+            <span class="promo-rank-from">Captain</span>
+            <span class="promo-divider"></span>
+            <span class="promo-rank-to">Commander</span>
+          </div>
+          <div class="promo-step-tags"><span class="promo-tag-cd">Кулдаун</span></div>
+        </div>
+        <div class="promo-step-body">
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Патруль города <strong>40 минут</strong></span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Проведение блок-поста</span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Проведение <strong>2 тренировок</strong></span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Проведение спец. операции</span></div>
+        </div>
+        <div class="promo-notice cd-notice"><span class="promo-notice-dot"></span><span>Отстоять на текущей должности не менее <strong>1 суток</strong> с момента предыдущего повышения</span></div>
       </div>
 
-      <div class="promo-step">
-        <div class="promo-badge">ПОДПОЛКОВНИК → ПОЛКОВНИК</div>
-        <ul class="promo-list">
-          <li>Назначение Шерифом или руководством МВД</li>
-        </ul>
+      <div class="promo-step-new hc cooldown-step">
+        <div class="promo-step-head">
+          <div class="promo-step-transition">
+            <span class="promo-rank-from">Commander</span>
+            <span class="promo-divider"></span>
+            <span class="promo-rank-to">Undersheriff</span>
+          </div>
+          <div class="promo-step-tags">
+            <span class="promo-tag-cd">Кулдаун</span>
+            <span class="promo-tag-hc">HC</span>
+          </div>
+        </div>
+        <div class="promo-step-body">
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Отстоять на текущей должности не менее <strong>1 суток</strong> с момента предыдущего повышения</span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Оставить еженедельный отчёт в теме старшего состава</span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Отсутствие активных взысканий</span></div>
+        </div>
+        <div class="promo-notice hc-notice"><span class="promo-notice-dot"></span><span>Повышение по доверенности <strong>Шерифа [9]</strong></span></div>
+      </div>
+
+      <div class="promo-step-new hc">
+        <div class="promo-step-head">
+          <div class="promo-step-transition">
+            <span class="promo-rank-from">Undersheriff</span>
+            <span class="promo-divider"></span>
+            <span class="promo-rank-to">Sheriff</span>
+          </div>
+          <div class="promo-step-tags"><span class="promo-tag-hc">HC</span></div>
+        </div>
+        <div class="promo-notice mvd-notice"><span class="promo-notice-dot"></span><span>Назначение осуществляется исключительно <strong>руководством МВД</strong></span></div>
       </div>
 
     </div>
@@ -2638,80 +2800,145 @@
     <!-- ══ SFPD ══ -->
     <div id="ranks-SFPD" class="dept-ranks-block" style="display:none;">
 
-      <div class="promo-header promo-blue">СИСТЕМА ПОВЫШЕНИЯ ДЛЯ МЛАДШЕГО ОТДЕЛА — POLICE ACADEMY [PA]</div>
-
-      <div class="promo-step">
-        <div class="promo-badge">КАДЕТ → ОФИЦЕР</div>
-        <ul class="promo-list">
-          <li>Сдать экзамен <strong>Зачёта Рядового</strong> (ЗР)</li>
-          <li>Пройти базовый инструктаж</li>
-        </ul>
+      <div class="promo-dept-header promo-blue">
+        <div class="promo-dept-info">
+          <div class="promo-dept-title">San Fierro Police Department</div>
+          <div class="promo-dept-sub">Система карьерного роста · 9 рангов</div>
+        </div>
+        <div class="promo-dept-badge">SFPD</div>
       </div>
 
-      <div class="promo-step">
-        <div class="promo-badge">ОФИЦЕР → СТ. ОФИЦЕР</div>
-        <ul class="promo-list">
-          <li>Сдать экзамен <strong>Учебный Патруль</strong> (УП)</li>
-          <li>Сдать <strong>Физические Нормативы</strong></li>
-          <li>Создать личное дело под разделом San Fierro Police Department</li>
-        </ul>
+      <div class="promo-section-label">Police Academy</div>
+
+      <div class="promo-step-new">
+        <div class="promo-step-head">
+          <div class="promo-step-transition">
+            <span class="promo-rank-from">Cadet I</span>
+            <span class="promo-divider"></span>
+            <span class="promo-rank-to">Cadet II</span>
+          </div>
+          <div class="promo-step-tags"></div>
+        </div>
+        <div class="promo-step-body">
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Сдать экзамен <strong>Зачёт Рядового</strong> (ЗР)</span></div>
+        </div>
       </div>
 
-      <div class="promo-header promo-blue" style="margin-top:28px;">СИСТЕМА ПОВЫШЕНИЯ ДЛЯ СРЕДНЕГО ОТДЕЛА — POLICE DEPARTMENT [PD]</div>
-
-      <div class="promo-step">
-        <div class="promo-badge">СТ. ОФИЦЕР → СЕРЖАНТ</div>
-        <ul class="promo-list">
-          <li>Патруль города 20 минут</li>
-          <li>Принять участие в любой тренировке</li>
-        </ul>
+      <div class="promo-step-new">
+        <div class="promo-step-head">
+          <div class="promo-step-transition">
+            <span class="promo-rank-from">Cadet II</span>
+            <span class="promo-divider"></span>
+            <span class="promo-rank-to">Police Officer I</span>
+          </div>
+          <div class="promo-step-tags"></div>
+        </div>
+        <div class="promo-step-body">
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Сдать экзамен <strong>Учебный Патруль</strong> (УП)</span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Сдать <strong>Физические Нормативы</strong></span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Иметь личное дело под разделом SFPD</span></div>
+        </div>
       </div>
 
-      <div class="promo-step">
-        <div class="promo-badge">СЕРЖАНТ → СТ. СЕРЖАНТ</div>
-        <ul class="promo-list">
-          <li>Патруль города 30 минут</li>
-          <li>Принять участие в блок-посте / спец. операции</li>
-          <li>Принять участие в любой тренировке</li>
-        </ul>
+      <div class="promo-section-label">Police Department</div>
+
+      <div class="promo-step-new">
+        <div class="promo-step-head">
+          <div class="promo-step-transition">
+            <span class="promo-rank-from">Police Officer I</span>
+            <span class="promo-divider"></span>
+            <span class="promo-rank-to">Police Officer II</span>
+          </div>
+          <div class="promo-step-tags"></div>
+        </div>
+        <div class="promo-step-body">
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Патруль города <strong>20 минут</strong></span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Принять участие в любой тренировке</span></div>
+        </div>
       </div>
 
-      <div class="promo-step">
-        <div class="promo-badge">СТ. СЕРЖАНТ → ЛЕЙТЕНАНТ</div>
-        <ul class="promo-list">
-          <li>Патруль города 30 минут</li>
-          <li>Сдать экзамен <strong>Среднего Состава</strong> (ЭСС)</li>
-          <li>Принять участие в спец. операции / блок-посте</li>
-          <li>Принять участие в 2 тренировках</li>
-        </ul>
+      <div class="promo-step-new">
+        <div class="promo-step-head">
+          <div class="promo-step-transition">
+            <span class="promo-rank-from">Police Officer II</span>
+            <span class="promo-divider"></span>
+            <span class="promo-rank-to">Lieutenant</span>
+          </div>
+          <div class="promo-step-tags"></div>
+        </div>
+        <div class="promo-step-body">
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Патруль города <strong>30 минут</strong></span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Принять участие в блок-посте / спец. операции</span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Принять участие в любой тренировке</span></div>
+        </div>
       </div>
 
-      <div class="promo-step">
-        <div class="promo-badge">ЛЕЙТЕНАНТ → КАПИТАН</div>
-        <ul class="promo-list">
-          <li>Патруль города 40 минут</li>
-          <li>Проведение блок-поста</li>
-          <li>Проведение 2 тренировок</li>
-          <li>Проведение спец. операции</li>
-        </ul>
+      <div class="promo-step-new cooldown-step">
+        <div class="promo-step-head">
+          <div class="promo-step-transition">
+            <span class="promo-rank-from">Lieutenant</span>
+            <span class="promo-divider"></span>
+            <span class="promo-rank-to">Captain</span>
+          </div>
+          <div class="promo-step-tags"><span class="promo-tag-cd">Кулдаун</span></div>
+        </div>
+        <div class="promo-step-body">
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Патруль города <strong>30 минут</strong></span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Сдать экзамен <strong>Среднего Состава</strong> (ЭСС)</span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Принять участие в спец. операции / блок-посте</span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Принять участие в <strong>2 тренировках</strong></span></div>
+        </div>
+        <div class="promo-notice cd-notice"><span class="promo-notice-dot"></span><span>Отстоять на текущей должности не менее <strong>1 суток</strong> с момента предыдущего повышения</span></div>
       </div>
 
-      <div class="promo-header promo-blue" style="margin-top:28px;">СИСТЕМА ПОВЫШЕНИЯ ДЛЯ СТАРШЕГО ОТДЕЛА — HIGH COMMAND [HC]</div>
-
-      <div class="promo-step">
-        <div class="promo-badge">КАПИТАН → МАЙОР</div>
-        <ul class="promo-list">
-          <li>Решение командования, выдающиеся показатели</li>
-          <li>Проведение не менее 3 тренировок</li>
-          <li>Отсутствие активных взысканий</li>
-        </ul>
+      <div class="promo-step-new cooldown-step">
+        <div class="promo-step-head">
+          <div class="promo-step-transition">
+            <span class="promo-rank-from">Captain</span>
+            <span class="promo-divider"></span>
+            <span class="promo-rank-to">Commander</span>
+          </div>
+          <div class="promo-step-tags"><span class="promo-tag-cd">Кулдаун</span></div>
+        </div>
+        <div class="promo-step-body">
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Патруль города <strong>40 минут</strong></span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Проведение блок-поста</span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Проведение <strong>2 тренировок</strong></span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Проведение спец. операции</span></div>
+        </div>
+        <div class="promo-notice cd-notice"><span class="promo-notice-dot"></span><span>Отстоять на текущей должности не менее <strong>1 суток</strong> с момента предыдущего повышения</span></div>
       </div>
 
-      <div class="promo-step">
-        <div class="promo-badge">МАЙОР → ЗАМЕСТИТЕЛЬ ШЕФА</div>
-        <ul class="promo-list">
-          <li>Назначение Шефом или руководством МВД</li>
-        </ul>
+      <div class="promo-step-new hc cooldown-step">
+        <div class="promo-step-head">
+          <div class="promo-step-transition">
+            <span class="promo-rank-from">Commander</span>
+            <span class="promo-divider"></span>
+            <span class="promo-rank-to">Assistant Chief</span>
+          </div>
+          <div class="promo-step-tags">
+            <span class="promo-tag-cd">Кулдаун</span>
+            <span class="promo-tag-hc">HC</span>
+          </div>
+        </div>
+        <div class="promo-step-body">
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Отстоять на текущей должности не менее <strong>1 суток</strong> с момента предыдущего повышения</span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Оставить еженедельный отчёт в теме старшего состава</span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Отсутствие активных взысканий</span></div>
+        </div>
+        <div class="promo-notice hc-notice"><span class="promo-notice-dot"></span><span>Повышение по доверенности <strong>Шефа [9]</strong></span></div>
+      </div>
+
+      <div class="promo-step-new hc">
+        <div class="promo-step-head">
+          <div class="promo-step-transition">
+            <span class="promo-rank-from">Assistant Chief</span>
+            <span class="promo-divider"></span>
+            <span class="promo-rank-to">Chief</span>
+          </div>
+          <div class="promo-step-tags"><span class="promo-tag-hc">HC</span></div>
+        </div>
+        <div class="promo-notice mvd-notice"><span class="promo-notice-dot"></span><span>Назначение осуществляется исключительно <strong>руководством МВД</strong></span></div>
       </div>
 
     </div>
@@ -2719,86 +2946,177 @@
     <!-- ══ LVMPD ══ -->
     <div id="ranks-LVMPD" class="dept-ranks-block" style="display:none;">
 
-      <div class="promo-header promo-navy">СИСТЕМА ПОВЫШЕНИЯ ДЛЯ МЛАДШЕГО ОТДЕЛА — METRO ACADEMY [MA]</div>
-
-      <div class="promo-step">
-        <div class="promo-badge">КАДЕТ → КОНСТЕБЛЬ</div>
-        <ul class="promo-list">
-          <li>Сдать экзамен <strong>Зачёта Рядового</strong> (ЗР)</li>
-          <li>Пройти вводный инструктаж LVMPD</li>
-        </ul>
+      <div class="promo-dept-header promo-navy">
+        <div class="promo-dept-info">
+          <div class="promo-dept-title">Las Venturas Metropolitan Police Department</div>
+          <div class="promo-dept-sub">Система карьерного роста · 10 рангов</div>
+        </div>
+        <div class="promo-dept-badge">LVMPD</div>
       </div>
 
-      <div class="promo-step">
-        <div class="promo-badge">КОНСТЕБЛЬ → СТ. КОНСТЕБЛЬ</div>
-        <ul class="promo-list">
-          <li>Сдать экзамен <strong>Учебный Патруль</strong> (УП)</li>
-          <li>Сдать <strong>Физические Нормативы</strong></li>
-          <li>Создать личное дело под разделом Las Venturas Metropolitan Police Department</li>
-        </ul>
+      <div class="promo-section-label">Police Academy</div>
+
+      <div class="promo-step-new">
+        <div class="promo-step-head">
+          <div class="promo-step-transition">
+            <span class="promo-rank-from">Cadet I</span>
+            <span class="promo-divider"></span>
+            <span class="promo-rank-to">Cadet II</span>
+          </div>
+          <div class="promo-step-tags"></div>
+        </div>
+        <div class="promo-step-body">
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Сдать экзамен <strong>Зачёт Рядового</strong> (ЗР)</span></div>
+        </div>
       </div>
 
-      <div class="promo-header promo-navy" style="margin-top:28px;">СИСТЕМА ПОВЫШЕНИЯ ДЛЯ СРЕДНЕГО ОТДЕЛА — METRO POLICE [MP]</div>
-
-      <div class="promo-step">
-        <div class="promo-badge">СТ. КОНСТЕБЛЬ → ИНСПЕКТОР</div>
-        <ul class="promo-list">
-          <li>Патруль города 20 минут</li>
-          <li>Принять участие в любой тренировке</li>
-        </ul>
+      <div class="promo-step-new">
+        <div class="promo-step-head">
+          <div class="promo-step-transition">
+            <span class="promo-rank-from">Cadet II</span>
+            <span class="promo-divider"></span>
+            <span class="promo-rank-to">Police Officer I</span>
+          </div>
+          <div class="promo-step-tags"></div>
+        </div>
+        <div class="promo-step-body">
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Сдать экзамен <strong>Учебный Патруль</strong> (УП)</span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Сдать <strong>Физические Нормативы</strong></span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Иметь личное дело под разделом LVMPD</span></div>
+        </div>
       </div>
 
-      <div class="promo-step">
-        <div class="promo-badge">ИНСПЕКТОР → СТ. ИНСПЕКТОР</div>
-        <ul class="promo-list">
-          <li>Патруль города 30 минут</li>
-          <li>Принять участие в блок-посте / спец. операции</li>
-          <li>Принять участие в любой тренировке</li>
-        </ul>
+      <div class="promo-section-label">Police Department</div>
+
+      <div class="promo-step-new">
+        <div class="promo-step-head">
+          <div class="promo-step-transition">
+            <span class="promo-rank-from">Police Officer I</span>
+            <span class="promo-divider"></span>
+            <span class="promo-rank-to">Police Officer II</span>
+          </div>
+          <div class="promo-step-tags"></div>
+        </div>
+        <div class="promo-step-body">
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Патруль города <strong>20 минут</strong></span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Принять участие в любой тренировке</span></div>
+        </div>
       </div>
 
-      <div class="promo-step">
-        <div class="promo-badge">СТ. ИНСПЕКТОР → КОМИССАР</div>
-        <ul class="promo-list">
-          <li>Патруль города 30 минут</li>
-          <li>Сдать экзамен <strong>Среднего Состава</strong> (ЭСС)</li>
-          <li>Принять участие в спец. операции / блок-посте</li>
-          <li>Принять участие в 2 тренировках</li>
-        </ul>
+      <div class="promo-step-new">
+        <div class="promo-step-head">
+          <div class="promo-step-transition">
+            <span class="promo-rank-from">Police Officer II</span>
+            <span class="promo-divider"></span>
+            <span class="promo-rank-to">Lieutenant</span>
+          </div>
+          <div class="promo-step-tags"></div>
+        </div>
+        <div class="promo-step-body">
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Патруль города <strong>30 минут</strong></span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Принять участие в блок-посте / спец. операции</span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Принять участие в любой тренировке</span></div>
+        </div>
       </div>
 
-      <div class="promo-step">
-        <div class="promo-badge">КОМИССАР → СТ. КОМИССАР</div>
-        <ul class="promo-list">
-          <li>Патруль города 40 минут</li>
-          <li>Проведение блок-поста</li>
-          <li>Проведение 2 тренировок</li>
-          <li>Проведение спец. операции</li>
-        </ul>
+      <div class="promo-step-new cooldown-step">
+        <div class="promo-step-head">
+          <div class="promo-step-transition">
+            <span class="promo-rank-from">Lieutenant</span>
+            <span class="promo-divider"></span>
+            <span class="promo-rank-to">Captain</span>
+          </div>
+          <div class="promo-step-tags"><span class="promo-tag-cd">Кулдаун</span></div>
+        </div>
+        <div class="promo-step-body">
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Патруль города <strong>30 минут</strong></span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Сдать экзамен <strong>Среднего Состава</strong> (ЭСС)</span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Принять участие в спец. операции / блок-посте</span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Принять участие в <strong>2 тренировках</strong></span></div>
+        </div>
+        <div class="promo-notice cd-notice"><span class="promo-notice-dot"></span><span>Отстоять на текущей должности не менее <strong>1 суток</strong> с момента предыдущего повышения</span></div>
       </div>
 
-      <div class="promo-header promo-navy" style="margin-top:28px;">СИСТЕМА ПОВЫШЕНИЯ ДЛЯ СТАРШЕГО ОТДЕЛА — HIGH COMMAND [HC]</div>
-
-      <div class="promo-step">
-        <div class="promo-badge">СТ. КОМИССАР → СУПЕРИНТЕНДАНТ</div>
-        <ul class="promo-list">
-          <li>Решение командования, выдающиеся показатели</li>
-          <li>Проведение не менее 3 тренировок</li>
-          <li>Отсутствие активных взысканий</li>
-        </ul>
+      <div class="promo-step-new cooldown-step">
+        <div class="promo-step-head">
+          <div class="promo-step-transition">
+            <span class="promo-rank-from">Captain</span>
+            <span class="promo-divider"></span>
+            <span class="promo-rank-to">Commander</span>
+          </div>
+          <div class="promo-step-tags"><span class="promo-tag-cd">Кулдаун</span></div>
+        </div>
+        <div class="promo-step-body">
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Патруль города <strong>40 минут</strong></span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Проведение блок-поста</span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Проведение <strong>2 тренировок</strong></span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Проведение спец. операции</span></div>
+        </div>
+        <div class="promo-notice cd-notice"><span class="promo-notice-dot"></span><span>Отстоять на текущей должности не менее <strong>1 суток</strong> с момента предыдущего повышения</span></div>
       </div>
 
-      <div class="promo-step">
-        <div class="promo-badge">СУПЕРИНТЕНДАНТ → ЗАМЕСТИТЕЛЬ ШЕФА</div>
-        <ul class="promo-list">
-          <li>Назначение Шефом или руководством МВД</li>
-        </ul>
+      <div class="promo-step-new hc cooldown-step">
+        <div class="promo-step-head">
+          <div class="promo-step-transition">
+            <span class="promo-rank-from">Commander</span>
+            <span class="promo-divider"></span>
+            <span class="promo-rank-to">Deputy Chief</span>
+          </div>
+          <div class="promo-step-tags"><span class="promo-tag-cd">Кулдаун</span><span class="promo-tag-hc">HC</span></div>
+        </div>
+        <div class="promo-step-body">
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Отстоять на текущей должности не менее <strong>1 суток</strong> с момента предыдущего повышения</span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Оставить еженедельный отчёт в теме старшего состава</span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Отсутствие активных взысканий</span></div>
+        </div>
+        <div class="promo-notice hc-notice"><span class="promo-notice-dot"></span><span>Повышение по доверенности <strong>Шефа</strong></span></div>
+      </div>
+
+      <div class="promo-step-new hc cooldown-step">
+        <div class="promo-step-head">
+          <div class="promo-step-transition">
+            <span class="promo-rank-from">Deputy Chief</span>
+            <span class="promo-divider"></span>
+            <span class="promo-rank-to">Assistant Chief</span>
+          </div>
+          <div class="promo-step-tags">
+            <span class="promo-tag-cd">Кулдаун</span>
+            <span class="promo-tag-hc">HC</span>
+          </div>
+        </div>
+        <div class="promo-step-body">
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Отчёт старшего состава</span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Отсутствие активных взысканий</span></div>
+        </div>
+        <div class="promo-notice cd-notice"><span class="promo-notice-dot"></span><span>Отстоять на текущей должности не менее <strong>1 суток</strong> с момента предыдущего повышения</span></div>
+        <div class="promo-notice hc-notice"><span class="promo-notice-dot"></span><span>Повышение по доверенности <strong>Шефа</strong></span></div>
+      </div>
+
+      <div class="promo-step-new hc cooldown-step">
+        <div class="promo-step-head">
+          <div class="promo-step-transition">
+            <span class="promo-rank-from">Assistant Chief</span>
+            <span class="promo-divider"></span>
+            <span class="promo-rank-to">Chief</span>
+          </div>
+          <div class="promo-step-tags">
+            <span class="promo-tag-cd">Кулдаун</span>
+            <span class="promo-tag-hc">HC</span>
+          </div>
+        </div>
+        <div class="promo-step-body">
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Отчёт старшего состава</span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Отсутствие активных взысканий</span></div>
+        </div>
+        <div class="promo-notice cd-notice"><span class="promo-notice-dot"></span><span>Отстоять на текущей должности не менее <strong>1 суток</strong> с момента предыдущего повышения</span></div>
+        <div class="promo-notice mvd-notice"><span class="promo-notice-dot"></span><span>Назначение осуществляется исключительно <strong>руководством МВД</strong></span></div>
       </div>
 
     </div>
 
-    <div class="warning-box" style="margin-top:24px;max-width:700px;background:var(--accent-light);border-color:#E0CE90;color:#7A5C18;">
-      ⚠ Каждое повышение сопровождается подачей отчёта во вкладке «Подать отчёт». Без отчёта повышение не фиксируется.
+    <div style="margin-top:28px;padding:14px 20px;background:var(--navy);display:flex;align-items:center;gap:14px;border-left:3px solid var(--accent);">
+      <span style="font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);white-space:nowrap;">Отчёт</span>
+      <span style="font-size:13px;color:rgba(255,255,255,0.45);line-height:1.5;">Каждое повышение сопровождается подачей отчёта во вкладке <strong style="color:rgba(255,255,255,0.7);font-weight:600;">Подать отчёт</strong>. Без отчёта повышение не осуществляется.</span>
     </div>
   </div>
 
@@ -9114,7 +9432,7 @@
         <div style="display:flex;flex-direction:column;gap:10px;margin:12px 0;">
 
           <!-- 3.1 -->
-          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
+          <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
             <div style="background:var(--cream);padding:9px 16px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);border-bottom:1px solid var(--grey-light);">3.1 — Представление и паспорт</div>
             <div style="padding:14px 16px;">
               <code style="display:block;background:var(--cream);padding:10px 14px;border-left:2px solid var(--accent);border-radius:0 8px 8px 0;font-size:12.5px;color:var(--navy);font-family:monospace;line-height:1.8;">/фд Здравия желаю, Имя Фамилия, LSPD/LVPD/SFPD, звание *показав жетон [Номер аккаунта]*<br>Покажите Ваш паспорт и оставайтесь на месте.</code>
@@ -9123,7 +9441,7 @@
           </div>
 
           <!-- 3.2 -->
-          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
+          <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
             <div style="background:var(--cream);padding:9px 16px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);border-bottom:1px solid var(--grey-light);">3.2 — При согласии предъявить документы</div>
             <div style="padding:14px 16px;font-size:13px;color:var(--text-soft);line-height:1.8;">
               <p><strong>Розыска нет:</strong> Вы не находитесь в списке розыска. Извините за беспокойство.</p>
@@ -9134,7 +9452,7 @@
           </div>
 
           <!-- 3.3 -->
-          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
+          <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
             <div style="background:var(--cream);padding:9px 16px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);border-bottom:1px solid var(--grey-light);">3.3 — При невозможности предъявить документы</div>
             <div style="padding:14px 16px;">
               <code style="display:block;background:var(--cream);padding:10px 14px;border-left:2px solid var(--accent);border-radius:0 8px 8px 0;font-size:12.5px;color:var(--navy);font-family:monospace;line-height:2;">/я достал КПК из кармана, сфотографировал лицо гражданина и отправил запрос на сервер<br>/я просмотрел ответ от сервера и установил личность человека напротив<br>/я убрал КПК в карман</code>
@@ -9143,7 +9461,7 @@
           </div>
 
           <!-- 3.4 -->
-          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
+          <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
             <div style="background:var(--cream);padding:9px 16px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);border-bottom:1px solid var(--grey-light);">3.4 — Выписка штрафа</div>
             <div style="padding:14px 16px;font-size:13px;color:var(--text-soft);">
               <code style="display:block;background:var(--cream);padding:10px 14px;border-left:2px solid var(--accent);border-radius:0 8px 8px 0;font-size:12.5px;color:var(--navy);font-family:monospace;line-height:2;margin-bottom:8px;">/фд Вы нарушили А.К Х.Х, штраф составляет х.ххх $ *выписывая штраф*<br>/фд В случае отказа оплатить штраф, Вы будете арестованы *выдавая квитанцию "id*</code>
@@ -9154,7 +9472,7 @@
           </div>
 
           <!-- 3.5 -->
-          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
+          <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
             <div style="background:var(--cream);padding:9px 16px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);border-bottom:1px solid var(--grey-light);">3.5 — Посадка в транспортное средство</div>
             <div style="padding:14px 16px;">
               <code style="display:block;background:var(--cream);padding:10px 14px;border-left:2px solid var(--accent);border-radius:0 8px 8px 0;font-size:12.5px;color:var(--navy);font-family:monospace;line-height:2;">/я открыл дверь патрульного транспорта<br>/putpl ид &nbsp;или&nbsp; /и ид — Посадить в полицейский транспорт<br>/я закрыл дверь патрульного транспорта</code>
@@ -9163,7 +9481,7 @@
           </div>
 
           <!-- 3.6 -->
-          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
+          <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
             <div style="background:var(--cream);padding:9px 16px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);border-bottom:1px solid var(--grey-light);">3.6 — Явка с повинной (14.1 У.К.)</div>
             <div style="padding:14px 16px;font-size:13px;color:var(--text-soft);line-height:1.8;">
               <p>Прошу Вас предъявить паспорт.</p>
@@ -9174,7 +9492,7 @@
           </div>
 
           <!-- 3.7 -->
-          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
+          <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
             <div style="background:var(--cream);padding:9px 16px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);border-bottom:1px solid var(--grey-light);">3.7 — Проверка на алкоголь и наркотики</div>
             <div style="padding:14px 16px;">
               <p style="font-size:13px;color:var(--text-soft);margin-bottom:8px;"><strong>Алкоголь:</strong></p>
@@ -9187,7 +9505,7 @@
           </div>
 
           <!-- 3.8 -->
-          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
+          <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
             <div style="background:var(--cream);padding:9px 16px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);border-bottom:1px solid var(--grey-light);">3.8 — Проверка на употребление наркотических веществ</div>
             <div style="padding:14px 16px;">
               <p style="font-size:12.5px;color:var(--text-soft);margin-bottom:8px;">Проводится только при жалобе от граждан или если вы лично заметили употребление.</p>
@@ -9292,13 +9610,13 @@
         <h2>04. Взлом двери</h2>
         <p>Функционально доступно от <strong>Старшего лейтенанта [5]</strong>. Два варианта взлома:</p>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0;">
-          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
+          <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
             <div style="background:var(--cream);padding:9px 16px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);border-bottom:1px solid var(--grey-light);">🔨 Ручной таран</div>
             <div style="padding:14px 16px;">
               <code style="display:block;font-family:monospace;font-size:12px;background:var(--cream);padding:10px 14px;border-radius:8px;color:var(--navy);line-height:2;">/я достал ручной таран из-за спины<br>/я бьет ручным тараном в дверь<br>/я выбил дверь<br>/я убрал ручной таран за спину</code>
             </div>
           </div>
-          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
+          <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
             <div style="background:var(--cream);padding:9px 16px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);border-bottom:1px solid var(--grey-light);">🔫 Выстрел в замок</div>
             <div style="padding:14px 16px;">
               <code style="display:block;font-family:monospace;font-size:12px;background:var(--cream);padding:10px 14px;border-radius:8px;color:var(--navy);line-height:2;">/я достал пистолет "Desert Eagle" и снял с предохранителя<br>/я навелся на дверной замок и произвел выстрел<br>/я выбил дверь</code>
@@ -10586,7 +10904,7 @@
         </div>
 
         <!-- БЫСТРАЯ НАВИГАЦИЯ -->
-        <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:14px;padding:20px 24px;margin:24px 0;">
+        <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:14px;padding:20px 24px;margin:24px 0;">
           <div style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--grey);margin-bottom:14px;">Быстрая навигация</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
             <a href="#react-01" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--cream);text-decoration:none;color:var(--text-soft);font-size:13px;transition:all 0.15s;" onmouseover="this.style.background='var(--grey-light)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cream)';this.style.color='var(--text-soft)'">
@@ -10896,14 +11214,14 @@
         <!-- ═══════════════════ 16 ═══════════════════ -->
         <h2 id="react-16">16. Умышленный таран</h2>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;">
-          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;padding:16px;">
+          <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:16px;">
             <div style="font-weight:700;color:var(--navy);margin-bottom:10px;">При попытке скрыться</div>
             <ol style="padding-left:18px;font-size:13px;color:var(--text-soft);line-height:1.9;">
               <li>Зафиксируйте таран (фрапс/скрин), объявите в розыск по <strong>2.1 У.К.</strong> (офицер в ТС) / <strong>1.1 У.К.</strong> (гражданский) / <strong>11.1 У.К.</strong> (пустое ТС).</li>
               <li>Попросите остановиться. При отказе — <strong>9.3 У.К.</strong>, огонь по колёсам. Если ТС уничтожено и нарушитель не вылазил — сообщите в рацию или отправьте патруль к больнице.</li>
             </ol>
           </div>
-          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;padding:16px;">
+          <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:16px;">
             <div style="font-weight:700;color:var(--navy);margin-bottom:10px;">Без попытки скрыться</div>
             <ol style="padding-left:18px;font-size:13px;color:var(--text-soft);line-height:1.9;">
               <li>Выбросьте нарушителя из ТС, если он в нём.</li>
