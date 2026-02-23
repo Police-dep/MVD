@@ -824,8 +824,8 @@
       .personnel-dept-filter { flex-wrap: wrap; gap: 6px; }
 
       /* Dept page */
-      .dept-tab-nav { padding-left: 16px; padding-right: 16px; overflow-x: auto; flex-wrap: nowrap; gap: 4px; }
-      .dept-tab { white-space: nowrap; padding: 8px 12px; font-size: 12px; }
+      .dept-tab-nav { padding-left: 16px; padding-right: 16px; overflow-x: auto; flex-wrap: nowrap; }
+      .dept-tab { white-space: nowrap; padding: 0 14px; font-size: 10px; }
       .dept-panel { padding-left: 16px; padding-right: 16px; }
       .exams-grid { grid-template-columns: 1fr; }
       .reports-layout { grid-template-columns: 1fr; }
@@ -859,7 +859,7 @@
     @media (max-width: 480px) {
       .hero-title { font-size: 26px; }
       .quick-actions-secondary-inner { grid-template-columns: 1fr; }
-      .dept-tab { font-size: 11px; padding: 7px 10px; }
+      .dept-tab { font-size: 10px; padding: 0 11px; }
       .page-title { font-size: 22px; }
       .inbox-modal { max-height: 98vh; }
       .inbox-list { max-height: 35vh; }
@@ -1740,19 +1740,24 @@
     .dept-topbar-LSCSD { background: linear-gradient(90deg,#2A1A50,#6040B0); }
 
     .dept-tab-nav {
-      max-width:1100px; margin:0 auto; padding:24px 60px 0;
-      display:flex; gap:6px; flex-wrap:wrap; border-bottom:1px solid var(--grey-light);
+      max-width:1100px; margin:0 auto; padding:0 60px;
+      display:flex; align-items:center; gap:4px;
+      border-bottom:1.5px solid var(--grey-light);
+      padding-top:20px;
     }
     .dept-tab {
-      padding:9px 18px; border-radius:10px 10px 0 0; border:1.5px solid transparent;
-      background:transparent; font-family:'DM Sans',sans-serif; font-size:13px;
-      font-weight:600; color:var(--text-soft); cursor:pointer; transition:all .2s;
-      border-bottom:none; position:relative; bottom:-1px;
+      padding:8px 18px;
+      border:none; border-radius:0;
+      background:transparent; font-family:'DM Sans',sans-serif; font-size:12px;
+      font-weight:600; letter-spacing:0.06em; text-transform:uppercase;
+      color:var(--grey); cursor:pointer; transition:all .18s;
+      position:relative; white-space:nowrap;
+      border-bottom:2px solid transparent; margin-bottom:-1.5px;
     }
     .dept-tab:hover { color:var(--navy); }
     .dept-tab.active {
-      background:var(--white); color:var(--navy);
-      border-color:var(--grey-light); border-bottom-color:var(--white);
+      color:var(--navy);
+      border-bottom-color:var(--accent);
     }
 
     .dept-panel { display:none; max-width:1100px; margin:0 auto; padding:36px 60px 64px; }
@@ -1895,7 +1900,7 @@
     .rtype-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:22px; }
 
     @media(max-width:960px){
-      .dept-tab-nav,.dept-panel { padding-left:24px; padding-right:24px; }
+      .dept-tab-nav { padding-left:24px; padding-right:24px; } .dept-panel { padding-left:24px; padding-right:24px; }
       .exams-grid { grid-template-columns:1fr; }
       .reports-layout { grid-template-columns:1fr; }
       .rtype-grid { grid-template-columns:1fr; }
@@ -2565,12 +2570,11 @@
 
   <!-- Tab nav -->
   <div class="dept-tab-nav">
-    <button class="dept-tab active" data-tab="leadership"   onclick="switchTab(this,'leadership')">👥 Руководство</button>
-    <button class="dept-tab"        data-tab="ranks"        onclick="switchTab(this,'ranks')">⬆ Повышение</button>
-    <button class="dept-tab"        data-tab="exams"        onclick="switchTab(this,'exams')">📝 Экзамены</button>
-    <button class="dept-tab"        data-tab="senior"       onclick="switchTab(this,'senior')">📊 Отчёты состава</button>
-    <button class="dept-tab"        data-tab="inbox-reports" onclick="switchTab(this,'inbox-reports')">📥 Входящие отчёты</button>
-    <button class="dept-tab"        data-tab="report"       onclick="switchTab(this,'report')">📤 Подать отчёт</button>
+    <button class="dept-tab active" data-tab="leadership"    onclick="switchTab(this,'leadership')">Руководство</button>
+    <button class="dept-tab"        data-tab="ranks"         onclick="switchTab(this,'ranks')">Повышение</button>
+    <button class="dept-tab"        data-tab="senior"        onclick="switchTab(this,'senior')">Отчёты состава</button>
+    <button class="dept-tab"        data-tab="inbox-reports" onclick="switchTab(this,'inbox-reports')">Входящие отчёты</button>
+    <button class="dept-tab"        data-tab="report"        onclick="switchTab(this,'report')">Подать отчёт</button>
   </div>
 
   <!-- ══ TAB: РУКОВОДСТВО ══ -->
@@ -3116,7 +3120,7 @@
 
     <div style="margin-top:28px;padding:14px 20px;background:var(--navy);display:flex;align-items:center;gap:14px;border-left:3px solid var(--accent);">
       <span style="font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);white-space:nowrap;">Отчёт</span>
-      <span style="font-size:13px;color:rgba(255,255,255,0.45);line-height:1.5;">Каждое повышение сопровождается подачей отчёта во вкладке <strong style="color:rgba(255,255,255,0.7);font-weight:600;">Подать отчёт</strong>. Без отчёта повышение не осуществляется.</span>
+      <span style="font-size:13px;color:rgba(255,255,255,0.45);line-height:1.5;">Каждое повышение сопровождается подачей отчёта во вкладке <strong style="color:rgba(255,255,255,0.7);font-weight:600;">Подать отчёт</strong>. Без отчёта повышение не фиксируется.</span>
     </div>
   </div>
 
