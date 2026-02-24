@@ -199,8 +199,8 @@
     /* Toast уведомления при загрузке */
     .notif-toast-container {
       position: fixed;
-      bottom: 28px; right: 28px;
-      display: flex; flex-direction: column-reverse; gap: 10px;
+      top: 88px; left: 24px;
+      display: flex; flex-direction: column; gap: 10px;
       z-index: 99999;
       pointer-events: none;
     }
@@ -219,7 +219,7 @@
       transition: all 0.3s;
     }
     .notif-toast.type-complaint { border-left-color: var(--red); }
-    .notif-toast.hiding { opacity: 0; transform: translateX(30px); }
+    .notif-toast.hiding { opacity: 0; transform: translateX(-30px); }
     .notif-toast-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
     .notif-toast-body { flex: 1; }
     .notif-toast-title { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
@@ -234,7 +234,7 @@
     .notif-toast-close:hover { background: var(--grey-light); color: var(--navy); }
 
     @keyframes toastIn {
-      from { opacity: 0; transform: translateX(40px); }
+      from { opacity: 0; transform: translateX(-40px); }
       to   { opacity: 1; transform: translateX(0); }
     }
     @keyframes notifSlideIn {
@@ -4612,7 +4612,7 @@
 
         <div class="form-group">
           <label>Номер телефона</label>
-          <input type="text" id="pf-phone" placeholder="Например: 555-1234"/>
+          <input type="text" id="pf-phone" placeholder="напр. 40404"/>
         </div>
         <div class="form-row">
           <div class="form-group">
@@ -4795,6 +4795,9 @@
       officerAuthed = true;
       sessionStorage.setItem('_mvd_slot', match.slot);
       sessionStorage.setItem('_mvd_pw', match.password || '');
+      _toastsShown = false;
+      // Подписываемся на реалтайм уведомления сразу после входа
+      setTimeout(() => loadNotifications(), 100);
       return { ok: true, rank: match.rank, dept: match.dept, name: match.label };
     } catch(e) { return { ok: false, error: 'Ошибка: ' + e.message }; }
   }
@@ -5779,10 +5782,15 @@
     const key = dept + '_' + slotId;
     const d = leadData[key] || {};
     const isVacant = !d.name || !d['Имя'];
-    const name = d['Имя'] || d.name || '';
-    const rank = d['Звание'] || d.rank || '';
-    const account = d['Аккаунт'] || d.account || '';
-    const discord = d['Discord'] || d.discord || '';
+    const name     = d['Имя']            || d.name        || '';
+    const rank     = d['Звание']         || d.rank        || '';
+    const account  = d['Аккаунт']        || d.account     || '';
+    const discord  = d['Discord']        || d.discord     || '';
+    const badge    = d['Жетон']          || d.badge       || '';
+    const appointed= d['ДатаНазначения'] || d['Дата назначения'] || d.appointed || d.appointDate || '';
+    const phone    = d['Телефон']        || d.phone       || '';
+    const vk       = d['ВКонтакте']      || d.vk          || '';
+    const telegram = d['Telegram']       || d.telegram    || '';
     const avaClass = slotId === 'chief' ? 'gold' : 'silver';
     const avaLetter = position[0].toUpperCase();
     const canEdit = canDo('editLeads');
@@ -5825,7 +5833,13 @@
 
     const editSection = canEdit ? `
       <div id="lead-edit-section" style="padding:16px 24px;border-top:1px solid var(--grey-light);">
-        <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);margin-bottom:12px;">Редактировать данные</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);">Редактировать данные</div>
+          <div style="display:flex;gap:5px;">
+            <button onclick="leadUndoRedo(-1)" title="Отменить (Ctrl+Z)" style="width:28px;height:28px;border:1.5px solid var(--grey-light);background:var(--cream);border-radius:7px;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;color:var(--text-soft);">↩</button>
+            <button onclick="leadUndoRedo(1)"  title="Повторить (Ctrl+Y)" style="width:28px;height:28px;border:1.5px solid var(--grey-light);background:var(--cream);border-radius:7px;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;color:var(--text-soft);">↪</button>
+          </div>
+        </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
           <div>
             <label style="font-size:11px;color:var(--grey);font-weight:600;display:block;margin-bottom:4px;">Имя и Фамилия</label>
@@ -5833,13 +5847,33 @@
           </div>
           <div>
             <label style="font-size:11px;color:var(--grey);font-weight:600;display:block;margin-bottom:4px;">Звание</label>
-            <input id="le-rank" type="text" value="${esc(rank)}" style="width:100%;padding:8px 11px;border:1.5px solid var(--grey-light);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);" placeholder="напр. Подполковник"/>
+            <input id="le-rank" type="text" value="${esc(rank)}" style="width:100%;padding:8px 11px;border:1.5px solid var(--grey-light);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);" placeholder="напр. Chief"/>
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--grey);font-weight:600;display:block;margin-bottom:4px;">Номер жетона</label>
+            <input id="le-badge" type="text" value="${esc(badge)}" style="width:100%;padding:8px 11px;border:1.5px solid var(--grey-light);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);" placeholder="напр. 1042"/>
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--grey);font-weight:600;display:block;margin-bottom:4px;">Дата назначения</label>
+            <input id="le-appointed" type="text" value="${esc(appointed)}" style="width:100%;padding:8px 11px;border:1.5px solid var(--grey-light);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);" placeholder="дд.мм.гггг"/>
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--grey);font-weight:600;display:block;margin-bottom:4px;">Номер телефона</label>
+            <input id="le-phone" type="text" value="${esc(phone)}" style="width:100%;padding:8px 11px;border:1.5px solid var(--grey-light);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);" placeholder="напр. 40404"/>
           </div>
           <div>
             <label style="font-size:11px;color:var(--grey);font-weight:600;display:block;margin-bottom:4px;">Аккаунт</label>
             <input id="le-account" type="text" value="${esc(account)}" style="width:100%;padding:8px 11px;border:1.5px solid var(--grey-light);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);" placeholder="ID аккаунта"/>
           </div>
           <div>
+            <label style="font-size:11px;color:var(--grey);font-weight:600;display:block;margin-bottom:4px;">ВКонтакте</label>
+            <input id="le-vk" type="text" value="${esc(vk)}" style="width:100%;padding:8px 11px;border:1.5px solid var(--grey-light);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);" placeholder="id123456 или username"/>
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--grey);font-weight:600;display:block;margin-bottom:4px;">Telegram</label>
+            <input id="le-telegram" type="text" value="${esc(telegram)}" style="width:100%;padding:8px 11px;border:1.5px solid var(--grey-light);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);" placeholder="@username"/>
+          </div>
+          <div style="grid-column:1/-1;">
             <label style="font-size:11px;color:var(--grey);font-weight:600;display:block;margin-bottom:4px;">Discord</label>
             <input id="le-discord" type="text" value="${esc(discord)}" style="width:100%;padding:8px 11px;border:1.5px solid var(--grey-light);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);" placeholder="username#0000"/>
           </div>
@@ -5874,16 +5908,36 @@
           <span class="lead-profile-value ${!name?'empty':''}">${name ? esc(name) : 'Вакансия'}</span>
         </div>
         <div class="lead-profile-field">
+          <span class="lead-profile-label">Номер жетона</span>
+          <span class="lead-profile-value ${!badge?'empty':''}">${badge ? esc(badge) : '—'}</span>
+        </div>
+        <div class="lead-profile-field">
+          <span class="lead-profile-label">Дата назначения</span>
+          <span class="lead-profile-value ${!appointed?'empty':''}">${appointed ? esc(appointed) : '—'}</span>
+        </div>
+        <div class="lead-profile-field">
+          <span class="lead-profile-label">Номер телефона</span>
+          <span class="lead-profile-value ${!phone?'empty':''}">${phone ? esc(phone) : '—'}</span>
+        </div>
+        <div class="lead-profile-field">
+          <span class="lead-profile-label">ВКонтакте</span>
+          <span class="lead-profile-value ${!vk?'empty':''}">${vk ? '<a href="https://vk.com/'+vk.replace(/^(https?:\/\/vk\.com\/|@)/,'')+'" target="_blank" rel="noopener" style="color:var(--navy);text-decoration:underline;text-underline-offset:3px;">'+esc(vk)+'</a>' : '—'}</span>
+        </div>
+        <div class="lead-profile-field">
+          <span class="lead-profile-label">Telegram</span>
+          <span class="lead-profile-value ${!telegram?'empty':''}">${telegram ? '<a href="https://t.me/'+telegram.replace(/^@/,'')+'" target="_blank" rel="noopener" style="color:var(--navy);text-decoration:underline;text-underline-offset:3px;">'+esc(telegram)+'</a>' : '—'}</span>
+        </div>
+        <div class="lead-profile-field">
+          <span class="lead-profile-label">Discord</span>
+          <span class="lead-profile-value ${!discord?'empty':''}">${discord ? esc(discord) : '—'}</span>
+        </div>
+        <div class="lead-profile-field">
           <span class="lead-profile-label">Звание</span>
           <span class="lead-profile-value ${!rank?'empty':''}">${rank ? esc(rank) : '—'}</span>
         </div>
         <div class="lead-profile-field">
           <span class="lead-profile-label">Аккаунт</span>
           <span class="lead-profile-value ${!account?'empty':''}">${account ? esc(account) : '—'}</span>
-        </div>
-        <div class="lead-profile-field">
-          <span class="lead-profile-label">Discord</span>
-          <span class="lead-profile-value ${!discord?'empty':''}">${discord ? esc(discord) : '—'}</span>
         </div>
       </div>
       ${editSection}
@@ -5894,14 +5948,20 @@
   }
 
   async function saveLeadInline(dept, slotId, position, key) {
-    const name    = (document.getElementById('le-name')    ||{}).value || '';
-    const rank    = (document.getElementById('le-rank')    ||{}).value || '';
-    const account = (document.getElementById('le-account') ||{}).value || '';
-    const discord = (document.getElementById('le-discord') ||{}).value || '';
+    const name     = (document.getElementById('le-name')     ||{}).value || '';
+    const rank     = (document.getElementById('le-rank')     ||{}).value || '';
+    const account  = (document.getElementById('le-account')  ||{}).value || '';
+    const discord  = (document.getElementById('le-discord')  ||{}).value || '';
+    const badge    = (document.getElementById('le-badge')    ||{}).value || '';
+    const appointed= (document.getElementById('le-appointed')||{}).value || '';
+    const phone    = (document.getElementById('le-phone')    ||{}).value || '';
+    const vk       = (document.getElementById('le-vk')       ||{}).value || '';
+    const telegram = (document.getElementById('le-telegram') ||{}).value || '';
     const msg = document.getElementById('le-msg');
 
-    leadData[key] = { dept, slotId, position, name, rank, account, discord,
-      'Имя': name, 'Звание': rank, 'Аккаунт': account, 'Discord': discord };
+    leadData[key] = { dept, slotId, position, name, rank, account, discord, badge, appointed, phone, vk, telegram,
+      'Имя': name, 'Звание': rank, 'Аккаунт': account, 'Discord': discord,
+      'Жетон': badge, 'ДатаНазначения': appointed, 'Телефон': phone, 'ВКонтакте': vk, 'Telegram': telegram };
 
     // Обновить имя на карточке
     document.querySelectorAll(`.lead-card`).forEach(card => {
@@ -5912,12 +5972,32 @@
     });
 
     try {
-      await sheetsPost('updateLeadData', { key, dept, slotId, position, name, rank, account, discord, ...reviewerInfo() });
+      await sheetsPost('updateLeadData', { key, dept, slotId, position, name, rank, account, discord, badge, appointed, phone, vk, telegram, ...reviewerInfo() });
       if (msg) { msg.style.display='block'; msg.style.background='var(--green-light)'; msg.style.color='var(--green)'; msg.textContent='✓ Сохранено'; setTimeout(()=>{ msg.style.display='none'; }, 2500); }
     } catch(_) {
       if (msg) { msg.style.display='block'; msg.style.background='var(--red-light)'; msg.style.color='var(--red)'; msg.textContent='Ошибка сохранения'; }
     }
   }
+
+
+  /* ── Undo/Redo для карточки руководства ─── */
+  let _leadUndoStack = [], _leadRedoStack = [];
+  const _leadFields = ['le-name','le-rank','le-badge','le-appointed','le-phone','le-account','le-vk','le-telegram','le-discord'];
+  function _leadSnap() { const s={}; _leadFields.forEach(id=>{const el=document.getElementById(id);if(el)s[id]=el.value;}); return s; }
+  function _leadApply(snap) { Object.entries(snap).forEach(([id,v])=>{const el=document.getElementById(id);if(el)el.value=v;}); }
+  function leadPushUndo() { _leadUndoStack.push(_leadSnap()); _leadRedoStack=[]; }
+  function leadUndoRedo(dir) {
+    if(dir===-1){if(!_leadUndoStack.length)return;_leadRedoStack.push(_leadSnap());_leadApply(_leadUndoStack.pop());}
+    else{if(!_leadRedoStack.length)return;_leadUndoStack.push(_leadSnap());_leadApply(_leadRedoStack.pop());}
+  }
+  document.addEventListener('keydown',function(e){
+    if(!document.getElementById('modal-lead-profile').classList.contains('open'))return;
+    if(e.ctrlKey&&e.key==='z'){e.preventDefault();leadUndoRedo(-1);}
+    if(e.ctrlKey&&(e.key==='y'||e.key==='Z')){e.preventDefault();leadUndoRedo(1);}
+  });
+  document.addEventListener('input',function(e){
+    if(_leadFields.includes(e.target.id)){clearTimeout(e.target._ut);e.target._ut=setTimeout(()=>leadPushUndo(),350);}
+  });
 
   async function changeSlotPassword(slot) {
     const pw1 = (document.getElementById('le-newpw')  ||{}).value || '';
@@ -6490,7 +6570,7 @@
         <div class="detail-fields">
           <div class="detail-field-row"><span class="detail-field-label">Тип отчёта</span><span class="detail-field-value">${esc(r.label||r.type)}</span></div>
           <div class="detail-field-row"><span class="detail-field-label">Звание</span><span class="detail-field-value">${esc(r.rank)||'—'}</span></div>
-          <div class="detail-field-row"><span class="detail-field-label">Аккаунт</span><span class="detail-field-value">${esc(r.account)||'—'}</span></div>
+
           ${specificFields}
           <div class="detail-field-row"><span class="detail-field-label">Подано</span><span class="detail-field-value">${fmtTs(r.ts)}</span></div>
           ${r.note ? `<div class="detail-field-row"><span class="detail-field-label">Вердикт</span><span class="detail-field-value">${esc(r.note)}</span></div>` : ''}
@@ -12838,11 +12918,12 @@
   let _toastsShown = false;
   function showNotifToasts(notifications) {
     if (_toastsShown) return;
-    _toastsShown = true;
+    if (!_auth) return;
     const dismissed = getDismissedNotifs();
     const active = notifications.filter(n => !dismissed.includes(n.id)).slice(0, 3);
     const container = document.getElementById('notif-toast-container');
     if (!container || !active.length) return;
+    _toastsShown = true;
     active.forEach((n, i) => {
       setTimeout(() => {
         const toast = document.createElement('div');
@@ -12868,87 +12949,76 @@
 
   let _currentNotifications = [];
 
-  async function loadNotifications() {
+  /* ══ РЕАЛТАЙМ уведомления через onSnapshot ═══════════════════
+     Подписываемся на коллекции — Firebase сам push-уведомляет
+     при любом изменении. Мгновенно, без poll-таймеров.
+  ══════════════════════════════════════════════════════════════ */
+  let _notifUnsubs = []; // функции отписки
+
+  function isPendingStatus(r) {
+    const s = ((r && r.status) || '').toLowerCase().trim();
+    return !s || s === 'pending' || s === 'на рассмотрении';
+  }
+
+  // Локальные счётчики по коллекциям (обновляются независимо)
+  const _notifCounts = { complaints: 0, reports: 0, senior_reports: 0, employment: 0 };
+
+  function _rebuildNotifications() {
     const notifications = [];
-
-    // Жалобы — непроверенные
-    try {
-      const complaints = await sheetsGet('getComplaints');
-      if (Array.isArray(complaints)) {
-        const pending = complaints.filter(c => !c.status || c.status === 'pending');
-        if (pending.length) {
-          const cnt = pending.length;
-          const oldest = pending.reduce((a,b) => (a.timestamp||'') < (b.timestamp||'') ? a : b);
-          const age = pendingAge(oldest.timestamp);
-          notifications.push({
-            id: 'complaints_pending',
-            type: 'complaint',
-            icon: '!',
-            title: 'Непроверенные жалобы',
-            desc: cnt + ' жалоб' + (cnt === 1 ? 'а' : cnt < 5 ? 'ы' : '') + ' ожидают проверки' + (age ? ' · ' + age + ' без ответа' : ''),
-            ts: (oldest && oldest.timestamp) || '',
-            action: 'complaints'
-          });
-        }
-      }
-    } catch(_) {}
-
-    // Отчёты — непроверенные: подгружаем свежие данные из Sheets напрямую
-    try {
-      // Собираем все отчёты по всем департаментам
-      const depts = ['SFPD','LVMPD','LSCSD'];
-      const allFetched = [];
-      await Promise.all(depts.map(async dept => {
-        try {
-          const [sr, rpts] = await Promise.all([
-            sheetsGet('getSeniorReports', { dept }),
-            sheetsGet('getReports', { dept })
-          ]);
-          if (Array.isArray(sr))   allFetched.push(...sr);
-          if (Array.isArray(rpts)) allFetched.push(...rpts);
-        } catch(_) {}
-      }));
-      // Дедупликация по id
-      const seen = new Set();
-      const uniq = allFetched.filter(r => { if (seen.has(r.id)) return false; seen.add(r.id); return true; });
-      const reportsPending = uniq.filter(r => !r.status || r.status === 'pending');
-      if (reportsPending.length) {
-        const cnt = reportsPending.length;
-        const oldest = reportsPending.reduce((a,b) => (a.ts||'') < (b.ts||'') ? a : b);
-        const age = pendingAge(oldest.ts);
-        notifications.push({
-          id: 'reports_pending_' + cnt,
-          type: 'report',
-          icon: '≡',
-          title: 'Непроверенные отчёты',
-          desc: cnt + ' отчёт' + (cnt === 1 ? '' : cnt < 5 ? 'а' : 'ов') + ' ожидает проверки' + (age ? ' · ' + age + ' без ответа' : ''),
-          ts: (oldest && oldest.ts) || '',
-          action: 'reports'
-        });
-      }
-    } catch(_) {
-      // Fallback: используем локальный массив
-      try {
-        const reportsPending = allReports.filter(r => !r.status || r.status === 'pending');
-        if (reportsPending.length) {
-          const cnt = reportsPending.length;
-          notifications.push({
-            id: 'reports_pending',
-            type: 'report',
-            icon: '≡',
-            title: 'Непроверенные отчёты',
-            desc: cnt + ' отчёт' + (cnt === 1 ? '' : cnt < 5 ? 'а' : 'ов') + ' ожидает проверки',
-            ts: (reportsPending[0] && reportsPending[0].ts) || '',
-            action: 'reports'
-          });
-        }
-      } catch(_) {}
+    if (_notifCounts.complaints > 0) {
+      const cnt = _notifCounts.complaints;
+      notifications.push({ id: 'complaints_' + cnt, type: 'complaint', icon: '⚠',
+        title: 'Непроверенные жалобы',
+        desc: cnt + ' жалоб' + (cnt===1?'а':cnt<5?'ы':'') + ' ожидают проверки',
+        ts: '', action: 'complaints' });
     }
-
+    if (_notifCounts.reports > 0) {
+      const cnt = _notifCounts.reports;
+      notifications.push({ id: 'reports_' + cnt, type: 'report', icon: '📋',
+        title: 'Непроверенные отчёты',
+        desc: cnt + ' отчёт' + (cnt===1?'':cnt<5?'а':'ов') + ' ожидает проверки',
+        ts: '', action: 'reports' });
+    }
+    if (_notifCounts.senior_reports > 0) {
+      const cnt = _notifCounts.senior_reports;
+      notifications.push({ id: 'sr_' + cnt, type: 'report', icon: '📄',
+        title: 'Отчёты старшего состава',
+        desc: cnt + ' отчёт' + (cnt===1?'':cnt<5?'а':'ов') + ' на рассмотрении',
+        ts: '', action: 'reports' });
+    }
+    if (_notifCounts.employment > 0) {
+      const cnt = _notifCounts.employment;
+      notifications.push({ id: 'emp_' + cnt, type: 'report', icon: '👤',
+        title: 'Заявки на трудоустройство',
+        desc: cnt + ' заявк' + (cnt===1?'а':cnt<5?'и':'') + ' ожидает рассмотрения',
+        ts: '', action: 'employment' });
+    }
     _currentNotifications = notifications;
     renderNotifPanel(notifications);
     showNotifToasts(notifications);
   }
+
+  function _subscribeCollection(colName) {
+    const db = getDb();
+    const unsub = db.collection(colName).onSnapshot(snap => {
+      _notifCounts[colName] = snap.docs.filter(d => isPendingStatus(d.data())).length;
+      _rebuildNotifications();
+    }, err => { console.warn('onSnapshot ' + colName + ':', err); });
+    return unsub;
+  }
+
+  function loadNotifications() {
+    if (!_auth) return;
+    // Отписываемся от предыдущих подписок если есть
+    _notifUnsubs.forEach(fn => { try { fn(); } catch(_) {} });
+    _notifUnsubs = [];
+    // Подписываемся на 4 коллекции — мгновенное обновление
+    _notifUnsubs.push(_subscribeCollection('complaints'));
+    _notifUnsubs.push(_subscribeCollection('reports'));
+    _notifUnsubs.push(_subscribeCollection('senior_reports'));
+    _notifUnsubs.push(_subscribeCollection('employment'));
+  }
+
 
   // Обновлять уведомления когда меняется статус отчёта
   const _origRenderReportsList = typeof renderReportsList !== 'undefined' ? renderReportsList : null;
@@ -12986,6 +13056,8 @@
         _auth = { rank: parseInt(match.rank), dept: match.dept, name: match.label, slot: match.slot };
         officerAuthed = true;
         updateAuthBadge();
+        _toastsShown = false;
+        setTimeout(() => loadNotifications(), 300);
       } else {
         sessionStorage.removeItem('_mvd_slot');
       }
@@ -13328,7 +13400,7 @@
   })();
 
   /* ── Боковые кнопки мыши (назад / вперёд) ───────────────────── */
-  document.addEventListener('mousedown', function(e) {
+  window.addEventListener('mousedown', function(e) {
     if (e.button === 3) { // кнопка «назад»
       e.preventDefault();
       history.back();
@@ -13354,8 +13426,7 @@
   }
 
   window.addEventListener('load', () => {
-    setTimeout(loadNotifications, 1800);
-    setInterval(loadNotifications, 3 * 60 * 1000);
+    // Уведомления запускаются через onSnapshot в doLogin/restoreSession
     updateAuthBadge();
     initPresence();
   });
