@@ -1049,6 +1049,260 @@
       .handbook-item:hover { transform: none; }
       .lead-card:hover { transform: none; }
     }
+
+    /* ══════════════════════════════════════════════
+       ПОЛНОЦЕННЫЙ МОБИЛЬНЫЙ ИНТЕРФЕЙС (≤ 768px)
+    ══════════════════════════════════════════════ */
+    @media (max-width: 768px) {
+
+      /* ── Header ── */
+      header { padding: 0 14px; height: 58px; position: sticky; top: 0; z-index: 200; }
+      .logo-badge { width: 36px; height: 36px; border-radius: 8px; }
+      .logo-badge::after { font-size: 17px; }
+      .logo-title { font-size: 14px; }
+      .logo-sub { display: none; }
+      .header-breadcrumb { display: none; }
+      .header-right { gap: 10px; }
+      .back-btn { font-size: 11px; padding: 6px 10px; gap: 4px; }
+      .notif-bell-btn { width: 36px; height: 36px; font-size: 16px; }
+      .notif-panel { width: 290px; right: -10px; }
+
+      /* ── Home page ── */
+      .hero { padding: 20px 14px 16px; gap: 12px; grid-template-columns: 1fr; }
+      .hero-emblem { display: none; }
+      .hero-title { font-size: 24px; line-height: 1.2; }
+      .hero-subtitle { font-size: 13px; }
+      .hero-badges { gap: 6px; }
+      .hero-badge { font-size: 10px; padding: 4px 10px; }
+
+      .quick-actions { flex-direction: column; gap: 8px; padding: 16px 14px 0; }
+      .action-card { min-width: unset; padding: 14px 16px; gap: 12px; }
+      .action-icon { width: 42px; height: 42px; font-size: 18px; }
+      .action-title { font-size: 14px; }
+      .action-desc { font-size: 12px; }
+
+      .quick-actions-secondary { padding: 12px 14px 0; margin-top: 4px; }
+      .quick-actions-secondary-inner { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .mini-action { padding: 12px 14px; }
+      .mini-action-icon { font-size: 18px; }
+      .mini-action-title { font-size: 12px; }
+
+      .departments { padding: 16px 14px 0; }
+      .section-title { font-size: 18px; }
+      .dept-grid { grid-template-columns: 1fr; gap: 10px; }
+      .dept-card { padding: 16px; }
+      .dept-acronym { font-size: 22px; }
+
+      footer { padding: 14px; flex-direction: column; gap: 4px; font-size: 11px; text-align: center; height: auto; }
+
+      /* ── Dept page ── */
+      .dept-panel { padding: 14px; }
+      .dept-tab-nav { padding: 0 14px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .dept-tab-nav::-webkit-scrollbar { display: none; }
+      .dept-tab { font-size: 11px; padding: 0 12px; white-space: nowrap; height: 42px; }
+
+      /* Leadership cards full-width on mobile */
+      .lead-row.cols-1, .lead-row.cols-2, .lead-row.cols-3 { grid-template-columns: 1fr; gap: 8px; }
+      .lead-card { padding: 12px 14px; }
+      .lead-card.chief { padding: 14px 16px; }
+      .lead-ava { width: 42px; height: 42px; border-radius: 10px; }
+      .lead-ava svg { width: 20px; height: 20px; }
+      .lead-card.chief .lead-ava { width: 50px; height: 50px; }
+      .lead-name { font-size: 14px; }
+      .lead-pos { font-size: 10px; }
+
+      /* Reports layout */
+      .reports-layout { grid-template-columns: 1fr; gap: 12px; }
+      .rtype-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .app-type-card { padding: 12px; }
+      .app-type-icon { font-size: 20px; }
+      .app-type-name { font-size: 12px; }
+      .app-type-desc { font-size: 11px; }
+      .form-card { padding: 16px; border-radius: 12px; }
+      .form-row { grid-template-columns: 1fr; gap: 0; }
+      .rules-card { display: none; } /* Скрываем правила на мобильном — экономим место */
+
+      /* Subtab nav */
+      .reports-subtab-nav { overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 2px; }
+      .reports-subtab-nav::-webkit-scrollbar { display: none; }
+      .reports-subtab { font-size: 11px; padding: 0 12px; white-space: nowrap; }
+
+      /* ── INBOX MODALS — мобильный режим sheet ── */
+      .inbox-modal-overlay { align-items: flex-end; padding: 0; }
+      .inbox-modal {
+        flex-direction: column;
+        width: 100%;
+        max-width: 100%;
+        height: 96vh;
+        border-radius: 20px 20px 0 0;
+        margin: 0;
+        overflow: hidden;
+      }
+      .inbox-modal-header { padding: 14px 14px 10px; }
+      .inbox-modal-eyebrow { font-size: 10px; }
+      .inbox-modal-title { font-size: 16px; }
+      .inbox-modal-actions { gap: 6px; flex-wrap: wrap; }
+      .inbox-filter-select { font-size: 11px; padding: 5px 8px; }
+
+      /* На мобильном: список сверху (40%), детали снизу (60%) */
+      .inbox-modal-body { flex-direction: column; overflow: hidden; flex: 1; }
+      .inbox-list {
+        flex: none;
+        height: 38vh;
+        max-height: 38vh;
+        border-right: none;
+        border-bottom: 1px solid var(--grey-light);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .inbox-detail {
+        flex: 1;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .inbox-item { padding: 10px 12px; }
+      .inbox-item-name { font-size: 13px; }
+      .inbox-item-meta { font-size: 11px; }
+      .inbox-item-badge { font-size: 10px; padding: 3px 8px; }
+
+      /* Detail panel */
+      .detail-name { font-size: 16px; }
+      .detail-meta { font-size: 11px; }
+      .detail-field-row { flex-direction: row; gap: 8px; padding: 8px 0; }
+      .detail-field-label { font-size: 11px; min-width: 100px; }
+      .detail-field-value { font-size: 13px; }
+      .decision-panel { margin-top: 14px; padding: 14px; border-radius: 12px; }
+      .decision-panel-title { font-size: 11px; margin-bottom: 10px; }
+      .decision-btns { gap: 6px; }
+      .decision-btn { font-size: 12px; padding: 10px 8px; border-radius: 8px; }
+      .decision-note { font-size: 13px; padding: 10px 12px; min-height: 80px; }
+      .decision-save-btn { font-size: 13px; padding: 12px; border-radius: 8px; }
+
+      /* All-reports inline layout */
+      .inbox-modal-body[style*="min-height:460px"],
+      div[style*="min-height:460px"] {
+        min-height: unset !important;
+        height: auto !important;
+      }
+      #all-reports-list, #all-reports-detail { min-height: unset; }
+
+      /* ── File modal (карточка сотрудника) ── */
+      .file-modal-overlay { align-items: flex-end; }
+      .file-modal {
+        max-height: 94vh;
+        border-radius: 20px 20px 0 0;
+        max-width: 100%;
+        width: 100%;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .file-modal-banner { height: 60px; }
+      .file-modal-header { padding: 12px 14px 10px; }
+      .file-modal-name { font-size: 18px; }
+      .file-modal-meta { font-size: 12px; }
+      .file-modal-actions { flex-wrap: wrap; gap: 6px; }
+      .file-modal-body { padding: 14px; }
+      .info-grid { grid-template-columns: 1fr; gap: 0; }
+      .info-field { padding: 8px 0; }
+      .info-label { font-size: 10px; }
+      .info-value { font-size: 14px; }
+
+      /* ── Lead profile modal ── */
+      .lead-profile-header { padding: 14px 14px 12px; gap: 10px; }
+      .lead-profile-ava { width: 48px; height: 48px; font-size: 20px; border-radius: 12px; }
+      .lead-profile-pos { font-size: 10px; }
+      .lead-profile-name { font-size: 18px; }
+      .lead-profile-body { padding: 0 14px; }
+      .lead-profile-field { padding: 9px 0; }
+      .lead-profile-label { font-size: 10px; }
+      .lead-profile-value { font-size: 13px; }
+      #lead-edit-section { padding: 12px 14px; }
+
+      /* ── Personnel page ── */
+      .personnel-intro { padding: 16px 14px 0; }
+      .personnel-search-wrap { padding: 12px 14px 0; }
+      .personnel-results { padding: 12px 14px 0; }
+      .personnel-grid { grid-template-columns: 1fr; gap: 8px; }
+      .personnel-card { padding: 0; }
+      .personnel-card-banner { height: 56px; }
+      .personnel-card-body { padding: 10px 12px; }
+
+      /* ── Promo / Ranks page ── */
+      .promo-grid { grid-template-columns: 1fr; }
+      .promo-card { padding: 14px; }
+      .rank-title { font-size: 16px; }
+
+      /* ── Employment page ── */
+      .employment-intro, .employment-main, .employment-footer-row { padding-left: 14px; padding-right: 14px; }
+      .employment-main { grid-template-columns: 1fr; }
+      .employment-footer-row { grid-template-columns: 1fr; }
+      .app-type-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+
+      /* ── Handbook page ── */
+      .handbook-wrap { padding: 16px 14px 40px; }
+      .article-wrap { padding: 16px 14px 40px; }
+      .handbook-section-title { font-size: 10px; }
+      .handbook-item { padding: 12px 14px; }
+      .handbook-item-title { font-size: 14px; }
+
+      /* ── Notif panel ── */
+      .notif-panel { position: fixed; top: 58px; right: 0; left: 0; width: 100%; border-radius: 0 0 16px 16px; max-height: 70vh; overflow-y: auto; }
+      .notif-list { max-height: none; }
+
+      /* ── Password overlay ── */
+      .pw-overlay { padding: 0; align-items: flex-end; }
+      .pw-box { width: 100%; border-radius: 20px 20px 0 0; margin: 0; padding: 24px 20px; }
+
+      /* ── Admin panel ── */
+      .admin-panel-box { padding: 16px; border-radius: 0; min-height: 100vh; max-width: 100%; }
+      .admin-table { font-size: 11px; }
+      .admin-table th, .admin-table td { padding: 6px 8px; }
+
+      /* ── Modal boxes (confirm/alert) ── */
+      .modal-box { width: calc(100% - 28px); border-radius: 16px; }
+
+      /* ── Touch-friendly tap targets ── */
+      button, .action-card, .lead-card, .inbox-item, .handbook-item, .dept-card, .mini-action {
+        -webkit-tap-highlight-color: rgba(0,0,0,0.05);
+        cursor: pointer;
+      }
+      input, textarea, select {
+        font-size: 16px !important; /* Prevent iOS zoom on focus */
+      }
+
+      /* ── Scrollable tabs with indicator ── */
+      .dept-tab-nav { scrollbar-width: none; }
+      .reports-subtab-nav { scrollbar-width: none; }
+
+      /* ── Exams grid ── */
+      .exams-grid { grid-template-columns: 1fr; }
+      .exam-card { padding: 14px; }
+
+      /* ── Form improvements ── */
+      .submit-btn { font-size: 14px; padding: 14px; }
+      input[type="text"], input[type="number"], input[type="email"], textarea, select {
+        border-radius: 10px;
+        padding: 11px 13px;
+      }
+      .form-group label { font-size: 12px; }
+
+      /* ── MTF block ── */
+      .mtf-banner { grid-template-columns: 1fr; }
+      .mtf-left, .mtf-right { padding: 16px 14px; }
+    }
+
+    /* ── Very small phones (≤ 380px) ── */
+    @media (max-width: 380px) {
+      .hero-title { font-size: 21px; }
+      .rtype-grid { grid-template-columns: 1fr; }
+      .app-type-grid { grid-template-columns: 1fr; }
+      .quick-actions-secondary-inner { grid-template-columns: 1fr; }
+      .dept-tab { font-size: 10px; padding: 0 10px; }
+      .reports-subtab { font-size: 10px; padding: 0 10px; }
+      .decision-btns { flex-direction: column; }
+      .decision-btn { min-width: unset; }
+      .inbox-list { height: 32vh; max-height: 32vh; }
+    }
     /* ════════════════════════════
        EMPLOYMENT PAGE
     ════════════════════════════ */
@@ -1454,6 +1708,12 @@
       background: #EDE9FE; color: #5B21B6; border-color: #C4B5FD;
     }
     .decision-btn.d-revision:hover, .decision-btn.d-revision.selected {
+      background: #5B21B6; color: white; border-color: #5B21B6;
+    }
+    .decision-btn.d-review {
+      background: #EDE9FE; color: #5B21B6; border-color: #C4B5FD;
+    }
+    .decision-btn.d-review:hover, .decision-btn.d-review.selected {
       background: #5B21B6; color: white; border-color: #5B21B6;
     }
     .decision-note {
@@ -2947,6 +3207,26 @@
               </div>
             </div>
           </div>
+          <div class="lead-tier">
+            <div class="lead-tier-label">Заместитель шефа</div>
+            <div class="lead-row cols-3">
+              <div class="lead-card" onclick="openLeadModal('SFPD','dep1','Заместитель шефа','')">
+                <div class="lead-ava silver"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="7.5" r="3.5" fill="#1A2340" opacity="0.7"/><path d="M3.5 19.5c0-3.5 3.4-6.5 7.5-6.5s7.5 3 7.5 6.5" stroke="#1A2340" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/><rect x="14" y="13" width="7" height="7" rx="2" fill="#1A2340" opacity="0.15"/><path d="M15.5 16.5h4M15.5 18.5h2.5" stroke="#1A2340" stroke-width="1.4" stroke-linecap="round" opacity="0.6"/></svg></div>
+                <div class="lead-card-body"><div class="lead-pos silver">Заместитель шефа</div><div class="lead-name vacant">Вакансия</div></div>
+                <span class="lead-card-arrow">›</span>
+              </div>
+              <div class="lead-card" onclick="openLeadModal('SFPD','dep2','Заместитель шефа','')">
+                <div class="lead-ava silver"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="7.5" r="3.5" fill="#1A2340" opacity="0.7"/><path d="M3.5 19.5c0-3.5 3.4-6.5 7.5-6.5s7.5 3 7.5 6.5" stroke="#1A2340" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/><rect x="14" y="13" width="7" height="7" rx="2" fill="#1A2340" opacity="0.15"/><path d="M15.5 16.5h4M15.5 18.5h2.5" stroke="#1A2340" stroke-width="1.4" stroke-linecap="round" opacity="0.6"/></svg></div>
+                <div class="lead-card-body"><div class="lead-pos silver">Заместитель шефа</div><div class="lead-name vacant">Вакансия</div></div>
+                <span class="lead-card-arrow">›</span>
+              </div>
+              <div class="lead-card" onclick="openLeadModal('SFPD','dep3','Заместитель шефа','')">
+                <div class="lead-ava silver"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="7.5" r="3.5" fill="#1A2340" opacity="0.7"/><path d="M3.5 19.5c0-3.5 3.4-6.5 7.5-6.5s7.5 3 7.5 6.5" stroke="#1A2340" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/><rect x="14" y="13" width="7" height="7" rx="2" fill="#1A2340" opacity="0.15"/><path d="M15.5 16.5h4M15.5 18.5h2.5" stroke="#1A2340" stroke-width="1.4" stroke-linecap="round" opacity="0.6"/></svg></div>
+                <div class="lead-card-body"><div class="lead-pos silver">Заместитель шефа</div><div class="lead-name vacant">Вакансия</div></div>
+                <span class="lead-card-arrow">›</span>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- LVMPD -->
@@ -3021,6 +3301,26 @@
               <div class="lead-card" onclick="openLeadModal('LSCSD','under2','Андершериф','')">
                 <div class="lead-ava silver"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3L4 6.5v5c0 4.5 3.5 8.5 8 9.5 4.5-1 8-5 8-9.5v-5L12 3z" stroke="#1A2340" stroke-width="1.6" fill="#1A2340" fill-opacity="0.08" opacity="0.7"/><path d="M12 8l1.2 2.4 2.7.4-1.95 1.9.46 2.7L12 14.2l-2.41 1.2.46-2.7L8.1 10.8l2.7-.4L12 8z" fill="#C8A84B"/></svg></div>
                 <div class="lead-card-body"><div class="lead-pos silver">Андершериф</div><div class="lead-name vacant">Вакансия</div></div>
+                <span class="lead-card-arrow">›</span>
+              </div>
+            </div>
+          </div>
+          <div class="lead-tier">
+            <div class="lead-tier-label">Заместитель шерифа</div>
+            <div class="lead-row cols-3">
+              <div class="lead-card" onclick="openLeadModal('LSCSD','dep1','Заместитель шерифа','')">
+                <div class="lead-ava silver"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="7.5" r="3.5" fill="#1A2340" opacity="0.7"/><path d="M3.5 19.5c0-3.5 3.4-6.5 7.5-6.5s7.5 3 7.5 6.5" stroke="#1A2340" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/><rect x="14" y="13" width="7" height="7" rx="2" fill="#1A2340" opacity="0.15"/><path d="M15.5 16.5h4M15.5 18.5h2.5" stroke="#1A2340" stroke-width="1.4" stroke-linecap="round" opacity="0.6"/></svg></div>
+                <div class="lead-card-body"><div class="lead-pos silver">Заместитель шерифа</div><div class="lead-name vacant">Вакансия</div></div>
+                <span class="lead-card-arrow">›</span>
+              </div>
+              <div class="lead-card" onclick="openLeadModal('LSCSD','dep2','Заместитель шерифа','')">
+                <div class="lead-ava silver"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="7.5" r="3.5" fill="#1A2340" opacity="0.7"/><path d="M3.5 19.5c0-3.5 3.4-6.5 7.5-6.5s7.5 3 7.5 6.5" stroke="#1A2340" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/><rect x="14" y="13" width="7" height="7" rx="2" fill="#1A2340" opacity="0.15"/><path d="M15.5 16.5h4M15.5 18.5h2.5" stroke="#1A2340" stroke-width="1.4" stroke-linecap="round" opacity="0.6"/></svg></div>
+                <div class="lead-card-body"><div class="lead-pos silver">Заместитель шерифа</div><div class="lead-name vacant">Вакансия</div></div>
+                <span class="lead-card-arrow">›</span>
+              </div>
+              <div class="lead-card" onclick="openLeadModal('LSCSD','dep3','Заместитель шерифа','')">
+                <div class="lead-ava silver"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="7.5" r="3.5" fill="#1A2340" opacity="0.7"/><path d="M3.5 19.5c0-3.5 3.4-6.5 7.5-6.5s7.5 3 7.5 6.5" stroke="#1A2340" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/><rect x="14" y="13" width="7" height="7" rx="2" fill="#1A2340" opacity="0.15"/><path d="M15.5 16.5h4M15.5 18.5h2.5" stroke="#1A2340" stroke-width="1.4" stroke-linecap="round" opacity="0.6"/></svg></div>
+                <div class="lead-card-body"><div class="lead-pos silver">Заместитель шерифа</div><div class="lead-name vacant">Вакансия</div></div>
                 <span class="lead-card-arrow">›</span>
               </div>
             </div>
@@ -3602,6 +3902,7 @@
     <div class="reports-subtab-nav">
       <button class="reports-subtab active" data-stab="submit"  onclick="switchSubtab(this,'submit')">Подать отчёт</button>
       <button class="reports-subtab"        data-stab="all"     onclick="switchSubtab(this,'all')">Все отчёты</button>
+      <button class="reports-subtab"        data-stab="edit"    onclick="switchSubtab(this,'edit')">Редактировать отчёт</button>
     </div>
 
     <!-- ──────────── SUB: ПОДАТЬ ОТЧЁТ ──────────── -->
@@ -3698,7 +3999,17 @@
               <hr class="form-divider"/>
               <button type="submit" class="submit-btn" id="rpt-submit-btn">Отправить отчёт</button>
             </form>
-            <div id="rpt-success" style="display:none;margin-top:14px;background:var(--green-light);border:1.5px solid #A8D8BC;border-radius:10px;padding:14px;color:var(--green);font-size:13px;text-align:center;">✓ Отчёт подан. Ожидайте рассмотрения.</div>
+            <div id="rpt-success" style="display:none;margin-top:14px;background:var(--green-light);border:1.5px solid #A8D8BC;border-radius:10px;padding:16px 18px;color:var(--green);font-size:13px;">
+              <div style="font-weight:700;margin-bottom:8px;">✓ Отчёт успешно подан</div>
+              <div style="color:var(--text-soft);margin-bottom:10px;font-size:12px;">Сохраните ваш личный код — он нужен для редактирования отчёта при статусе «Доработка».</div>
+              <div style="background:var(--white);border:1.5px solid #A8D8BC;border-radius:8px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;">
+                <div>
+                  <div style="font-size:10px;color:var(--grey);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px;">Код отчёта</div>
+                  <div id="rpt-success-code" style="font-family:monospace;font-size:17px;font-weight:700;color:var(--navy);letter-spacing:.1em;"></div>
+                </div>
+                <button onclick="copyReportCode()" style="background:var(--navy);color:white;border:none;padding:8px 14px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;">Скопировать</button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -3752,7 +4063,7 @@
             <option value="approved">Одобрено</option>
             <option value="rejected">Отказано</option>
           </select>
-          <button class="back-btn" onclick="loadDeptReports(currentDept)" style="font-size:12px;padding:6px 12px;gap:5px;">↻ Обновить</button>
+          <button class="back-btn" onclick="loadDeptReports(currentDept)" style="font-size:12px;padding:6px 12px;gap:5px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Обновить</button>
         </div>
       </div>
       <div class="inbox-modal-body" style="border:1.5px solid var(--grey-light);border-radius:14px;overflow:hidden;min-height:460px;">
@@ -3762,6 +4073,22 @@
         <div class="inbox-detail" id="all-reports-detail">
           <div class="inbox-detail-empty"><div class="inbox-detail-empty-icon">📋</div>Выберите отчёт из списка слева.</div>
         </div>
+      </div>
+    </div>
+
+    <!-- ──────────── SUB: РЕДАКТИРОВАТЬ ОТЧЁТ ──────────── -->
+    <div class="reports-subpanel" id="subpanel-edit">
+      <div class="dept-section-title" style="margin-bottom:6px;">Редактировать отчёт</div>
+      <p class="dept-section-sub">Введите код отчёта, который вы получили при подаче. Редактирование доступно только если статус — «Доработка».</p>
+      <div class="form-card" style="max-width:520px;margin-top:18px;">
+        <div class="form-group">
+          <label>Код отчёта <span class="req">*</span></label>
+          <div style="display:flex;gap:8px;">
+            <input type="text" id="edit-rpt-code" placeholder="напр. RPT-LVMPD-4X2K" style="flex:1;text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()"/>
+            <button type="button" onclick="loadReportByCode()" style="white-space:nowrap;padding:10px 16px;background:var(--navy);color:white;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Найти</button>
+          </div>
+        </div>
+        <div id="edit-rpt-result" style="display:none;margin-top:14px;"></div>
       </div>
     </div>
 
@@ -4666,11 +4993,11 @@
         <div class="inbox-modal-eyebrow">Трудоустройство</div>
         <div class="inbox-modal-title" style="display:flex;align-items:center;gap:10px;">
           Входящие заявления
-          <span class="sheets-badge">📊 Google Sheets</span>
+          
         </div>
       </div>
       <div class="inbox-modal-actions">
-        <button class="back-btn" onclick="refreshInbox('emp')" title="Обновить из Sheets" style="gap:6px;">↻ Обновить</button>
+        <button class="back-btn" onclick="refreshInbox('emp')" title="Обновить из Sheets" style="gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Обновить</button>
         <select class="inbox-filter-select" id="emp-filter" onchange="renderEmpList()">
           <option value="all">Все статусы</option>
           <option value="pending">На рассмотрении</option>
@@ -4704,11 +5031,11 @@
         <div class="inbox-modal-eyebrow">Жалобы</div>
         <div class="inbox-modal-title" style="display:flex;align-items:center;gap:10px;">
           Входящие жалобы
-          <span class="sheets-badge">📊 Google Sheets</span>
+          
         </div>
       </div>
       <div class="inbox-modal-actions">
-        <button class="back-btn" onclick="refreshInbox('complaints')" title="Обновить из Sheets" style="gap:6px;">↻ Обновить</button>
+        <button class="back-btn" onclick="refreshInbox('complaints')" title="Обновить из Sheets" style="gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Обновить</button>
         <select class="inbox-filter-select" id="complaints-filter" onchange="renderComplaintsList()">
           <option value="all">Все статусы</option>
           <option value="pending">На рассмотрении</option>
@@ -5121,12 +5448,16 @@
           writeLog('УДАЛЕНИЕ', 'Личное дело', data.id, '');
           break;
 
-        case 'addReport':
-          await fbSet('reports', data.id, { ...data, status:'pending', ts });
+        case 'addReport': {
+          const editCode = 'RPT-' + (data.dept||'MVD') + '-' + data.id.slice(-4).toUpperCase();
+          await fbSet('reports', data.id, { ...data, status:'pending', ts, edit_code: editCode });
           break;
-        case 'addSeniorReport':
-          await fbSet('senior_reports', data.id, { ...data, status:'pending', ts });
+        }
+        case 'addSeniorReport': {
+          const editCode = 'RPT-' + (data.dept||'MVD') + '-' + data.id.slice(-4).toUpperCase();
+          await fbSet('senior_reports', data.id, { ...data, status:'pending', ts, edit_code: editCode });
           break;
+        }
         case 'addComplaint':
           await fbSet('complaints', data.id, { ...data, status:'pending', timestamp:ts });
           break;
@@ -5271,7 +5602,7 @@
     document.getElementById(listId).innerHTML =
       '<div class="inbox-loading"><div class="spinner"></div>Загрузка из Google Sheets...</div>';
     document.getElementById(detailId).innerHTML =
-      '<div class="inbox-detail-empty"><div class="inbox-detail-empty-icon">⏳</div>Загрузка данных...</div>';
+      '<div class="inbox-detail-empty"><div style="width:40px;height:40px;border:3px solid var(--grey-light);border-top-color:var(--navy);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 12px;"></div>Загрузка данных...</div>';
   }
 
   async function refreshInbox(type) {
@@ -5329,6 +5660,13 @@
     const r = empApplications.find(x => x.id === id);
     if (!r) return;
     renderEmpList();
+    // На мобильном — прячем список, показываем детали
+    if (window.innerWidth <= 768) {
+      const list = document.getElementById('emp-inbox-list');
+      const detail = document.getElementById('emp-inbox-detail');
+      if (list) list.style.display = 'none';
+      if (detail) { detail.style.display = ''; detail.style.flex = '1'; }
+    }
 
     const extra = r.app_type === 'Перевод' ? `
       <div class="detail-field-row"><span class="detail-field-label">Текущая организация</span><span class="detail-field-value">${esc(r.current_org)}</span></div>
@@ -5360,8 +5698,8 @@
             <button class="decision-btn d-approve ${r.status==='approved'?'selected':''}" onclick="setDecision('emp','${esc(r.id)}','approved',this)">✓ Одобрить</button>
             <button class="decision-btn d-reject  ${r.status==='rejected'?'selected':''}" onclick="setDecision('emp','${esc(r.id)}','rejected',this)">✗ Отказать</button>
           </div>
-          <label style="font-size:12px;font-weight:600;color:var(--navy);margin-bottom:4px;display:block;">Вердикт <span style="color:var(--red);">*</span> <span style="font-weight:400;color:var(--grey);">(обязательно — укажите решение или причину отказа)</span></label>
-          <textarea class="decision-note" id="emp-note-${esc(r.id)}" placeholder="Укажите решение или причину отказа..." required>${esc(r.note)}</textarea>
+          <label style="font-size:12px;font-weight:600;color:var(--navy);margin-bottom:4px;display:block;">Примечание <span style="font-weight:400;color:var(--grey);">(необязательно)</span></label>
+          <textarea class="decision-note" id="emp-note-${esc(r.id)}" placeholder="Примечание (необязательно)..." required>${esc(r.note)}</textarea>
           <button class="decision-save-btn" id="emp-save-${esc(r.id)}" onclick="saveDecision('emp','${esc(r.id)}')">Сохранить решение</button>
         </div>
       ` : `
@@ -5370,7 +5708,14 @@
           <div class="decision-locked-text">Вынесение решений доступно только офицерам.<br/>Войдите с кодом доступа чтобы продолжить.</div>
           <button class="decision-unlock-btn" onclick="openPasswordGate('unlock-emp')">Войти как офицер</button>
         </div>
-      `}`;
+      `}
+      <div class="mobile-back-to-list" style="display:none;margin-top:14px;border-top:1px solid var(--grey-light);padding-top:14px;">
+        <button onclick="mobileBackToList('emp-inbox-list','emp-inbox-detail')" style="width:100%;padding:12px;background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;font-size:13px;font-weight:600;color:var(--navy);cursor:pointer;font-family:inherit;">← Назад к списку</button>
+      </div>`;
+    if (window.innerWidth <= 768) {
+      const det = document.getElementById('emp-inbox-detail');
+      if (det) det.querySelectorAll('.mobile-back-to-list').forEach(b => b.style.display = 'block');
+    }
   }
 
   /* ══════════════════════════════════════════════════════════════
@@ -5400,6 +5745,13 @@
     const r = complaintsList.find(x => x.id === id);
     if (!r) return;
     renderComplaintsList();
+    // На мобильном — прячем список, показываем детали
+    if (window.innerWidth <= 768) {
+      const list = document.getElementById('complaints-inbox-list');
+      const detail = document.getElementById('complaints-inbox-detail');
+      if (list) list.style.display = 'none';
+      if (detail) { detail.style.display = ''; detail.style.flex = '1'; }
+    }
 
     document.getElementById('complaints-inbox-detail').innerHTML = `
       <div class="detail-applicant">
@@ -5436,7 +5788,22 @@
           <div class="decision-locked-text">Вынесение решений доступно только офицерам 9 ранга и выше.<br/>Войдите с кодом доступа чтобы продолжить.</div>
           <button class="decision-unlock-btn" onclick="openPasswordGate('unlock-complaints')">Войти как офицер</button>
         </div>
-      `}`;
+      `}
+      <div class="mobile-back-to-list" style="display:none;margin-top:14px;border-top:1px solid var(--grey-light);padding-top:14px;">
+        <button onclick="mobileBackToList('complaints-inbox-list','complaints-inbox-detail')" style="width:100%;padding:12px;background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;font-size:13px;font-weight:600;color:var(--navy);cursor:pointer;font-family:inherit;">← Назад к списку</button>
+      </div>`;
+    if (window.innerWidth <= 768) {
+      const det = document.getElementById('complaints-inbox-detail');
+      if (det) det.querySelectorAll('.mobile-back-to-list').forEach(b => b.style.display = 'block');
+    }
+  }
+
+  /* ── Мобильная навигация: назад к списку ─────────────────── */
+  function mobileBackToList(listId, detailId) {
+    const list = document.getElementById(listId);
+    const detail = document.getElementById(detailId);
+    if (list) { list.style.display = ''; list.style.flex = ''; }
+    if (detail) { detail.style.display = 'none'; }
   }
 
   /* ══════════════════════════════════════════════════════════════
@@ -5460,12 +5827,7 @@
       return;
     }
 
-    if (!note) {
-      alert('Вердикт обязателен. Укажите наказание для офицера или причину отказа.');
-      if (noteEl) { noteEl.focus(); noteEl.style.borderColor = 'var(--red)'; setTimeout(() => { noteEl.style.borderColor = ''; }, 2000); }
-      if (saveBtn) { saveBtn.textContent = 'Сохранить решение'; saveBtn.disabled = false; }
-      return;
-    }
+    // Примечание необязательно в трудоустройстве/жалобах — просто пустая строка
 
     if (saveBtn) { saveBtn.textContent = 'Сохранение...'; saveBtn.disabled = true; }
 
@@ -5771,6 +6133,22 @@
       const data = await sheetsGet('getLeadData', { dept });
       if (data && typeof data === 'object') {
         Object.assign(leadData, data);
+        // Обновляем DOM-карточки с загруженными данными
+        Object.entries(data).forEach(([key, d]) => {
+          const name = d['Имя'] || d.name || '';
+          const slotId = d.slotId || (key.includes('_') ? key.substring(key.indexOf('_') + 1) : '');
+          const cardDept = d.dept || (key.includes('_') ? key.substring(0, key.indexOf('_')) : '');
+          document.querySelectorAll('.lead-card').forEach(card => {
+            const onclick = card.getAttribute('onclick') || '';
+            if (onclick.includes("'" + cardDept + "'") && onclick.includes("'" + slotId + "'")) {
+              const nameEl = card.querySelector('.lead-name');
+              if (nameEl) {
+                nameEl.textContent = name || 'Вакансия';
+                nameEl.classList.toggle('vacant', !name);
+              }
+            }
+          });
+        });
       }
     } catch(_) {}
   }
@@ -5862,10 +6240,6 @@
             <input id="le-phone" type="text" value="${esc(phone)}" style="width:100%;padding:8px 11px;border:1.5px solid var(--grey-light);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);" placeholder="напр. 40404"/>
           </div>
           <div>
-            <label style="font-size:11px;color:var(--grey);font-weight:600;display:block;margin-bottom:4px;">Аккаунт</label>
-            <input id="le-account" type="text" value="${esc(account)}" style="width:100%;padding:8px 11px;border:1.5px solid var(--grey-light);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);" placeholder="ID аккаунта"/>
-          </div>
-          <div>
             <label style="font-size:11px;color:var(--grey);font-weight:600;display:block;margin-bottom:4px;">ВКонтакте</label>
             <input id="le-vk" type="text" value="${esc(vk)}" style="width:100%;padding:8px 11px;border:1.5px solid var(--grey-light);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);" placeholder="id123456 или username"/>
           </div>
@@ -5935,10 +6309,6 @@
           <span class="lead-profile-label">Звание</span>
           <span class="lead-profile-value ${!rank?'empty':''}">${rank ? esc(rank) : '—'}</span>
         </div>
-        <div class="lead-profile-field">
-          <span class="lead-profile-label">Аккаунт</span>
-          <span class="lead-profile-value ${!account?'empty':''}">${account ? esc(account) : '—'}</span>
-        </div>
       </div>
       ${editSection}
       ${pwSection}
@@ -5950,7 +6320,7 @@
   async function saveLeadInline(dept, slotId, position, key) {
     const name     = (document.getElementById('le-name')     ||{}).value || '';
     const rank     = (document.getElementById('le-rank')     ||{}).value || '';
-    const account  = (document.getElementById('le-account')  ||{}).value || '';
+    const account  = '';
     const discord  = (document.getElementById('le-discord')  ||{}).value || '';
     const badge    = (document.getElementById('le-badge')    ||{}).value || '';
     const appointed= (document.getElementById('le-appointed')||{}).value || '';
@@ -5963,9 +6333,10 @@
       'Имя': name, 'Звание': rank, 'Аккаунт': account, 'Discord': discord,
       'Жетон': badge, 'ДатаНазначения': appointed, 'Телефон': phone, 'ВКонтакте': vk, 'Telegram': telegram };
 
-    // Обновить имя на карточке
+    // Обновить имя на карточке (фильтруем по dept И slotId, чтобы не задеть другие департаменты)
     document.querySelectorAll(`.lead-card`).forEach(card => {
-      if (card.getAttribute('onclick') && card.getAttribute('onclick').includes("'"+slotId+"'")) {
+      const onclick = card.getAttribute('onclick') || '';
+      if (onclick.includes("'" + dept + "'") && onclick.includes("'" + slotId + "'")) {
         const nameEl = card.querySelector('.lead-name');
         if (nameEl) { nameEl.textContent = name||'Вакансия'; nameEl.classList.toggle('vacant',!name); }
       }
@@ -5982,7 +6353,7 @@
 
   /* ── Undo/Redo для карточки руководства ─── */
   let _leadUndoStack = [], _leadRedoStack = [];
-  const _leadFields = ['le-name','le-rank','le-badge','le-appointed','le-phone','le-account','le-vk','le-telegram','le-discord'];
+  const _leadFields = ['le-name','le-rank','le-badge','le-appointed','le-phone','le-vk','le-telegram','le-discord'];
   function _leadSnap() { const s={}; _leadFields.forEach(id=>{const el=document.getElementById(id);if(el)s[id]=el.value;}); return s; }
   function _leadApply(snap) { Object.entries(snap).forEach(([id,v])=>{const el=document.getElementById(id);if(el)el.value=v;}); }
   function leadPushUndo() { _leadUndoStack.push(_leadSnap()); _leadRedoStack=[]; }
@@ -6287,6 +6658,13 @@
 
   function showAllReportDetail(id) {
     _selAllId = id;
+    // На мобильном — прячем список, показываем детали
+    if (window.innerWidth <= 768) {
+      const list = document.getElementById('all-reports-list');
+      const detail = document.getElementById('all-reports-detail');
+      if (list) list.style.display = 'none';
+      if (detail) { detail.style.display = ''; detail.style.flex = '1'; detail.style.minHeight = '0'; }
+    }
     renderAllReports();
 
     const allMerged = [...allReports, ...seniorReports];
@@ -6347,7 +6725,7 @@
               <button class="decision-btn d-review  ${r.status==='review' ?'selected':''}" onclick="setReportDecision('${esc(r.id||'')}','review', this)">↩ Доработка</button>
             </div>
             <label style="font-size:12px;font-weight:600;color:var(--navy);margin-bottom:4px;display:block;margin-top:10px;">Комментарий <span style="color:var(--red);">*</span></label>
-            <textarea class="decision-note" id="rpt-note-${esc(r.id||listIdx)}" placeholder="Укажите решение или причину отказа..." style="margin-bottom:10px;">${esc(r.note||'')}</textarea>
+            <textarea class="decision-note" id="rpt-note-${esc(r.id||listIdx)}" placeholder="Примечание (обязательно при «Доработке»)..." style="margin-bottom:10px;">${esc(r.note||'')}</textarea>
             <button class="decision-save-btn" onclick="saveAllReportDecision('${esc(r.id||'')}')">Сохранить решение</button>
           </div>
         ` : ''}
@@ -6360,7 +6738,7 @@
               <button class="decision-btn d-review  ${r.status==='review' ?'selected':''}" onclick="setReportDecision('${esc(r.id||'')}','review', this)">↩ Доработка</button>
             </div>
             <label style="font-size:12px;font-weight:600;color:var(--navy);margin-bottom:4px;display:block;margin-top:10px;">Комментарий <span style="color:var(--red);">*</span></label>
-            <textarea class="decision-note" id="rpt-note-${esc(r.id||listIdx)}" placeholder="Укажите решение или причину отказа..." style="margin-bottom:10px;">${esc(r.note||'')}</textarea>
+            <textarea class="decision-note" id="rpt-note-${esc(r.id||listIdx)}" placeholder="Примечание (обязательно при «Доработке»)..." style="margin-bottom:10px;">${esc(r.note||'')}</textarea>
             <button class="decision-save-btn" onclick="saveSeniorReportDecision('${esc(r.id||'')}')">Сохранить решение</button>
           </div>
         ` : ''}
@@ -6370,7 +6748,15 @@
             <button onclick="deleteReportRecord('${esc(r.id||'')}','${r.type==='weekly'?'SeniorReports':'Reports'}')" style="background:var(--red-light);border:1.5px solid var(--red);color:var(--red);padding:7px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;">✕ Удалить запись</button>
           </div>
         ` : ''}
+        <div class="mobile-back-to-list" onclick="mobileBackToList('all-reports-list','all-reports-detail')" style="display:none;margin-top:16px;border-top:1px solid var(--grey-light);padding-top:14px;">
+          <button style="width:100%;padding:12px;background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;font-size:13px;font-weight:600;color:var(--navy);cursor:pointer;font-family:inherit;">← Назад к списку</button>
+        </div>
       </div>`;
+    // На мобильном — показываем кнопку назад
+    if (window.innerWidth <= 768) {
+      const backBtns = el.querySelectorAll('.mobile-back-to-list');
+      backBtns.forEach(b => b.style.display = 'block');
+    }
   }
 
   async function saveAllReportDecision(id) {
@@ -6378,8 +6764,8 @@
     if (!newStatus) { alert('Выберите решение.'); return; }
     const noteEl = document.getElementById('rpt-note-' + id);
     const note = noteEl ? noteEl.value.trim() : '';
-    if (!note) {
-      alert('Комментарий обязателен.');
+    if (newStatus === 'review' && !note) {
+      alert('При «Доработке» примечание обязательно.');
       if (noteEl) { noteEl.focus(); noteEl.style.borderColor = 'var(--red)'; setTimeout(() => { noteEl.style.borderColor = ''; }, 2000); }
       return;
     }
@@ -6402,8 +6788,8 @@
     if (!newStatus) { alert('Выберите решение.'); return; }
     const noteEl = document.getElementById('rpt-note-' + id);
     const note = noteEl ? noteEl.value.trim() : '';
-    if (!note) {
-      alert('Комментарий обязателен.');
+    if (newStatus === 'review' && !note) {
+      alert('При «Доработке» примечание обязательно.');
       if (noteEl) { noteEl.focus(); noteEl.style.borderColor = 'var(--red)'; setTimeout(() => { noteEl.style.borderColor = ''; }, 2000); }
       return;
     }
@@ -6583,7 +6969,7 @@
               <button class="decision-btn d-reject ${r.status==='rejected'?'selected':''}" onclick="setReportDecision('${esc(r.id||'')}','rejected',this)">✗ Отказать</button>
             </div>
             <label style="font-size:12px;font-weight:600;color:var(--navy);margin-bottom:4px;display:block;">Вердикт <span style="color:var(--red);">*</span> <span style="font-weight:400;color:var(--grey);">(обязательно)</span></label>
-            <textarea class="decision-note" id="rpt-note-${esc(r.id||idx)}" placeholder="Укажите решение или причину отказа..." required>${esc(r.note||'')}</textarea>
+            <textarea class="decision-note" id="rpt-note-${esc(r.id||idx)}" placeholder="Примечание (обязательно при «Доработке»)..." required>${esc(r.note||'')}</textarea>
             <button class="decision-save-btn" onclick="saveReportDecision('${esc(r.id||'')}',${idx})">Сохранить решение</button>
           </div>
         ` : ''}
@@ -6702,6 +7088,23 @@
     if (submitBtn) { submitBtn.textContent = 'Подать отчёт'; submitBtn.disabled = false; }
     if (!ok) return;
 
+    // Генерируем красивый код отчёта
+    const lastReport = currentRType === 'weekly' ? seniorReports[0] : allReports[0];
+    const rptId = lastReport ? lastReport.id : '';
+    const code = 'RPT-' + currentDept + '-' + rptId.slice(-4).toUpperCase();
+    window._lastReportCode = code;
+    window._lastReportId   = rptId;
+    // Сохраняем код в Firebase
+    if (rptId) {
+      try {
+        const col = currentRType === 'weekly' ? 'senior_reports' : 'reports';
+        try { getDb().collection(col).doc(rptId).update({ edit_code: code }); } catch(_) {}
+      } catch(_) {}
+    }
+
+    const codeEl = document.getElementById('rpt-success-code');
+    if (codeEl) codeEl.textContent = code;
+    document.getElementById('rpt-success').style.display = 'block';
     this.reset();
     currentRType = '';
     document.querySelectorAll('[data-rtype]').forEach(c => c.classList.remove('selected'));
@@ -6714,10 +7117,214 @@
     card.style.pointerEvents = 'none';
     card.style.display = '';
 
-    document.getElementById('rpt-success').style.display = 'block';
-    setTimeout(() => document.getElementById('rpt-success').style.display = 'none', 3000);
     renderReportsList();
   });
+  /* ══════════════════════════════════════════════════════════════
+     СИСТЕМА КОДОВ ОТЧЁТОВ — копирование и редактирование
+  ══════════════════════════════════════════════════════════════ */
+  function copyReportCode() {
+    const codeEl = document.getElementById('rpt-success-code');
+    const code = codeEl ? codeEl.textContent.trim() : (window._lastReportCode || '');
+    if (!code) { showToast('Код не найден'); return; }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(code)
+        .then(() => showToast('Код скопирован: ' + code))
+        .catch(() => { prompt('Скопируйте код вручную:', code); });
+    } else {
+      // Fallback для браузеров без clipboard API
+      const ta = document.createElement('textarea');
+      ta.value = code; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showToast('Код скопирован: ' + code);
+    }
+  }
+
+  async function loadReportByCode() {
+    const codeInput = document.getElementById('edit-rpt-code');
+    const resultEl  = document.getElementById('edit-rpt-result');
+    const code = (codeInput.value || '').trim().toUpperCase();
+    if (!code) { alert('Введите код отчёта.'); return; }
+
+    resultEl.style.display = 'block';
+    resultEl.innerHTML = '<div style="color:var(--grey);font-size:13px;">Поиск...</div>';
+
+    let found = null;
+    let foundSheet = '';
+    try {
+      // Ищем в reports
+      const rDocs = await getDb().collection('reports').where('edit_code','==',code).get();
+      if (!rDocs.empty) { found = { ...rDocs.docs[0].data(), _docId: rDocs.docs[0].id }; foundSheet = 'reports'; }
+      if (!found) {
+        const sDocs = await getDb().collection('senior_reports').where('edit_code','==',code).get();
+        if (!sDocs.empty) { found = { ...sDocs.docs[0].data(), _docId: sDocs.docs[0].id }; foundSheet = 'senior_reports'; }
+      }
+    } catch(e) {
+      resultEl.innerHTML = '<div style="color:var(--red);font-size:13px;">Ошибка: ' + (e.message||e) + '</div>';
+      return;
+    }
+
+    if (!found) {
+      resultEl.innerHTML = '<div style="background:var(--red-light);border:1.5px solid #F0BABA;border-radius:10px;padding:14px;color:var(--red);font-size:13px;">Отчёт с таким кодом не найден.</div>';
+      return;
+    }
+    if (found.status === 'approved' || found.status === 'rejected') {
+      const statusLabels = { approved:'Одобрено ✓', rejected:'Отказано ✗' };
+      const isApproved = found.status === 'approved';
+      resultEl.innerHTML = `<div style="background:${isApproved?'var(--green-light)':'var(--red-light)'};border:1.5px solid ${isApproved?'#A8D8BC':'#F0BABA'};border-radius:10px;padding:16px 18px;color:${isApproved?'var(--green)':'var(--red)'};font-size:13px;">
+        <div style="font-weight:700;margin-bottom:6px;">Редактирование недоступно — статус: ${statusLabels[found.status]}</div>
+        ${found.reviewer ? `<div style="font-size:12px;opacity:.8;">Проверил: <strong>${found.reviewer}</strong>${found.reviewer_ts?' · '+found.reviewer_ts:''}</div>` : ''}
+        ${found.note ? `<div style="margin-top:8px;padding:8px 10px;background:white;border-radius:7px;color:var(--text-soft);font-size:12px;">Примечание: ${found.note}</div>` : ''}
+      </div>`;
+      return;
+    }
+    if (found.status === 'pending') {
+      resultEl.innerHTML = `<div style="background:#FFF8E1;border:1.5px solid #FFD54F;border-radius:10px;padding:14px;color:#7B5E00;font-size:13px;">
+        Отчёт ещё на рассмотрении. Редактирование доступно только при статусе «Доработка».
+      </div>`;
+      return;
+    }
+
+    // Показываем оригинальные данные + форму редактирования
+    const isWeekly = found.type === 'weekly';
+    // Оригинальный снимок данных (сохраняем при первом редактировании)
+    const origName       = found._orig_name       || found.name       || '';
+    const origRank       = found._orig_rank       || found.rank       || '';
+    const origPos        = found._orig_pos        || found.pos        || found.position || '';
+    const origPeriod     = found._orig_period     || found.period     || '';
+    const origWork       = found._orig_work       || found.work       || '';
+    const origTarget     = found._orig_target     || found.target     || '';
+    const origReason     = found._orig_reason     || found.promoReason|| '';
+    const origLeaveStart = found._orig_leaveStart || found.leaveStart || '';
+    const origLeaveEnd   = found._orig_leaveEnd   || found.leaveEnd   || '';
+    const origLeaveReason= found._orig_leaveReason|| found.leaveReason|| '';
+
+    function esc2(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+    // Блок оригинальных данных
+    let origFields = `
+      <div style="margin-bottom:6px;font-size:11px;font-weight:700;color:var(--grey);letter-spacing:.08em;text-transform:uppercase;">Исходный отчёт</div>
+      <div class="detail-fields" style="margin-bottom:0;">
+        <div class="detail-field-row"><span class="detail-field-label">Имя</span><span class="detail-field-value">${esc2(origName)}</span></div>
+        <div class="detail-field-row"><span class="detail-field-label">Звание</span><span class="detail-field-value">${esc2(origRank)}</span></div>`;
+    if (isWeekly) {
+      origFields += `
+        <div class="detail-field-row"><span class="detail-field-label">Должность</span><span class="detail-field-value">${esc2(origPos)}</span></div>
+        <div class="detail-field-row"><span class="detail-field-label">Период</span><span class="detail-field-value">${esc2(origPeriod)}</span></div>
+        <div class="detail-field-row"><span class="detail-field-label">Деятельность</span><span class="detail-field-value" style="white-space:pre-wrap;">${esc2(origWork)}</span></div>`;
+    } else if (found.type === 'promotion') {
+      origFields += `
+        <div class="detail-field-row"><span class="detail-field-label">Желаемое звание</span><span class="detail-field-value">${esc2(origTarget)}</span></div>
+        <div class="detail-field-row"><span class="detail-field-label">Обоснование</span><span class="detail-field-value" style="white-space:pre-wrap;">${esc2(origReason)}</span></div>`;
+    } else if (found.type === 'leave') {
+      origFields += `
+        <div class="detail-field-row"><span class="detail-field-label">Начало</span><span class="detail-field-value">${esc2(origLeaveStart)}</span></div>
+        <div class="detail-field-row"><span class="detail-field-label">Конец</span><span class="detail-field-value">${esc2(origLeaveEnd)}</span></div>
+        <div class="detail-field-row"><span class="detail-field-label">Причина</span><span class="detail-field-value" style="white-space:pre-wrap;">${esc2(origLeaveReason)}</span></div>`;
+    }
+    origFields += `</div>`;
+
+    resultEl.innerHTML = `
+      <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 16px;margin-bottom:14px;">
+        ${origFields}
+      </div>
+      <div style="background:#EDE9FE;border:1.5px solid #C4B5FD;border-radius:10px;padding:12px 14px;color:#5B21B6;font-size:12px;margin-bottom:16px;">
+        <div style="font-weight:700;margin-bottom:4px;">↩ Требуется доработка</div>
+        ${found.reviewer ? `<div style="opacity:.85;">Проверил: <strong>${found.reviewer}</strong>${found.reviewer_ts?' · '+found.reviewer_ts:''}</div>` : ''}
+        ${found.note ? `<div style="margin-top:8px;padding:8px 10px;background:white;border-radius:7px;color:var(--text-soft);font-size:12px;">Примечание проверяющего: <strong>${found.note}</strong></div>` : ''}
+      </div>
+      <div class="form-card" style="padding:18px;margin:0;">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Имя и Фамилия</label>
+            <input type="text" id="er-name" value="${esc(found.name||'')}"/>
+          </div>
+          <div class="form-group">
+            <label>Текущее звание</label>
+            <input type="text" id="er-rank" value="${esc(found.rank||'')}"/>
+          </div>
+        </div>
+        ${isWeekly ? `
+          <div class="form-group">
+            <label>Должность и звание</label>
+            <input type="text" id="er-pos" value="${esc(found.pos||found.position||'')}"/>
+          </div>
+          <div class="form-group">
+            <label>Период отчёта</label>
+            <input type="text" id="er-period" value="${esc(found.period||'')}"/>
+          </div>
+          <div class="form-group">
+            <label>Проделанная работа</label>
+            <textarea id="er-work" style="min-height:120px;width:100%;padding:11px 14px;border:1.5px solid var(--grey-light);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:var(--cream);outline:none;resize:vertical;">${esc(found.work||'')}</textarea>
+          </div>
+        ` : `
+          ${found.type === 'promotion' ? `
+          <div class="form-group">
+            <label>Желаемое звание</label>
+            <input type="text" id="er-target" value="${esc(found.target||'')}"/>
+          </div>
+          <div class="form-group">
+            <label>Обоснование</label>
+            <textarea id="er-reason" style="min-height:100px;width:100%;padding:11px 14px;border:1.5px solid var(--grey-light);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:var(--cream);outline:none;resize:vertical;">${esc(found.promoReason||'')}</textarea>
+          </div>` : ''}
+          ${found.type === 'leave' ? `
+          <div class="form-row">
+            <div class="form-group"><label>Дата начала</label><input type="text" id="er-leave-start" value="${esc(found.leaveStart||'')}"/></div>
+            <div class="form-group"><label>Дата окончания</label><input type="text" id="er-leave-end" value="${esc(found.leaveEnd||'')}"/></div>
+          </div>
+          <div class="form-group">
+            <label>Причина</label>
+            <textarea id="er-leave-reason" style="min-height:80px;width:100%;padding:11px 14px;border:1.5px solid var(--grey-light);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:var(--cream);outline:none;resize:vertical;">${esc(found.leaveReason||'')}</textarea>
+          </div>` : ''}
+        `}
+        <hr class="form-divider"/>
+        <div id="er-msg" style="display:none;font-size:12px;margin-bottom:10px;padding:8px 12px;border-radius:8px;"></div>
+        <button type="button" onclick="submitEditedReport('${esc(found._docId)}','${foundSheet}')" class="submit-btn">Отправить исправленный отчёт</button>
+      </div>
+    `;
+  }
+
+  async function submitEditedReport(docId, col) {
+    const msg = document.getElementById('er-msg');
+    // Получаем текущие данные из Firebase чтобы сохранить оригинал
+    let origSnap = {};
+    try {
+      const docRef = getDb().collection(col).doc(docId);
+      const snap = await docRef.get();
+      if (snap.exists) origSnap = snap.data();
+    } catch(_) {}
+    // Сохраняем оригинал только при первом редактировании
+    const origFields2 = {};
+    if (!origSnap._orig_name && origSnap.name)             origFields2._orig_name        = origSnap.name;
+    if (!origSnap._orig_rank && origSnap.rank)             origFields2._orig_rank        = origSnap.rank;
+    if (!origSnap._orig_pos  && (origSnap.pos||origSnap.position)) origFields2._orig_pos  = origSnap.pos||origSnap.position||'';
+    if (!origSnap._orig_period && origSnap.period)         origFields2._orig_period      = origSnap.period;
+    if (!origSnap._orig_work && origSnap.work)             origFields2._orig_work        = origSnap.work;
+    if (!origSnap._orig_target && origSnap.target)         origFields2._orig_target      = origSnap.target;
+    if (!origSnap._orig_reason && origSnap.promoReason)    origFields2._orig_reason      = origSnap.promoReason;
+    if (!origSnap._orig_leaveStart && origSnap.leaveStart) origFields2._orig_leaveStart  = origSnap.leaveStart;
+    if (!origSnap._orig_leaveEnd   && origSnap.leaveEnd)   origFields2._orig_leaveEnd    = origSnap.leaveEnd;
+    if (!origSnap._orig_leaveReason&& origSnap.leaveReason)origFields2._orig_leaveReason = origSnap.leaveReason;
+    const updates = { status: 'pending', note: '', _edited: new Date().toISOString(), ...origFields2 };
+    const name = (document.getElementById('er-name')||{}).value; if (name !== undefined) updates.name = name;
+    const rank = (document.getElementById('er-rank')||{}).value; if (rank !== undefined) updates.rank = rank;
+    const pos  = (document.getElementById('er-pos') ||{}).value; if (pos  !== undefined) { updates.pos = pos; updates.position = pos; }
+    const period = (document.getElementById('er-period')||{}).value; if (period !== undefined) updates.period = period;
+    const work   = (document.getElementById('er-work')  ||{}).value; if (work   !== undefined) updates.work = work;
+    const target = (document.getElementById('er-target')||{}).value; if (target !== undefined) updates.target = target;
+    const reason = (document.getElementById('er-reason')||{}).value; if (reason !== undefined) updates.promoReason = reason;
+    const ls = (document.getElementById('er-leave-start') ||{}).value; if (ls !== undefined) updates.leaveStart = ls;
+    const le = (document.getElementById('er-leave-end')   ||{}).value; if (le !== undefined) updates.leaveEnd = le;
+    const lr = (document.getElementById('er-leave-reason')||{}).value; if (lr !== undefined) updates.leaveReason = lr;
+    try {
+      await getDb().collection(col).doc(docId).update(updates);
+      if (msg) { msg.style.display='block'; msg.style.background='var(--green-light)'; msg.style.color='var(--green)'; msg.textContent='✓ Отчёт обновлён и возвращён на рассмотрение'; }
+    } catch(e) {
+      if (msg) { msg.style.display='block'; msg.style.background='var(--red-light)'; msg.style.color='var(--red)'; msg.textContent='Ошибка: ' + (e.message||e); }
+    }
+  }
+
   /* ══════════════════════════════════════════════════════════════
      HANDBOOK — JS
   ══════════════════════════════════════════════════════════════ */
@@ -12999,16 +13606,25 @@
   }
 
   function _subscribeCollection(colName) {
-    const db = getDb();
-    const unsub = db.collection(colName).onSnapshot(snap => {
-      _notifCounts[colName] = snap.docs.filter(d => isPendingStatus(d.data())).length;
-      _rebuildNotifications();
-    }, err => { console.warn('onSnapshot ' + colName + ':', err); });
-    return unsub;
+    try {
+      const db = getDb();
+      const unsub = db.collection(colName).onSnapshot(snap => {
+        _notifCounts[colName] = snap.docs.filter(d => isPendingStatus(d.data())).length;
+        _rebuildNotifications();
+      }, err => { console.warn('onSnapshot ' + colName + ':', err); });
+      return unsub;
+    } catch(e) {
+      console.warn('_subscribeCollection error:', colName, e.message);
+      return () => {};
+    }
   }
 
   function loadNotifications() {
-    if (!_auth) return;
+    // Если Firebase SDK ещё не готов — ждём и повторяем
+    if (typeof firebase === 'undefined' || !firebase.firestore) {
+      setTimeout(() => loadNotifications(), 500);
+      return;
+    }
     // Отписываемся от предыдущих подписок если есть
     _notifUnsubs.forEach(fn => { try { fn(); } catch(_) {} });
     _notifUnsubs = [];
@@ -13426,9 +14042,11 @@
   }
 
   window.addEventListener('load', () => {
-    // Уведомления запускаются через onSnapshot в doLogin/restoreSession
+    // Уведомления для ВСЕХ — не зависит от авторизации
     updateAuthBadge();
     initPresence();
+    // Запускаем мониторинг pending-записей сразу при загрузке
+    setTimeout(() => loadNotifications(), 500);
   });
 
 </script>
@@ -13442,11 +14060,11 @@
         <div class="inbox-modal-eyebrow">Отчёты</div>
         <div class="inbox-modal-title" style="display:flex;align-items:center;gap:10px;">
           Архив входящих отчётов
-          <span class="sheets-badge">📊 Google Sheets</span>
+          
         </div>
       </div>
       <div class="inbox-modal-actions">
-        <button class="back-btn" onclick="refreshArchiveModal()" title="Обновить" style="gap:6px;">↻ Обновить</button>
+        <button class="back-btn" onclick="refreshArchiveModal()" title="Обновить" style="gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Обновить</button>
         <select class="inbox-filter-select" id="archive-filter" onchange="renderArchiveModalList()">
           <option value="all">Все статусы</option>
           <option value="pending">На рассмотрении</option>
@@ -13503,7 +14121,7 @@ async function seedPasswords() {
 
   try {
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+    const db = getDb();
 
     // Проверяем что коллекция пустая
     const existing = await db.collection('passwords').get();
