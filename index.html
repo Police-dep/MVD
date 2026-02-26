@@ -35,9 +35,12 @@
       color: var(--text);
       min-height: 100vh;
       overflow-x: hidden;
+      max-width: 100vw;
     }
+    *, *::before, *::after { max-width: 100%; }
+    img, svg, video, canvas { max-width: 100%; height: auto; }
 
-    .page-view { min-height: 100vh; }
+    .page-view { min-height: 100vh; max-width: 100vw; overflow-x: hidden; }
     .page-view.hidden { display: none; }
 
     /* ════════════════════════════
@@ -1168,9 +1171,13 @@
       /* Detail panel */
       .detail-name { font-size: 16px; }
       .detail-meta { font-size: 11px; }
-      .detail-field-row { flex-direction: row; gap: 8px; padding: 8px 0; }
-      .detail-field-label { font-size: 11px; min-width: 100px; }
-      .detail-field-value { font-size: 13px; }
+      .detail-field-row { flex-direction: column; gap: 2px; padding: 9px 0; }
+      .detail-field-label { font-size: 10px; min-width: unset; letter-spacing: .05em; text-transform: uppercase; font-weight: 600; }
+      .detail-field-value { font-size: 14px; word-break: break-word; overflow-wrap: anywhere; }
+      .detail-fields { padding: 12px 14px; border-radius: 10px; }
+      .detail-applicant { flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+      .detail-name { font-size: 18px; }
+      .detail-meta { font-size: 11px; white-space: normal; }
       .decision-panel { margin-top: 14px; padding: 14px; border-radius: 12px; }
       .decision-panel-title { font-size: 11px; margin-bottom: 10px; }
       .decision-btns { gap: 6px; }
@@ -1268,6 +1275,8 @@
       }
       input, textarea, select {
         font-size: 16px !important; /* Prevent iOS zoom on focus */
+        max-width: 100%;
+        box-sizing: border-box;
       }
 
       /* ── Scrollable tabs with indicator ── */
@@ -1291,6 +1300,22 @@
       .mtf-left, .mtf-right { padding: 16px 14px; }
     }
 
+
+      /* Prevent horizontal overflow inside modals */
+      .inbox-modal, .file-modal, .personnel-form-box, .modal-box {
+        max-width: 100vw !important;
+        overflow-x: hidden;
+      }
+      .inbox-modal * { max-width: 100%; }
+      .detail-fields { overflow-x: hidden; }
+      /* Убираем фиксированные min-width в grid/flex которые могут расширять страницу */
+      .lead-card { min-width: 0; }
+      .action-card { min-width: 0; }
+      .inbox-item { min-width: 0; }
+      /* Dept топбар и хедер */
+      .dept-page-topbar { max-width: 100vw; }
+      /* Статус-бейдж не переносится */
+      .inbox-item-badge { white-space: normal; text-align: center; max-width: 120px; }
     /* ── Very small phones (≤ 380px) ── */
     @media (max-width: 380px) {
       .hero-title { font-size: 21px; }
@@ -1670,10 +1695,15 @@
     }
     .detail-field-row:last-child { border-bottom: none; }
     .detail-field-label { color: var(--grey); min-width: 170px; flex-shrink: 0; font-size: 12px; }
-    .detail-field-value { color: var(--navy); font-weight: 500; word-break: break-word; }
+    .detail-field-value {
+      color: var(--navy); font-weight: 500;
+      word-break: break-word; overflow-wrap: anywhere;
+      min-width: 0; flex: 1;
+    }
     .detail-field-link {
       color: var(--navy); font-weight: 500; text-decoration: underline;
-      text-decoration-color: var(--accent); word-break: break-word;
+      text-decoration-color: var(--accent);
+      word-break: break-word; overflow-wrap: anywhere;
     }
 
     /* Панель решения */
