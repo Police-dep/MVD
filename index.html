@@ -487,12 +487,13 @@
       background: var(--red); margin-top: 7px; flex-shrink: 0;
     }
     .bl-warning {
-      background: var(--red-light); border: 1.5px solid #F0BABA;
+      background: var(--cream); border: 1.5px solid var(--grey-light);
+      border-left: 3px solid var(--accent);
       border-radius: 10px; padding: 14px 18px;
-      font-size: 12.5px; color: #A0281E; line-height: 1.65;
-      margin-top: 14px; display: flex; gap: 10px; align-items: flex-start;
+      font-size: 13px; color: var(--text-soft); line-height: 1.65;
+      margin-top: 14px;
     }
-    .bl-warning::before { content: '⚠'; font-size: 14px; margin-top: 1px; flex-shrink: 0; }
+    .bl-warning strong { color: var(--navy); }
 
     .bl-table-section { margin-top: 28px; }
     .bl-table-title {
@@ -532,10 +533,10 @@
       background: var(--cream); padding: 2px 7px; border-radius: 4px; color: var(--text-soft);
     }
     .bl-badge {
-      font-size: 11px; background: var(--red-light);
-      color: var(--red); padding: 3px 8px; border-radius: 5px; font-weight: 500;
+      font-size: 12px; color: var(--text-soft);
+      line-height: 1.5; word-break: break-word;
     }
-    .bl-badge.twin { background: #EEE8F8; color: #6040A0; }
+    .bl-badge.twin { color: #6040A0; }
 
     /* ════════════════════════════
        HOME — DEPARTMENTS
@@ -2199,6 +2200,20 @@
       .personnel-intro, .personnel-search-wrap, .personnel-results { padding-left: 16px; padding-right: 16px; }
       .personnel-grid { grid-template-columns: 1fr; }
     }
+    /* ════════════════════════════
+       LOGIN BUTTON (global)
+    ════════════════════════════ */
+    .global-login-btn-secondary {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 14px; background: var(--navy); color: white;
+      border: none; border-radius: 9px;
+      font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600;
+      cursor: pointer; transition: all .2s; white-space: nowrap;
+    }
+    .global-login-btn-secondary:hover { background: var(--navy-mid); }
+    body.is-authed .global-login-btn-secondary,
+    body.is-authed #global-login-btn { display: none !important; }
+
     /* ════════════════ DEPT PAGE ════════════════ */
     .dept-page-topbar { height: 4px; }
     .dept-topbar-SFPD  { background: linear-gradient(90deg,#1A2340,#3D5080); }
@@ -3301,9 +3316,10 @@
     </div>
     <div class="header-right">
       <div id="officer-badge-wrap" style="display:none;align-items:center;gap:6px;">
-        <span id="officer-badge" style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:var(--navy);color:var(--accent);font-size:11px;font-weight:700;letter-spacing:0.06em;border-radius:8px;white-space:nowrap;"></span>
+        <span id="officer-badge" style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:var(--navy);color:var(--accent);font-size:11px;font-weight:700;letter-spacing:0.06em;border-radius:8px;white-space:nowrap;max-width:160px;overflow:hidden;text-overflow:ellipsis;"></span>
         <button onclick="doLogout()" style="padding:5px 10px;background:transparent;border:1.5px solid var(--grey-light);border-radius:8px;font-size:11px;font-weight:600;color:var(--grey);cursor:pointer;white-space:nowrap;transition:all 0.15s;" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='var(--grey-light)';this.style.color='var(--grey)'">Выйти</button>
       </div>
+      <button id="global-login-btn" onclick="openPasswordGate('login')" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:var(--navy);color:white;border:none;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;">🔑 Войти</button>
       <div class="notif-bell-wrap" id="notif-bell-wrap">
         <button class="notif-bell-btn" id="notif-bell-btn" onclick="toggleNotifPanel()" title="Уведомления">
           🔔
@@ -3486,6 +3502,7 @@
         <span class="breadcrumb-sep">›</span>
         <span class="breadcrumb-current" id="bc-dept-name">—</span>
       </div>
+      <button class="global-login-btn-secondary" onclick="openPasswordGate('login')" id="login-btn-dept">🔑 Войти</button>
       <button class="back-btn" id="back-btn-dept">← Назад</button>
     </div>
   </header>
@@ -4161,9 +4178,9 @@
 
     </div>
 
-    <div style="margin-top:28px;padding:14px 20px;background:var(--navy);display:flex;align-items:center;gap:14px;border-left:3px solid var(--accent);">
-      <span style="font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);white-space:nowrap;">Отчёт</span>
-      <span style="font-size:13px;color:rgba(255,255,255,0.45);line-height:1.5;">Каждое повышение сопровождается подачей отчёта во вкладке <strong style="color:rgba(255,255,255,0.7);font-weight:600;">Подать отчёт</strong>. Без отчёта повышение не фиксируется.</span>
+    <div style="margin-top:28px;padding:14px 20px;background:var(--navy);display:flex;align-items:flex-start;gap:14px;border-left:3px solid var(--accent);flex-wrap:wrap;">
+      <span style="font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);flex-shrink:0;padding-top:2px;">Отчёт</span>
+      <span style="font-size:13px;color:rgba(255,255,255,0.55);line-height:1.6;flex:1;min-width:180px;">Каждое повышение сопровождается подачей отчёта во вкладке <strong style="color:rgba(255,255,255,0.8);font-weight:600;">Подать отчёт</strong>. Без отчёта повышение не фиксируется.</span>
     </div>
   </div>
 
@@ -4425,7 +4442,7 @@
           <div class="inbox-detail-empty"><div class="inbox-detail-empty-icon">📋</div>Отчётов пока нет.</div>
         </div>
         <div class="inbox-detail" id="all-reports-detail">
-          <div class="inbox-detail-empty"><div class="inbox-detail-empty-icon">📋</div>Выберите отчёт из списка слева.</div>
+          <div class="inbox-detail-empty"><div class="inbox-detail-empty-icon">📋</div>Выберите отчёт из списка.</div>
         </div>
       </div>
     </div>
@@ -5268,7 +5285,7 @@
         <div class="form-row">
           <div class="form-group">
             <label>Отдел <span style="color:var(--grey);font-weight:400;text-transform:none;letter-spacing:0">(опц.)</span></label>
-            <input type="text" id="pf-unit" placeholder="Например: ПДД, ОМОн"/>
+            <input type="text" id="pf-unit" placeholder="Напр.: Police Department, Police Academy"/>
           </div>
           <div class="form-group">
             <label>Дата последнего повышения</label>
@@ -5358,7 +5375,7 @@
       <div class="inbox-detail" id="emp-inbox-detail">
         <div class="inbox-detail-empty">
           <div class="inbox-detail-empty-icon">📋</div>
-          Выберите заявление из списка слева,<br/>чтобы просмотреть анкету.
+          Выберите заявление из списка выше, чтобы просмотреть.
         </div>
       </div>
     </div>
@@ -5396,7 +5413,7 @@
       <div class="inbox-detail" id="complaints-inbox-detail">
         <div class="inbox-detail-empty">
           <div class="inbox-detail-empty-icon">📋</div>
-          Выберите жалобу из списка слева,<br/>чтобы просмотреть анкету.
+          Выберите жалобу из списка выше, чтобы просмотреть.
         </div>
       </div>
     </div>
@@ -5569,6 +5586,9 @@
       } else if (pendingInboxTarget === 'complaints') {
         document.getElementById('modal-complaints-inbox').classList.add('open');
         refreshInbox('complaints');
+      } else if (pendingInboxTarget === 'login') {
+        // просто авторизация — ничего дополнительно не открываем
+        showToast('Добро пожаловать, ' + (_auth ? _auth.name : '') + ' [Ранг ' + (_auth ? _auth.rank : '') + ']');
       } else if (pendingInboxTarget === 'unlock-emp') {
         if (selectedEmpId) showEmpDetail(selectedEmpId);
       } else if (pendingInboxTarget === 'unlock-complaints') {
@@ -5658,6 +5678,11 @@
     const addBtn = document.getElementById('bl-add-btn');
     if (addBtn) addBtn.style.display = authRank() >= 9 ? 'inline-flex' : 'none';
   });
+  // Re-check bl-add-btn visibility whenever auth changes
+  function updateBlacklistAddBtn() {
+    const addBtn = document.getElementById('bl-add-btn');
+    if (addBtn) addBtn.style.display = authRank() >= 9 ? 'inline-flex' : 'none';
+  }
   function closeBlacklist(e) {
     if (e.target === document.getElementById('modal-blacklist'))
       document.getElementById('modal-blacklist').classList.remove('open');
@@ -6081,7 +6106,7 @@
       }
       renderEmpList();
       document.getElementById('emp-inbox-detail').innerHTML =
-        '<div class="inbox-detail-empty"><div class="inbox-detail-empty-icon">📋</div>Выберите заявление из списка слева.</div>';
+        '<div class="inbox-detail-empty"><div class="inbox-detail-empty-icon">📋</div>Выберите заявление из списка.</div>';
     } else {
       showLoading('complaints-inbox-list', 'complaints-inbox-detail');
       selectedComplaintId = null;
@@ -6093,7 +6118,7 @@
       }
       renderComplaintsList();
       document.getElementById('complaints-inbox-detail').innerHTML =
-        '<div class="inbox-detail-empty"><div class="inbox-detail-empty-icon">📋</div>Выберите жалобу из списка слева.</div>';
+        '<div class="inbox-detail-empty"><div class="inbox-detail-empty-icon">📋</div>Выберите жалобу из списка.</div>';
     }
   }
 
@@ -6504,18 +6529,34 @@
   /* ── Разблокировка: перехватываем checkPassword ── */
   const _origCheckPassword = checkPassword;
   // Переопределим чтобы обработать personnel
-  window.checkPassword = function() {
-    const val = document.getElementById('pw-input').value;
+  window.checkPassword = async function() {
+    const val = document.getElementById('pw-input').value.trim();
 
     // Проверяем пароль личных дел
     if (pendingInboxTarget === 'personnel') {
-      if (val === PERSONNEL_PASSWORD) {
+      if (!val) return;
+      const btn = document.getElementById('pw-submit-btn');
+      const origText = btn ? btn.textContent : '';
+      if (btn) { btn.textContent = 'Проверка...'; btn.disabled = true; }
+
+      // Сначала проверяем через Firebase (обычный офицерский пароль)
+      const res = await doLogin(val);
+      if (btn) { btn.textContent = origText; btn.disabled = false; }
+
+      const rankOk = res.ok && _auth && _auth.rank >= 8;
+      // Также принимаем legacy-пароль PERSONNEL_PASSWORD
+      const legacyOk = (val === PERSONNEL_PASSWORD);
+
+      if (rankOk || legacyOk) {
         personnelUnlocked = true;
+        if (!res.ok) {
+          // legacy path — auth не установлен, просто разблокируем
+        }
         document.getElementById('modal-pw-gate').classList.remove('open');
+        updateAuthBadge();
         // Обновить кнопку добавления
         const addBtn = document.getElementById('personnel-add-btn');
-        addBtn.classList.remove('locked');
-        addBtn.innerHTML = '+ Добавить дело';
+        if (addBtn) { addBtn.classList.remove('locked'); addBtn.innerHTML = '+ Добавить дело'; }
 
         // Выполнить отложенное действие
         if (_personnelPendingAction) {
@@ -6529,7 +6570,7 @@
       } else {
         const inp = document.getElementById('pw-input');
         inp.classList.add('error');
-        document.getElementById('pw-error').textContent = 'Неверный код доступа.';
+        document.getElementById('pw-error').textContent = 'Неверный код или недостаточно прав (нужен ранг 8+).';
         inp.value = '';
         setTimeout(() => { inp.classList.remove('error'); inp.focus(); }, 1200);
         return;
@@ -14109,10 +14150,13 @@
   function updateAuthBadge() {
     const wrap  = document.getElementById('officer-badge-wrap');
     const badge = document.getElementById('officer-badge');
+    const loginBtn = document.getElementById('global-login-btn');
     if (!wrap || !badge) return;
     if (_auth) {
       badge.textContent = _auth.name + ' [Ранг ' + _auth.rank + ' · ' + _auth.dept + ']';
       wrap.style.display = 'inline-flex';
+      if (loginBtn) loginBtn.style.display = 'none';
+      document.body.classList.add('is-authed');
       // Auto-unlock personnel management for rank >= 8
       if (_auth.rank >= 8 && !personnelUnlocked) {
         personnelUnlocked = true;
@@ -14122,14 +14166,18 @@
           addBtn.innerHTML = '+ Добавить дело';
         }
       }
+      updateBlacklistAddBtn();
     } else {
       wrap.style.display = 'none';
+      if (loginBtn) loginBtn.style.display = 'inline-flex';
+      document.body.classList.remove('is-authed');
       personnelUnlocked = false;
       const addBtn = document.getElementById('personnel-add-btn');
       if (addBtn) {
         addBtn.classList.add('locked');
         addBtn.innerHTML = '🔐 Добавить дело';
       }
+      updateBlacklistAddBtn();
     }
   }
 
@@ -14560,7 +14608,7 @@
       <div class="inbox-detail" id="archive-modal-detail">
         <div class="inbox-detail-empty">
           <div class="inbox-detail-empty-icon">📋</div>
-          Выберите отчёт из списка слева,<br/>чтобы просмотреть.
+          Выберите отчёт из списка выше, чтобы просмотреть.
         </div>
       </div>
     </div>
