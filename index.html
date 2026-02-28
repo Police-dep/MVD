@@ -2955,6 +2955,308 @@
       border-bottom: 2px solid var(--navy);
       margin-bottom: 0;
     }
+
+    /* ══════════════════════════════════════
+       MOBILE COMPREHENSIVE FIXES
+    ══════════════════════════════════════ */
+
+    /* ── Global overflow guard ── */
+    html, body { overflow-x: hidden; }
+    * { min-width: 0; }
+
+    /* ── Tables: always scrollable ── */
+    .ranks-wrap,
+    .admin-table-wrap,
+    .article-body table { overflow-x: auto; -webkit-overflow-scrolling: touch; display: block; max-width: 100%; }
+    .ranks-table, .admin-table { min-width: 480px; }
+
+    @media (max-width: 960px) {
+
+      /* ── Header: officer badge & logout ── */
+      #officer-badge-wrap {
+        max-width: 180px;
+        gap: 4px;
+        overflow: hidden;
+      }
+      #officer-badge {
+        max-width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 10px;
+        padding: 4px 8px;
+      }
+      #officer-badge-wrap button {
+        padding: 4px 7px;
+        font-size: 10px;
+        white-space: nowrap;
+      }
+
+      /* ── Dept page: inline-padded hero ── */
+      #dept-hero-content {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        padding-top: 24px !important;
+      }
+
+      /* ── Tab navs: horizontally scrollable ── */
+      .dept-tab-nav {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        flex-wrap: nowrap;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .dept-tab-nav::-webkit-scrollbar { display: none; }
+
+      /* ── Dept panels ── */
+      .dept-panel {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+      }
+
+      /* ── Reports sub-tabs: scrollable ── */
+      .reports-subtab-nav {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        flex-wrap: nowrap;
+        box-sizing: border-box;
+      }
+      .reports-subtab-nav::-webkit-scrollbar { display: none; }
+      .reports-layout { grid-template-columns: 1fr; }
+
+      /* ── Lead cards: single column on mobile ── */
+      .lead-row.cols-2,
+      .lead-row.cols-3 { grid-template-columns: 1fr; }
+      .lead-info-bar { flex-direction: column; }
+      .lead-info-item { min-width: 0; width: 100%; }
+
+      /* ── Detail field rows: stack label/value ── */
+      .detail-field-row,
+      .file-field-row,
+      .status-field-row,
+      .lead-profile-field,
+      .personnel-field-row {
+        flex-direction: column;
+        gap: 2px;
+        padding: 10px 0;
+      }
+      .detail-field-label,
+      .file-field-label,
+      .status-field-label,
+      .lead-profile-label,
+      .personnel-field-label {
+        min-width: 0;
+        width: 100%;
+        font-size: 10px;
+      }
+      .detail-field-value,
+      .file-field-value,
+      .status-field-value,
+      .lead-profile-value,
+      .personnel-field-value {
+        font-size: 13px;
+      }
+
+      /* ── Form rows: single column ── */
+      .form-row,
+      .personnel-form-body .form-row {
+        grid-template-columns: 1fr !important;
+        gap: 0 !important;
+      }
+
+      /* ── Status search block ── */
+      .status-search-block {
+        flex-direction: column;
+        gap: 12px;
+      }
+      .status-search-btn { width: 100%; }
+
+      /* ── Inbox modal header: wrap actions ── */
+      .inbox-modal-header {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .inbox-modal-actions {
+        flex-wrap: wrap;
+        gap: 6px;
+        width: 100%;
+        justify-content: flex-end;
+      }
+
+      /* ── Decision buttons: 2-column grid ── */
+      .decision-btns { flex-wrap: wrap; }
+      .decision-btn {
+        min-width: 0;
+        flex: 1 1 calc(50% - 4px);
+        font-size: 11px;
+        padding: 8px;
+      }
+
+      /* ── Personnel form modal: bottom sheet ── */
+      .personnel-form-overlay {
+        padding: 0;
+        align-items: flex-end;
+      }
+      .personnel-form-box {
+        border-radius: 20px 20px 0 0;
+        max-height: 92vh;
+        overflow-y: auto;
+      }
+      .personnel-form-header { padding: 20px 20px 16px; }
+      .personnel-form-body { padding: 20px 20px 24px; }
+
+      /* ── Notif panel: full width ── */
+      .notif-panel {
+        left: 8px;
+        right: 8px;
+        width: auto;
+        max-width: none;
+      }
+
+      /* ── Promo step: wrap tags ── */
+      .promo-step-head { flex-wrap: wrap; gap: 8px; }
+      .promo-step-transition { flex-wrap: nowrap; }
+
+      /* ── Archive modal footer row ── */
+      .complaints-footer-row,
+      .employment-footer-row {
+        grid-template-columns: 1fr;
+      }
+
+      /* ── App type grid ── */
+      .app-type-grid {
+        grid-template-columns: 1fr 1fr;
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      /* ── Rtype grid ── */
+      .rtype-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+
+      /* ── Lead profile modal ── */
+      .lead-profile-field { flex-direction: column; gap: 2px; }
+      .lead-profile-label { min-width: 0; width: 100%; }
+
+      /* ── Info grids ── */
+      .info-grid { grid-template-columns: 1fr; }
+      .info-field { flex-direction: column; gap: 2px; }
+      .info-label { min-width: 0 !important; }
+
+      /* ── Black list info grid ── */
+      .bl-info-grid { grid-template-columns: 1fr !important; }
+
+      /* ── Admin table scrollable ── */
+      .admin-panel-box { overflow-x: hidden; }
+      .admin-table { display: block; overflow-x: auto; font-size: 11px; }
+
+      /* ── Footer: single column ── */
+      footer {
+        flex-direction: column;
+        gap: 8px;
+        padding: 16px;
+        text-align: center;
+        height: auto;
+        min-height: auto;
+      }
+      .footer-stats-wrap { justify-content: center; }
+    }
+
+    @media (max-width: 480px) {
+      /* ── Header compact ── */
+      header { padding: 0 12px; height: 60px; }
+      .logo-badge { width: 36px; height: 36px; }
+      .logo-title { font-size: 14px; }
+
+      /* ── Quick actions: full column ── */
+      .quick-actions { flex-direction: column; padding-left: 12px; padding-right: 12px; }
+      .quick-actions-secondary { padding-left: 12px; padding-right: 12px; }
+      .quick-actions-secondary-inner { grid-template-columns: 1fr; }
+      .action-card { min-width: 0; }
+
+      /* ── Hero ── */
+      .hero { padding: 20px 12px 16px; }
+      .hero-title { font-size: 28px; }
+
+      /* ── Dept ── */
+      .dept-grid, .departments { padding-left: 12px; padding-right: 12px; }
+      .dept-grid { grid-template-columns: 1fr; }
+
+      /* ── mtf-banner: stack ── */
+      .mtf-wrap { padding-left: 12px; padding-right: 12px; }
+      .mtf-banner { grid-template-columns: 1fr; }
+      .mtf-left { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); padding: 18px 16px; }
+      .mtf-center { padding: 14px 16px; }
+      .mtf-right { border-left: none; padding: 12px 16px; justify-content: center; }
+
+      /* ── App type grid: single col ── */
+      .app-type-grid { grid-template-columns: 1fr; }
+      .rtype-grid { grid-template-columns: 1fr; }
+
+      /* ── Inbox / archive modal ── */
+      .inbox-modal-title { font-size: 17px; }
+      .inbox-modal-header { padding: 14px 14px 12px; }
+      .inbox-detail { padding: 16px 14px; }
+      .detail-name { font-size: 18px; }
+      .decision-btn { flex: 1 1 100%; }
+
+      /* ── Reports subtabs ── */
+      .reports-subtab { padding: 7px 14px; font-size: 12px; }
+
+      /* ── Dept tabs ── */
+      .dept-tab { padding: 8px 14px; font-size: 11px; }
+
+      /* ── Promo grid ── */
+      .promo-grid { grid-template-columns: 1fr; }
+
+      /* ── Exams grid ── */
+      .exams-grid { grid-template-columns: 1fr; }
+
+      /* ── Personnel cards ── */
+      .personnel-grid { grid-template-columns: 1fr; }
+
+      /* ── File modal ── */
+      .file-modal-overlay { padding: 0; align-items: flex-end; }
+      .file-modal { border-radius: 20px 20px 0 0; max-height: 92vh; overflow-y: auto; }
+
+      /* ── Complaints intro, main ── */
+      .complaints-intro,
+      .complaints-main,
+      .complaints-footer-row { padding-left: 12px; padding-right: 12px; }
+
+      /* ── Employment ── */
+      .employment-intro,
+      .employment-main,
+      .employment-footer-row { padding-left: 12px; padding-right: 12px; }
+
+      /* ── Handbook ── */
+      .handbook-wrap, .article-wrap { padding: 14px 12px 40px; }
+
+      /* ── Status page ── */
+      .status-page-wrap { padding-left: 12px; padding-right: 12px; }
+
+      /* ── Lead cards layout ── */
+      .lead-row.cols-1,
+      .lead-row.cols-2,
+      .lead-row.cols-3 { grid-template-columns: 1fr; }
+
+      /* ── Admin panel ── */
+      .admin-panel-box { padding: 12px; }
+    }
+
+    @media (max-width: 360px) {
+      .logo-title { font-size: 13px; }
+      #officer-badge { max-width: 80px; font-size: 9px; }
+      #officer-badge-wrap button { display: none; }
+      .hero-title { font-size: 24px; }
+      .dept-tab { font-size: 10px; padding: 7px 10px; }
+      .reports-subtab { font-size: 11px; padding: 6px 10px; }
+    }
   </style>
 </head>
 <body>
@@ -3167,7 +3469,7 @@
   </header>
 
   <!-- Hero -->
-  <div style="max-width:1100px;margin:0 auto;padding:36px 60px 8px;">
+  <div id="dept-hero-content" style="max-width:1100px;margin:0 auto;padding:36px 60px 8px;">
     <div class="page-eyebrow" id="dept-eyebrow">Департамент МВД</div>
     <h1 class="page-title" id="dept-title" style="margin-bottom:6px;">—</h1>
     <p class="page-desc" id="dept-desc">—</p>
