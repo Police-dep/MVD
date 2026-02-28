@@ -2975,17 +2975,18 @@
        MOBILE COMPREHENSIVE FIXES
     ══════════════════════════════════════ */
 
-    /* ── Global overflow guard ── */
-    html, body { overflow-x: hidden; }
-    * { min-width: 0; }
-
     /* ── Tables: always scrollable ── */
     .ranks-wrap,
     .admin-table-wrap,
     .article-body table { overflow-x: auto; -webkit-overflow-scrolling: touch; display: block; max-width: 100%; }
     .ranks-table, .admin-table { min-width: 480px; }
 
+    /* ── Notif panel: never clipped ── */
+    .notif-panel { max-width: none !important; }
+
     @media (max-width: 960px) {
+      html, body { overflow-x: hidden; }
+      * { min-width: 0; }
 
       /* ── Header: officer badge & logout ── */
       #officer-badge-wrap {
