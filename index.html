@@ -240,6 +240,35 @@
       from { opacity: 0; transform: translateX(-40px); }
       to   { opacity: 1; transform: translateX(0); }
     }
+    #sys-modal-overlay{position:fixed;inset:0;background:rgba(10,15,35,0.55);backdrop-filter:blur(3px);z-index:999999;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s;pointer-events:none;}
+    #sys-modal-overlay.open{opacity:1;pointer-events:all;}
+    #sys-modal-box{background:var(--white);border-radius:18px;box-shadow:0 20px 60px rgba(26,35,64,0.28);width:100%;max-width:440px;margin:16px;overflow:hidden;transform:translateY(14px) scale(0.97);transition:transform 0.22s cubic-bezier(.4,0,.2,1);}
+    #sys-modal-overlay.open #sys-modal-box{transform:translateY(0) scale(1);}
+    #sys-modal-topbar{height:5px;background:linear-gradient(90deg,var(--navy),#3D5080);}
+    #sys-modal-topbar.type-danger{background:linear-gradient(90deg,#c0392b,#e74c3c);}
+    #sys-modal-topbar.type-warning{background:linear-gradient(90deg,#b8860b,#e6a817);}
+    #sys-modal-topbar.type-success{background:linear-gradient(90deg,#1a6e3c,#2ea865);}
+    #sys-modal-body{padding:26px 28px 10px;}
+    #sys-modal-icon{font-size:30px;margin-bottom:10px;}
+    #sys-modal-title{font-size:16px;font-weight:800;color:var(--navy);margin-bottom:8px;}
+    #sys-modal-msg{font-size:14px;color:var(--text-soft);line-height:1.6;}
+    #sys-modal-input-wrap{margin-top:14px;}
+    #sys-modal-input{width:100%;padding:10px 14px;border:1.5px solid var(--grey-light);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--navy);background:var(--cream);outline:none;box-sizing:border-box;}
+    #sys-modal-footer{display:flex;gap:10px;justify-content:flex-end;padding:18px 28px 22px;}
+    .sys-modal-btn{padding:9px 22px;border-radius:10px;font-size:13px;font-weight:700;border:none;cursor:pointer;transition:all 0.15s;font-family:'DM Sans',sans-serif;}
+    .sys-modal-btn-cancel{background:var(--grey-light);color:var(--navy);}
+    .sys-modal-btn-cancel:hover{background:#dde3ef;}
+    .sys-modal-btn-ok{background:var(--navy);color:white;}
+    .sys-modal-btn-ok:hover{background:#0f1a36;}
+    .sys-modal-btn-ok.danger{background:#c0392b;}
+    .sys-modal-btn-ok.danger:hover{background:#a93226;}
+    #sys-snack-container{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;z-index:999998;pointer-events:none;}
+    .sys-snack{background:var(--navy);color:white;padding:11px 22px 11px 16px;border-radius:12px;font-size:13px;font-weight:600;box-shadow:0 6px 24px rgba(26,35,64,0.28);display:flex;align-items:center;gap:10px;pointer-events:all;animation:snackIn 0.28s cubic-bezier(.4,0,.2,1);transition:opacity 0.3s,transform 0.3s;white-space:nowrap;}
+    .sys-snack.type-error{background:#c0392b;}
+    .sys-snack.type-warn{background:#b8860b;}
+    .sys-snack.type-ok{background:#1a6e3c;}
+    .sys-snack.hiding{opacity:0;transform:translateY(8px);}
+    @keyframes snackIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
     @keyframes notifSlideIn {
       from { opacity: 0; transform: translateY(-4px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -3306,6 +3335,8 @@
 
   <!-- Toast container -->
   <div class="notif-toast-container" id="notif-toast-container"></div>
+  <div id="sys-modal-overlay"><div id="sys-modal-box"><div id="sys-modal-topbar"></div><div id="sys-modal-body"><div id="sys-modal-icon"></div><div id="sys-modal-title"></div><div id="sys-modal-msg"></div><div id="sys-modal-input-wrap" style="display:none"><input id="sys-modal-input" type="text"/></div></div><div id="sys-modal-footer"></div></div></div>
+  <div id="sys-snack-container"></div>
 
   <header>
     <div class="logo">
@@ -5455,15 +5486,17 @@
   function canDo(action, targetDept) {
     if (!_auth) return false;
     const rank = _auth.rank;
-    const dept = _auth.dept;
-    const ownOrMVD = dept === 'МВД' || rank >= 11 || !targetDept || dept === targetDept;
+    // Для проверки/редактирования — только свой департамент (или МВД/ранг 11+)
+    const modOk = canModifyDept(targetDept);
     switch(action) {
-      case 'editPersonnel':       return rank >= 8  && ownOrMVD;
-      case 'deletePersonnel':     return rank >= 10 && ownOrMVD;
-      case 'approveReport':       return rank >= 8  && ownOrMVD;
-      case 'approveComplaint':    return rank >= 9  && ownOrMVD;
-      case 'approveSeniorReport': return rank >= (SS_REPORT_MIN_RANK[targetDept]||10) && ownOrMVD;
-      case 'approveEmployment':   return rank >= 8  && ownOrMVD;
+      case 'editPersonnel':       return rank >= 8  && rank <= 10 && modOk;
+      case 'createPersonnel':     return rank >= 8  && rank <= 10 && modOk;
+      case 'deletePersonnel':     return rank >= 11;
+      case 'addBlacklist':        return rank >= 11;
+      case 'approveReport':       return rank >= 8  && modOk;
+      case 'approveComplaint':    return rank >= 9  && modOk;
+      case 'approveSeniorReport': return rank >= (SS_REPORT_MIN_RANK[targetDept]||10) && modOk;
+      case 'approveEmployment':   return rank >= 8  && modOk;
       case 'editLeads':           return rank >= 11;
       case 'deleteReport':
       case 'deleteComplaint':
@@ -5472,6 +5505,44 @@
       case 'managePasswords':     return rank >= 11;
       default:                    return rank >= 11;
     }
+  }
+
+  /* ── Проверка доступа по департаменту ──
+     Просматривать разделы любых департаментов могут все авторизованные.
+     Проверять/одобрять можно только свой департамент (контролируется через canDo + ownOrMVD).
+  */
+  function canAccessDept(targetDept) {
+    if (!_auth) return false;
+    return true; // просмотр открыт для всех авторизованных
+  }
+
+  /* ── Проверка: может ли текущий пользователь ПРОВЕРЯТЬ записи указанного департамента ── */
+  function canModifyDept(targetDept) {
+    if (!_auth) return false;
+    if (_auth.dept === 'МВД' || _auth.rank >= 11) return true;
+    return !targetDept || _auth.dept === targetDept;
+  }
+
+  /* ── Лимит редактирований личных дел: 5 уникальных дел в сутки (ранги 8-10) ── */
+  function _editLimitKey() {
+    return 'editLimit_' + (_auth ? _auth.slot : 'anon') + '_' + new Date().toISOString().slice(0, 10);
+  }
+  function getEditedPersonnelToday() {
+    try { const r = sessionStorage.getItem(_editLimitKey()); return r ? JSON.parse(r) : []; } catch(e) { return []; }
+  }
+  function markPersonnelEdited(id) {
+    const list = getEditedPersonnelToday();
+    if (!list.includes(id)) { list.push(id); try { sessionStorage.setItem(_editLimitKey(), JSON.stringify(list)); } catch(e) {} }
+  }
+  function canEditPersonnelFile(id) {
+    if (!_auth) return false;
+    if (_auth.rank >= 11) return true;
+    const edited = getEditedPersonnelToday();
+    return edited.includes(id) || edited.length < 5;
+  }
+  function getRemainingEditSlots() {
+    if (!_auth || _auth.rank >= 11) return Infinity;
+    return Math.max(0, 5 - getEditedPersonnelToday().length);
   }
 
   async function doLogin(password) {
@@ -5487,6 +5558,7 @@
       _toastsShown = false;
       // Подписываемся на реалтайм уведомления сразу после входа
       setTimeout(() => loadNotifications(), 100);
+      setTimeout(() => applyDeptRestrictions(), 200);
       return { ok: true, rank: match.rank, dept: match.dept, name: match.label };
     } catch(e) { return { ok: false, error: 'Ошибка: ' + e.message }; }
   }
@@ -5677,7 +5749,7 @@
     loadBlacklist();
     // Show add button if rank >= 9
     const addBtn = document.getElementById('bl-add-btn');
-    if (addBtn) addBtn.style.display = authRank() >= 9 ? 'inline-flex' : 'none';
+    if (addBtn) addBtn.style.display = authRank() >= 11 ? 'inline-flex' : 'none'; // только ранг 11
   });
   // Re-check bl-add-btn visibility whenever auth changes
   function updateBlacklistAddBtn() {
@@ -5728,7 +5800,7 @@
   }
 
   function renderBlacklist() {
-    const canEdit = authRank() >= 9;
+    const canEdit = authRank() >= 11; // только ранг 11 может удалять из ЧС
     const loading = document.getElementById('bl-loading');
     const table   = document.getElementById('bl-table');
     const empty   = document.getElementById('bl-empty');
@@ -5766,7 +5838,7 @@
   }
 
   function openBlacklistAdd() {
-    if (authRank() < 9) { showToast('Недостаточно прав'); return; }
+    if (!_auth || _auth.rank < 11) { sysAlert('Добавлять в чёрный список могут только офицеры <b>ранга 11</b>.', {type:'error', title:'Нет прав', icon:'🔒'}); return; }
     const form = document.getElementById('bl-add-form');
     form.style.display = form.style.display === 'none' ? 'block' : 'none';
     if (form.style.display !== 'none') {
@@ -5794,7 +5866,8 @@
   }
 
   async function deleteBlacklistEntry(id) {
-    if (!confirm('Удалить запись из чёрного списка?')) return;
+    if (!_auth || _auth.rank < 11) { sysAlert('Удалять из чёрного списка могут только офицеры <b>ранга 11</b>.', {type:'error', title:'Нет прав', icon:'🔒'}); return; }
+    if (!await sysConfirm('Удалить запись из чёрного списка?', {title:'Удаление из ЧС', icon:'🚫', okText:'Удалить'})) return;
     try {
       await fbDelete('blacklist', id);
       writeLog('УДАЛЕНИЕ', 'ЧС', id, '');
@@ -6030,7 +6103,7 @@
       if (res && res.ok === false) throw new Error(res.error || 'Ошибка Firebase');
     } catch(err) {
       btn.textContent = 'Подать жалобу'; btn.disabled = false;
-      alert('❌ Ошибка при отправке жалобы:\n' + (err.message || err) + '\n\nПроверь правила Firestore (Rules → allow read, write: if true)');
+      sysAlert('Ошибка при отправке жалобы:<br><small>' + (err.message||err) + '</small>', {type:'error', title:'Ошибка отправки'});
       return;
     }
 
@@ -6046,7 +6119,7 @@
   ══════════════════════════════════════════════════════════════ */
   document.getElementById('employment-form').addEventListener('submit', async function(e) {
     e.preventDefault();
-    if (!currentType) { alert('Выберите тип заявления.'); return; }
+    if (!currentType) { sysAlert('Выберите тип заявления.', {type:'warn', title:'Тип не выбран'}); return; }
     const form = e.target, btn = document.getElementById('emp-submit-btn');
     btn.textContent = 'Отправка...'; btn.disabled = true;
 
@@ -6075,7 +6148,7 @@
     } catch(err) {
       empApplications.shift(); // откатываем
       btn.textContent = 'Подать заявление'; btn.disabled = false;
-      alert('❌ Ошибка при отправке заявления:\n' + (err.message || err) + '\n\nПроверь правила Firestore (Rules → allow read, write: if true)');
+      sysAlert('Ошибка при отправке заявления:<br><small>' + (err.message||err) + '</small>', {type:'error', title:'Ошибка отправки'});
       return;
     }
 
@@ -6128,7 +6201,12 @@
   ══════════════════════════════════════════════════════════════ */
   function renderEmpList() {
     const filter = document.getElementById('emp-filter').value;
-    const list   = empApplications.filter(r => filter === 'all' || r.status === filter);
+    const sorted = [...empApplications].sort((a,b) => {
+      const pd = statusPriority(a.status) - statusPriority(b.status);
+      if (pd !== 0) return pd;
+      return new Date(b.timestamp||0) - new Date(a.timestamp||0);
+    });
+    const list   = sorted.filter(r => filter === 'all' || r.status === filter);
     const el     = document.getElementById('emp-inbox-list');
     if (!list.length) {
       el.innerHTML = '<div class="inbox-list-empty">Заявлений не найдено.</div>';
@@ -6180,8 +6258,9 @@
         <div class="detail-field-row"><span class="detail-field-label">Паспорт</span><a class="detail-field-link" href="${esc(r.passport)}" target="_blank" rel="noopener">${esc(r.passport)||'—'}</a></div>
         ${extra}
         ${r.note ? `<div class="detail-field-row"><span class="detail-field-label">Вердикт офицера</span><span class="detail-field-value">${esc(r.note)}</span></div>` : ''}
+        ${r.reviewer ? `<div class="detail-field-row"><span class="detail-field-label">Проверяющий</span><span class="detail-field-value">${esc(r.reviewer)} · ${esc(r.reviewer_ts||'')}</span></div>` : ''}
       </div>
-      ${canDo('approveReport', currentDept) ? `
+      ${canDo('approveEmployment', r.desired_dept) ? `
         <div class="decision-panel">
           <div class="decision-panel-title">Решение по заявлению</div>
           <div class="decision-btns">
@@ -6213,7 +6292,12 @@
   ══════════════════════════════════════════════════════════════ */
   function renderComplaintsList() {
     const filter = document.getElementById('complaints-filter').value;
-    const list   = complaintsList.filter(r => filter === 'all' || r.status === filter);
+    const sorted = [...complaintsList].sort((a,b) => {
+      const pd = statusPriority(a.status) - statusPriority(b.status);
+      if (pd !== 0) return pd;
+      return new Date(b.timestamp||0) - new Date(a.timestamp||0);
+    });
+    const list   = sorted.filter(r => filter === 'all' || r.status === filter);
     const el     = document.getElementById('complaints-inbox-list');
     if (!list.length) {
       el.innerHTML = '<div class="inbox-list-empty">Жалоб не найдено.</div>';
@@ -6312,8 +6396,19 @@
     const note      = noteEl ? noteEl.value.trim() : '';
     const saveBtn   = document.getElementById(prefix + '-save-' + id);
 
+    // Проверка доступа по департаменту
+    if (type === 'emp') {
+      const app = empApplications.find(x => x.id === id);
+      const appDept = app ? (app.desired_dept || '') : '';
+      if (appDept && !canModifyDept(appDept)) { sysAlert('Вы можете проверять заявки только своего департамента (<b>' + (_auth ? _auth.dept : '') + '</b>).', {type:'error', title:'Нет прав', icon:'🔒'}); return; }
+    } else if (type === 'complaint') {
+      const cItem = complaintsList.find(x => x.id === id);
+      const cDept = cItem ? (cItem.dept || cItem.desired_dept || '') : '';
+      if (cDept && !canModifyDept(cDept)) { sysAlert('Вы можете проверять жалобы только своего департамента (<b>' + (_auth ? _auth.dept : '') + '</b>).', {type:'error', title:'Нет прав', icon:'🔒'}); return; }
+    }
+
     if (!newStatus) {
-      alert('Сначала выберите решение: Одобрить или Отказать.');
+      sysAlert('Сначала нажмите <b>«Одобрить»</b> или <b>«Отказать»</b>.', {type:'warn', title:'Решение не выбрано', icon:'⚖️'});
       return;
     }
 
@@ -6341,7 +6436,7 @@
       });
       if (res && res.ok === false) throw new Error(res.error || 'Ошибка записи');
     } catch(err) {
-      alert('❌ Ошибка сохранения:\n' + (err.message || err));
+      sysAlert('Ошибка сохранения:<br><small>' + (err.message||err) + '</small>', {type:'error', title:'Ошибка сохранения'});
       if (saveBtn) { saveBtn.textContent = 'Сохранить решение'; saveBtn.disabled = false; }
       return;
     }
@@ -6395,10 +6490,9 @@
 
   function filterPersonnel(q, dept) {
     return personnelList.filter(p => {
+      if (_auth && _auth.dept !== 'МВД' && _auth.rank < 11 && p.dept !== _auth.dept) return false;
       const matchDept = dept === 'all' || p.dept === dept;
-      const matchQ    = !q ||
-        (p.name   && p.name.toLowerCase().includes(q))   ||
-        (p.badge  && String(p.badge).includes(q));
+      const matchQ = !q || (p.name && p.name.toLowerCase().includes(q)) || (p.badge && String(p.badge).includes(q));
       return matchDept && matchQ;
     });
   }
@@ -6493,13 +6587,31 @@
         </div>
       </div>
       <div class="file-modal-actions">
-        <button class="file-edit-btn ${personnelUnlocked?'':'locked'}" onclick="${personnelUnlocked?`openPersonnelEdit('${esc(id)}')`:`requestPersonnelUnlock('edit','${esc(id)}')`}">
-          ${personnelUnlocked?'✏️ Редактировать':'🔐 Редактировать'}
-        </button>
-        <button class="file-delete-btn ${personnelUnlocked?'':'locked'}" onclick="${personnelUnlocked?`confirmDeletePersonnel('${esc(id)}')`:`requestPersonnelUnlock('delete','${esc(id)}')`}">
-          🗑 Удалить
-        </button>
-      </div>`;
+        ${(()=>{
+          if (!personnelUnlocked) return '<button class="file-edit-btn locked" onclick="requestPersonnelUnlock(\'edit\',\'' + esc(id) + '\')" >🔐 Редактировать</button><button class="file-delete-btn locked" onclick="requestPersonnelUnlock(\'delete\',\'' + esc(id) + '\')">🗑 Удалить</button>';
+          const deptOk = canModifyDept(p.dept); // только свой деп может редактировать
+          const rankEdit = _auth && _auth.rank >= 8 && _auth.rank <= 10;
+          const rankDel  = _auth && _auth.rank >= 11;
+          const alreadyEdited = getEditedPersonnelToday().includes(id);
+          const limitOk = _auth && (_auth.rank >= 11 || alreadyEdited || getRemainingEditSlots() > 0);
+          let editBtn;
+          if (!deptOk) {
+            editBtn = '<button class="file-edit-btn locked" disabled style="opacity:.5;cursor:not-allowed;" title="Чужой департамент">🔒 ' + p.dept + '</button>';
+          } else if (!rankEdit) {
+            editBtn = '<button class="file-edit-btn locked" disabled style="opacity:.5;cursor:not-allowed;" title="Только ранги 8-10">🔒 Нет прав</button>';
+          } else if (!limitOk) {
+            editBtn = '<button class="file-edit-btn locked" disabled style="opacity:.5;cursor:not-allowed;" title="Лимит 5 дел/сутки исчерпан">⏱ Лимит</button>';
+          } else {
+            const hint = (_auth.rank < 11 && !alreadyEdited) ? ' (' + getRemainingEditSlots() + ')' : '';
+            editBtn = '<button class="file-edit-btn" onclick="openPersonnelEdit(\'' + esc(id) + '\')">✏️ Редактировать' + hint + '</button>';
+          }
+          const delBtn = rankDel
+            ? '<button class="file-delete-btn" onclick="confirmDeletePersonnel(\'' + esc(id) + '\')">🗑 Удалить</button>'
+            : '<button class="file-delete-btn locked" disabled style="opacity:.5;cursor:not-allowed;" title="Только ранг 11">🔒 Удалить</button>';
+          return editBtn + delBtn;
+        })()}
+      </div>
+      ${p.reviewer ? '<div style="margin:0 22px 16px;padding:8px 14px;background:var(--cream);border-radius:9px;border:1px solid var(--grey-light);font-size:11px;color:var(--grey);">Последнее изм.: <strong>' + esc(p.reviewer) + '</strong>' + (p.reviewer_ts ? ' · ' + esc(p.reviewer_ts) : '') + '</div>' : ''}`;
 
     document.getElementById('modal-file-view').classList.add('open');
   }
@@ -6521,6 +6633,7 @@
 
   function openPersonnelAdd() {
     if (personnelUnlocked) {
+      if (_auth && (_auth.rank < 8 || _auth.rank > 10)) { sysAlert('Создавать личные дела могут только офицеры рангов <b>8–10</b>.', {type:'error', title:'Нет прав', icon:'🔒'}); return; }
       showPersonnelForm(null);
     } else {
       requestPersonnelUnlock('add');
@@ -6937,7 +7050,12 @@
 
   function openPersonnelEdit(id) {
     const p = personnelList.find(x => x.id === id);
-    if (p) showPersonnelForm(p);
+    if (!p) return;
+    // Просмотр личных дел доступен для всех — редактирование ограничено через canDo
+    if (!_auth || _auth.rank < 8 || _auth.rank > 10) { sysAlert('Редактировать личные дела могут только офицеры рангов <b>8–10</b> своего департамента.', {type:'error', title:'Нет прав', icon:'🔒'}); return; }
+    if (!canEditPersonnelFile(id)) { sysAlert('Лимит: <b>5 личных дел в сутки</b>.<br>Обратитесь к офицеру ранга 11 для сброса.', {type:'warn', title:'Лимит исчерпан', icon:'⏱'}); return; }
+    markPersonnelEdited(id);
+    showPersonnelForm(p);
   }
 
   function closePersonnelFormOnBg(e) {
@@ -6965,12 +7083,19 @@
     };
 
     if (isEdit) {
+      if (!canModifyDept(record.dept) || !_auth || _auth.rank < 8 || _auth.rank > 10) { sysAlert('Нет прав редактировать это личное дело.', {type:'error', title:'Нет прав', icon:'🔒'}); return; }
+      if (!canEditPersonnelFile(editingId)) { sysAlert('Лимит редактирований (5 дел в сутки) исчерпан.', {type:'warn', title:'Лимит', icon:'⏱'}); return; }
+    } else {
+      if (!_auth || _auth.rank < 8 || _auth.rank > 10) { sysAlert('Создавать личные дела могут только офицеры рангов 8–10.', {type:'error', title:'Нет прав', icon:'🔒'}); return; }
+    }
+    const _ri = reviewerInfo(); record.reviewer = _ri.reviewer; record.reviewer_rank = _ri.reviewer_rank; record.reviewer_dept = _ri.reviewer_dept; record.reviewer_ts = _ri.reviewer_ts;
+    if (isEdit) {
       const idx = personnelList.findIndex(x => x.id === editingId);
       if (idx >= 0) personnelList[idx] = record;
-      try { await sheetsPost('updatePersonnel', { ...record, ...reviewerInfo() }); } catch(_) {}
+      try { await sheetsPost('updatePersonnel', { ...record, ..._ri }); } catch(_) {}
     } else {
       personnelList.unshift(record);
-      try { await sheetsPost('addPersonnel', { ...record, ...reviewerInfo() }); } catch(_) {}
+      try { await sheetsPost('addPersonnel', { ...record, ..._ri }); } catch(_) {}
     }
 
     document.getElementById('pf-success').style.display = 'block';
@@ -6985,20 +7110,17 @@
   });
 
   /* ── Удаление ── */
-  function confirmDeletePersonnel(id) {
+  async function confirmDeletePersonnel(id) {
+    if (!_auth || _auth.rank < 11) { sysAlert('Удалять личные дела может только офицер <b>ранга 11</b>.', {type:'error', title:'Нет прав', icon:'🔒'}); return; }
     const p = personnelList.find(x => x.id === id);
     if (!p) return;
-    if (!confirm(`Удалить личное дело «${p.name}»? Это действие необратимо.`)) return;
-
+    const ok = await sysConfirm('Удалить личное дело <b>«' + p.name + '»</b>?<br><span style="font-size:12px;color:#888">Необратимо.</span>', {title:'Удаление', okText:'Удалить'});
+    if (!ok) return;
     personnelList = personnelList.filter(x => x.id !== id);
     document.getElementById('modal-file-view').classList.remove('open');
-
     try { sheetsPost('deletePersonnel', { id, ...reviewerInfo() }); } catch(_) {}
-
-    renderPersonnelGrid(filterPersonnel(
-      document.getElementById('personnel-search-input').value.trim().toLowerCase(),
-      personnelFilter
-    ));
+    renderPersonnelGrid(filterPersonnel(document.getElementById('personnel-search-input').value.trim().toLowerCase(), personnelFilter));
+    showToast('Личное дело удалено', 'ok');
   }
 
   /* ══════════════════════════════════════════════════════════════
@@ -7029,6 +7151,7 @@
   };
 
   function openDeptPage(dept) {
+    // Просмотр разделов всех департаментов разрешён всем авторизованным пользователям
     currentDept = dept;
     const meta = DEPT_META[dept];
 
@@ -7117,6 +7240,19 @@
   const TYPE_COLOR = { promotion: '#4B6BF5', leave: '#1E7A4A', weekly: '#8A6B20' };
   const TYPE_BG    = { promotion: '#EEF2FF', leave: '#E6F4EC', weekly: '#F0E4C0' };
 
+
+  // Приоритет сортировки: непроверенные и на доработке — наверх
+  function statusPriority(status) {
+    const s = (status || '').toLowerCase();
+    if (!s || s === 'pending' || s === 'на рассмотрении') return 0;
+    if (s === 'review' || s === 'доработка') return 1;
+    return 2; // approved / rejected — вниз
+  }
+  function sortByStatusThenDate(a, b) {
+    const pd = statusPriority(a.status) - statusPriority(b.status);
+    if (pd !== 0) return pd;
+    return new Date(b.ts || b.timestamp || 0) - new Date(a.ts || a.timestamp || 0);
+  }
   function renderAllReports() {
     const el = document.getElementById('all-reports-list');
     if (!el) return;
@@ -7131,7 +7267,7 @@
       seen.add(r.id);
       return true;
     });
-    merged.sort((a, b) => new Date(b.ts) - new Date(a.ts));
+    merged.sort(sortByStatusThenDate);
 
     const list = merged.filter(r =>
       (fType   === 'all' || r.type   === fType) &&
@@ -7267,11 +7403,11 @@
 
   async function saveAllReportDecision(id) {
     const newStatus = _pending['rpt_'+id];
-    if (!newStatus) { alert('Выберите решение.'); return; }
+    if (!newStatus) { sysAlert('Выберите решение.', {type:'warn', title:'Решение не выбрано', icon:'⚖️'}); return; }
     const noteEl = document.getElementById('rpt-note-' + id);
     const note = noteEl ? noteEl.value.trim() : '';
     if (newStatus === 'review' && !note) {
-      alert('При «Доработке» примечание обязательно.');
+      sysAlert('При «Доработке» заполните примечание.', {type:'warn', title:'Примечание обязательно', icon:'📝'});
       if (noteEl) { noteEl.focus(); noteEl.style.borderColor = 'var(--red)'; setTimeout(() => { noteEl.style.borderColor = ''; }, 2000); }
       return;
     }
@@ -7281,7 +7417,7 @@
       const res = await sheetsPost('updateStatus', { sheet: 'Reports', id, status: newStatus, note, ...reviewerInfo() });
       if (res && res.ok === false) throw new Error(res.error || 'Ошибка записи');
     } catch(err) {
-      alert('❌ Ошибка сохранения:\n' + (err.message || err));
+      sysAlert('Ошибка сохранения:<br><small>' + (err.message||err) + '</small>', {type:'error', title:'Ошибка сохранения'});
       return;
     }
     delete _pending['rpt_'+id];
@@ -7291,11 +7427,11 @@
 
   async function saveSeniorReportDecision(id) {
     const newStatus = _pending['rpt_'+id];
-    if (!newStatus) { alert('Выберите решение.'); return; }
+    if (!newStatus) { sysAlert('Выберите решение.', {type:'warn', title:'Решение не выбрано', icon:'⚖️'}); return; }
     const noteEl = document.getElementById('rpt-note-' + id);
     const note = noteEl ? noteEl.value.trim() : '';
     if (newStatus === 'review' && !note) {
-      alert('При «Доработке» примечание обязательно.');
+      sysAlert('При «Доработке» заполните примечание.', {type:'warn', title:'Примечание обязательно', icon:'📝'});
       if (noteEl) { noteEl.focus(); noteEl.style.borderColor = 'var(--red)'; setTimeout(() => { noteEl.style.borderColor = ''; }, 2000); }
       return;
     }
@@ -7305,7 +7441,7 @@
       const res = await sheetsPost('updateStatus', { sheet: 'SeniorReports', id, status: newStatus, note, ...reviewerInfo() });
       if (res && res.ok === false) throw new Error(res.error || 'Ошибка записи');
     } catch(err) {
-      alert('❌ Ошибка сохранения:\n' + (err.message || err));
+      sysAlert('Ошибка сохранения:<br><small>' + (err.message||err) + '</small>', {type:'error', title:'Ошибка сохранения'});
       return;
     }
     delete _pending['rpt_'+id];
@@ -7314,8 +7450,8 @@
   }
 
   async function deleteReportRecord(id, sheetName) {
-    if (!canDo('deleteReport', currentDept)) { alert('Нет прав на удаление.'); return; }
-    if (!confirm('Удалить запись? Это действие необратимо.')) return;
+    if (!canDo('deleteReport', currentDept)) { sysAlert('Нет прав на удаление.', {type:'error', title:'Доступ запрещён', icon:'🔒'}); return; }
+    if (!await sysConfirm('Удалить запись?<br><span style="font-size:12px;color:#888">Необратимо.</span>', {title:'Удаление', okText:'Удалить'})) return;
     allReports    = allReports.filter(x => x.id !== id);
     seniorReports = seniorReports.filter(x => x.id !== id);
     try { await sheetsPost('deleteRecord', { sheet: sheetName, id, ...reviewerInfo() }); } catch(_) {}
@@ -7325,8 +7461,8 @@
   }
 
   async function deleteComplaintRecord(id) {
-    if (!canDo('deleteComplaint')) { alert('Нет прав на удаление.'); return; }
-    if (!confirm('Удалить жалобу? Это действие необратимо.')) return;
+    if (!canDo('deleteComplaint')) { sysAlert('Нет прав на удаление жалобы.', {type:'error', title:'Доступ запрещён', icon:'🔒'}); return; }
+    if (!await sysConfirm('Удалить жалобу?<br><span style="font-size:12px;color:#888">Необратимо.</span>', {title:'Удаление жалобы', okText:'Удалить'})) return;
     complaintsList = complaintsList.filter(x => x.id !== id);
     try { await sheetsPost('deleteRecord', { sheet: 'Complaints', id, ...reviewerInfo() }); } catch(_) {}
     renderComplaintsList();
@@ -7490,12 +7626,12 @@
 
   async function saveReportDecision(id, idx) {
     const newStatus = _pending['rpt_'+id];
-    if (!newStatus) { alert('Выберите решение.'); return; }
+    if (!newStatus) { sysAlert('Выберите решение.', {type:'warn', title:'Решение не выбрано', icon:'⚖️'}); return; }
     const noteEl = document.getElementById('rpt-note-' + id) || document.getElementById('rpt-note-' + idx);
     const note = noteEl ? noteEl.value.trim() : '';
 
     if (!note) {
-      alert('Вердикт обязателен. Укажите решение или причину отказа.');
+      sysAlert('Поле «Вердикт» обязательно.', {type:'warn', title:'Вердикт не указан', icon:'⚖️'});
       if (noteEl) { noteEl.focus(); noteEl.style.borderColor = 'var(--red)'; setTimeout(() => { noteEl.style.borderColor = ''; }, 2000); }
       return;
     }
@@ -7543,7 +7679,7 @@
   /* ── Submit report form (unified) ── */
   document.getElementById('submit-report-form').addEventListener('submit', async function(e) {
     e.preventDefault();
-    if (!currentRType) { alert('Выберите тип отчёта.'); return; }
+    if (!currentRType) { sysAlert('Выберите тип отчёта.', {type:'warn', title:'Тип не выбран', icon:'📋'}); return; }
     const typeLabels = { promotion:'Отчёт на повышение', leave:'Заявление на отпуск', weekly:'Отчёт ст. состава' };
     const name = document.getElementById('rpt-name').value.trim();
     const rank = document.getElementById('rpt-rank').value.trim();
@@ -7588,7 +7724,7 @@
       }
       ok = true;
     } catch(err) {
-      alert('❌ Ошибка при отправке отчёта:\n' + (err.message || err) + '\n\nПроверь правила Firestore (Rules → allow read, write: if true)');
+      sysAlert('Ошибка при отправке отчёта:<br><small>' + (err.message||err) + '</small>', {type:'error', title:'Ошибка отправки'});
     }
 
     if (submitBtn) { submitBtn.textContent = 'Подать отчёт'; submitBtn.disabled = false; }
@@ -7635,7 +7771,7 @@
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(code)
         .then(() => showToast('Код скопирован: ' + code))
-        .catch(() => { prompt('Скопируйте код вручную:', code); });
+        .catch(() => { sysAlert('Скопируйте код вручную: <b>' + code + '</b>', {title:'Код отчёта', icon:'📋'}); });
     } else {
       // Fallback для браузеров без clipboard API
       const ta = document.createElement('textarea');
@@ -7651,7 +7787,7 @@
     const codeInput = document.getElementById('edit-rpt-code');
     const resultEl  = document.getElementById('edit-rpt-result');
     const code = (codeInput.value || '').trim().toUpperCase();
-    if (!code) { alert('Введите код отчёта.'); return; }
+    if (!code) { sysAlert('Введите код отчёта.', {type:'warn', title:'Код не введён', icon:'🔍'}); return; }
 
     resultEl.style.display = 'block';
     resultEl.innerHTML = '<div style="color:var(--grey);font-size:13px;">Поиск...</div>';
@@ -13964,7 +14100,7 @@
     if (badge) { badge.textContent = shown.length; badge.classList.add('visible'); }
     if (bellBtn) bellBtn.classList.add('has-notif');
     el.innerHTML = shown.map(n => `
-      <div class="notif-item" data-id="${n.id}" data-action="${n.action}" onclick="handleNotifClick(event, this)">
+      <div class="notif-item" data-id="${n.id}" data-action="${n.action}" data-dept="${n.dept||''}" onclick="handleNotifClick(event, this)">
         <div class="notif-item-icon type-${n.type}">${n.icon}</div>
         <div class="notif-item-body">
           <div class="notif-item-title">${n.title}</div>
@@ -14001,30 +14137,45 @@
 
   function handleNotifClick(e, el) {
     if (e.target.classList.contains('notif-item-dismiss')) return;
-    const id = el.dataset.id;
     const action = el.dataset.action;
-    addDismissedNotif(id);
+    const dept = el.dataset.dept || null;
+    // НЕ скрываем уведомление при клике — оно должно пропасть только когда
+    // все pending-записи в этом разделе будут проверены (Firebase сам обновит счётчик)
     document.getElementById('notif-panel').classList.remove('open');
-    doNotifAction(action);
+    doNotifAction(action, dept);
   }
 
-  function doNotifAction(action) {
+  function getActivePage() {
+    const ids = ['page-home','page-dept','page-complaints','page-employment','page-personnel','page-handbook','page-article'];
+    for (const id of ids) { const el = document.getElementById(id); if (el && !el.classList.contains('hidden')) return el; }
+    return pageHome;
+  }
+
+  function doNotifAction(action, notifDept) {
+    const from = getActivePage();
+    document.getElementById('notif-panel').classList.remove('open');
+
     if (action === 'complaints') {
-      if (typeof pageHome !== 'undefined' && typeof pageComplaints !== 'undefined') {
-        navigate(pageHome, pageComplaints);
-        setTimeout(() => {
-          const modal = document.getElementById('modal-complaints-inbox');
-          if (modal) { modal.classList.add('open'); refreshInbox('complaints'); }
-        }, 300);
-      }
+      // Жалобы живут на странице pageComplaints — dept не нужен для навигации
+      const open = () => { const m = document.getElementById('modal-complaints-inbox'); if (m) { m.classList.add('open'); refreshInbox('complaints'); } };
+      if (from === pageComplaints) { open(); } else { navigate(from, pageComplaints); setTimeout(open, 320); }
+
     } else if (action === 'reports') {
-      if (typeof pageHome !== 'undefined' && typeof pageDept !== 'undefined' && currentDept) {
-        navigate(pageHome, pageDept);
-        setTimeout(() => {
-          const tab = document.querySelector('.dept-tab[data-tab="inbox-reports"]');
-          if (tab) tab.click();
-        }, 300);
-      }
+      // Определяем целевой департамент: из уведомления → из текущей страницы → из _auth
+      const dept = notifDept || currentDept || (_auth && _auth.dept !== 'МВД' ? _auth.dept : null);
+      if (!dept) { showToast('Не удалось определить департамент', 'warn'); return; }
+      const goTab = () => {
+        const tab = document.querySelector('.dept-tab[data-tab="reports"]');
+        if (tab) tab.click();
+        setTimeout(() => { const stab = document.querySelector('.reports-subtab[data-stab="all"]'); if (stab) stab.click(); }, 200);
+      };
+      if (from === pageDept && currentDept === dept) { goTab(); }
+      else { openDeptPage(dept); setTimeout(goTab, 400); }
+
+    } else if (action === 'employment') {
+      // Трудоустройство — глобальная страница, dept нужен только чтобы открыть inbox
+      const open = () => { const m = document.getElementById('modal-emp-inbox'); if (m) { m.classList.add('open'); refreshInbox('emp'); } };
+      if (from === pageEmployment) { open(); } else { navigate(from, pageEmployment); setTimeout(open, 320); }
     }
   }
 
@@ -14032,8 +14183,9 @@
   function showNotifToasts(notifications) {
     if (_toastsShown) return;
     if (!_auth) return;
-    const dismissed = getDismissedNotifs();
-    const active = notifications.filter(n => !dismissed.includes(n.id)).slice(0, 3);
+    // Показываем тосты для всех активных уведомлений (без фильтрации по dismissed)
+    // dismissed используется только для кнопки ✕
+    const active = notifications.slice(0, 3);
     const container = document.getElementById('notif-toast-container');
     if (!container || !active.length) return;
     _toastsShown = true;
@@ -14044,9 +14196,10 @@
         toast.innerHTML = `<div class="notif-toast-icon">${n.icon}</div><div class="notif-toast-body"><div class="notif-toast-title">${n.title}</div><div class="notif-toast-desc">${n.desc}</div></div><button class="notif-toast-close" onclick="event.stopPropagation();hideToast(this.parentNode)">✕</button>`;
         toast.addEventListener('click', function(e) {
           if (e.target.classList.contains('notif-toast-close')) return;
+          const toastDept = n.dept || null;
           hideToast(toast);
-          addDismissedNotif(n.id);
-          doNotifAction(n.action);
+          // НЕ dismiss — тост закрывается, но уведомление в колокольчике живёт до реальной проверки
+          doNotifAction(n.action, toastDept);
         });
         container.appendChild(toast);
         setTimeout(() => hideToast(toast), 7000);
@@ -14075,37 +14228,68 @@
 
   // Локальные счётчики по коллекциям (обновляются независимо)
   const _notifCounts = { complaints: 0, reports: 0, senior_reports: 0, employment: 0 };
+  // Per-dept счётчики для правильной навигации
+  const _notifCountsDept = {
+    reports:        { SFPD: 0, LVMPD: 0, LSCSD: 0 },
+    senior_reports: { SFPD: 0, LVMPD: 0, LSCSD: 0 },
+    employment:     { SFPD: 0, LVMPD: 0, LSCSD: 0 },
+    complaints:     { SFPD: 0, LVMPD: 0, LSCSD: 0 },
+  };
 
   function _rebuildNotifications() {
     const notifications = [];
-    if (_notifCounts.complaints > 0) {
+    const DEPTS = ['SFPD', 'LVMPD', 'LSCSD'];
+
+    // Жалобы — per dept
+    DEPTS.forEach(dept => {
+      const cnt = (_notifCountsDept.complaints[dept] || 0);
+      if (cnt > 0) notifications.push({ id: 'complaints_' + dept + '_' + cnt, type: 'complaint', icon: '⚠',
+        title: 'Жалобы · ' + dept,
+        desc: cnt + ' жалоб' + (cnt===1?'а':cnt<5?'ы':'') + ' ожидают проверки',
+        ts: '', action: 'complaints', dept });
+    });
+    // Если нет per-dept данных но есть общий счётчик — fallback
+    if (!notifications.length && _notifCounts.complaints > 0) {
       const cnt = _notifCounts.complaints;
       notifications.push({ id: 'complaints_' + cnt, type: 'complaint', icon: '⚠',
         title: 'Непроверенные жалобы',
         desc: cnt + ' жалоб' + (cnt===1?'а':cnt<5?'ы':'') + ' ожидают проверки',
-        ts: '', action: 'complaints' });
+        ts: '', action: 'complaints', dept: null });
     }
-    if (_notifCounts.reports > 0) {
-      const cnt = _notifCounts.reports;
+
+    // Отчёты — per dept
+    DEPTS.forEach(dept => {
+      const cnt = (_notifCountsDept.reports[dept] || 0) + (_notifCountsDept.senior_reports[dept] || 0);
+      if (cnt > 0) notifications.push({ id: 'reports_' + dept + '_' + cnt, type: 'report', icon: '📋',
+        title: 'Отчёты · ' + dept,
+        desc: cnt + ' отчёт' + (cnt===1?'':cnt<5?'а':'ов') + ' ожидает проверки',
+        ts: '', action: 'reports', dept });
+    });
+    // Fallback
+    if (!notifications.filter(n=>n.action==='reports').length && (_notifCounts.reports > 0 || _notifCounts.senior_reports > 0)) {
+      const cnt = _notifCounts.reports + _notifCounts.senior_reports;
       notifications.push({ id: 'reports_' + cnt, type: 'report', icon: '📋',
         title: 'Непроверенные отчёты',
         desc: cnt + ' отчёт' + (cnt===1?'':cnt<5?'а':'ов') + ' ожидает проверки',
-        ts: '', action: 'reports' });
+        ts: '', action: 'reports', dept: null });
     }
-    if (_notifCounts.senior_reports > 0) {
-      const cnt = _notifCounts.senior_reports;
-      notifications.push({ id: 'sr_' + cnt, type: 'report', icon: '📄',
-        title: 'Отчёты старшего состава',
-        desc: cnt + ' отчёт' + (cnt===1?'':cnt<5?'а':'ов') + ' на рассмотрении',
-        ts: '', action: 'reports' });
-    }
-    if (_notifCounts.employment > 0) {
+
+    // Трудоустройство — per dept (desired_dept)
+    DEPTS.forEach(dept => {
+      const cnt = (_notifCountsDept.employment[dept] || 0);
+      if (cnt > 0) notifications.push({ id: 'emp_' + dept + '_' + cnt, type: 'report', icon: '👤',
+        title: 'Трудоустройство · ' + dept,
+        desc: cnt + ' заявк' + (cnt===1?'а':cnt<5?'и':'') + ' ожидает рассмотрения',
+        ts: '', action: 'employment', dept });
+    });
+    if (!notifications.filter(n=>n.action==='employment').length && _notifCounts.employment > 0) {
       const cnt = _notifCounts.employment;
       notifications.push({ id: 'emp_' + cnt, type: 'report', icon: '👤',
         title: 'Заявки на трудоустройство',
         desc: cnt + ' заявк' + (cnt===1?'а':cnt<5?'и':'') + ' ожидает рассмотрения',
-        ts: '', action: 'employment' });
+        ts: '', action: 'employment', dept: null });
     }
+
     _currentNotifications = notifications;
     renderNotifPanel(notifications);
     showNotifToasts(notifications);
@@ -14115,7 +14299,18 @@
     try {
       const db = getDb();
       const unsub = db.collection(colName).onSnapshot(snap => {
-        _notifCounts[colName] = snap.docs.filter(d => isPendingStatus(d.data())).length;
+        const pending = snap.docs.filter(d => isPendingStatus(d.data()));
+        _notifCounts[colName] = pending.length;
+        // Считаем per-dept
+        if (_notifCountsDept[colName]) {
+          const deptKey = colName === 'employment' ? 'desired_dept' : 'dept';
+          const fresh = { SFPD: 0, LVMPD: 0, LSCSD: 0 };
+          pending.forEach(d => {
+            const dep = d.data()[deptKey];
+            if (dep && fresh[dep] !== undefined) fresh[dep]++;
+          });
+          _notifCountsDept[colName] = fresh;
+        }
         _rebuildNotifications();
       }, err => { console.warn('onSnapshot ' + colName + ':', err); });
       return unsub;
@@ -14451,6 +14646,7 @@
         <td style="display:flex;gap:6px;flex-wrap:wrap;">
           <button class="admin-btn-sm" onclick="adminEditSlot('${esc(r._id)}','${esc(r.label)}','${esc(String(r.rank))}','${esc(r.dept)}','${esc(r.password||'')}')">✏</button>
           <button class="admin-btn-sm" onclick="adminToggleActive('${esc(r._id)}',${active})">${active?'Деакт.':'Активир.'}</button>
+          ${parseInt(r.rank)<11?`<button class="admin-btn-sm" title="Сбросить счётчик редактирований" onclick="adminResetEditCounter('${esc(r.slot||r._id)}','${esc(r.label)}')" style="background:#e8f4fd;color:#1a6e9e;">⏱ ${(()=>{try{const v=sessionStorage.getItem('editLimit_'+(r.slot||r._id)+'_'+new Date().toISOString().slice(0,10));return v?JSON.parse(v).length:0;}catch(e){return 0;}})()}/5</button>`:''}
           <button class="admin-btn-sm admin-btn-danger" onclick="adminDeleteSlot('${esc(r._id)}','${esc(r.label)}')">🗑</button>
         </td>
       </tr>`;
@@ -14465,22 +14661,40 @@
   }
 
   async function adminEditSlot(id, label, rank, dept, pw) {
-    const newLabel = prompt('Имя / Метка:', label);
-    if (newLabel === null) return;
-    const newRank  = prompt('Ранг (8-11):', rank);
-    if (newRank === null) return;
-    const newDept  = prompt('Отдел (SFPD/LVMPD/LSCSD/МВД):', dept);
-    if (newDept === null) return;
-    const newPw    = prompt('Новый код (оставьте текущий или введите новый):', pw);
-    if (newPw === null) return;
-    if (newPw !== pw) {
-      const all = await fbGet('passwords');
-      if (all.find(r => r.password === newPw && r._id !== id)) { alert('Этот код уже занят.'); return; }
-    }
-    await fbUpdate('passwords', id, { label: newLabel, rank: parseInt(newRank), dept: newDept, password: newPw });
-    writeLog('РЕДАКТИРОВАНИЕ', 'Пароли', id, newLabel);
-    showToast('Слот обновлён');
-    loadAdminPasswords();
+    const ov = document.getElementById('sys-modal-overlay');
+    document.getElementById('sys-modal-topbar').className = '';
+    document.getElementById('sys-modal-icon').textContent = '🔑';
+    document.getElementById('sys-modal-title').textContent = 'Редактирование слота доступа';
+    const dOpts = ['SFPD','LVMPD','LSCSD','МВД'].map(d => `<option${d===dept?' selected':''}>${d}</option>`).join('');
+    document.getElementById('sys-modal-msg').innerHTML = `<div style="display:flex;flex-direction:column;gap:10px;margin-top:6px;">
+      <div><label style="font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;">Имя / Метка</label>
+        <input id="ses-label" value="${label}" style="width:100%;padding:9px 12px;border:1.5px solid var(--grey-light);border-radius:9px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--navy);background:var(--cream);outline:none;box-sizing:border-box;"/></div>
+      <div style="display:flex;gap:10px;">
+        <div style="flex:1"><label style="font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;">Ранг</label>
+          <input id="ses-rank" type="number" min="8" max="11" value="${rank}" style="width:100%;padding:9px 12px;border:1.5px solid var(--grey-light);border-radius:9px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--navy);background:var(--cream);outline:none;box-sizing:border-box;"/></div>
+        <div style="flex:1"><label style="font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;">Отдел</label>
+          <select id="ses-dept" style="width:100%;padding:9px 12px;border:1.5px solid var(--grey-light);border-radius:9px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--navy);background:var(--cream);outline:none;box-sizing:border-box;">${dOpts}</select></div>
+      </div>
+      <div><label style="font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;">Код доступа</label>
+        <input id="ses-pw" value="${pw}" style="width:100%;padding:9px 12px;border:1.5px solid var(--grey-light);border-radius:9px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--navy);background:var(--cream);outline:none;box-sizing:border-box;"/></div>
+    </div>`;
+    document.getElementById('sys-modal-input-wrap').style.display = 'none';
+    const footer = document.getElementById('sys-modal-footer'); footer.innerHTML = '';
+    const cancel = document.createElement('button'); cancel.className = 'sys-modal-btn sys-modal-btn-cancel'; cancel.textContent = 'Отмена'; cancel.onclick = () => closeSysModal(); footer.appendChild(cancel);
+    const ok = document.createElement('button'); ok.className = 'sys-modal-btn sys-modal-btn-ok'; ok.textContent = 'Сохранить';
+    ok.onclick = async () => {
+      const newLabel = (document.getElementById('ses-label').value||'').trim();
+      const newRank = document.getElementById('ses-rank').value;
+      const newDept = document.getElementById('ses-dept').value;
+      const newPw = (document.getElementById('ses-pw').value||'').trim();
+      if (!newLabel) { sysAlert('Введите имя / метку.', {type:'warn'}); return; }
+      if (newPw !== pw) { const all = await fbGet('passwords'); if (all.find(r => r.password === newPw && r._id !== id)) { sysAlert('Этот код уже занят.', {type:'warn', title:'Код занят', icon:'🔑'}); return; } }
+      closeSysModal();
+      await fbUpdate('passwords', id, { label: newLabel, rank: parseInt(newRank), dept: newDept, password: newPw });
+      writeLog('РЕДАКТИРОВАНИЕ', 'Пароли', id, newLabel); showToast('Слот обновлён', 'ok'); loadAdminPasswords();
+    };
+    footer.appendChild(ok); ov.classList.add('open');
+    setTimeout(() => { const el = document.getElementById('ses-label'); if (el) el.focus(); }, 100);
   }
 
   async function adminToggleActive(id, currentActive) {
@@ -14490,7 +14704,7 @@
   }
 
   async function adminDeleteSlot(id, label) {
-    if (!confirm('Удалить слот «' + label + '»? Это действие нельзя отменить.')) return;
+    if (!await sysConfirm('Удалить слот <b>«' + label + '»</b>?', {title:'Удаление слота', okText:'Удалить'})) return;
     await fbDelete('passwords', id);
     writeLog('УДАЛЕНИЕ', 'Пароли', id, label);
     _adminPasswordsCache = _adminPasswordsCache.filter(r => r._id !== id);
@@ -14503,10 +14717,10 @@
     const rank  = parseInt((document.getElementById('admin-new-rank') || {}).value || '8');
     const dept  = (document.getElementById('admin-new-dept') || {}).value || 'SFPD';
     let   code  = (document.getElementById('admin-new-code') || {}).value.trim();
-    if (!label) { alert('Введите имя / метку'); return; }
+    if (!label) { sysAlert('Введите имя / метку.', {type:'warn', title:'Пусто', icon:'✏️'}); return; }
     if (!code) code = genAdminCode();
     const all = await fbGet('passwords');
-    if (all.find(r => r.password === code)) { alert('Этот код уже занят. Введите другой.'); return; }
+    if (all.find(r => r.password === code)) { sysAlert('Этот код уже занят.', {type:'warn', title:'Код занят', icon:'🔑'}); return; }
     const slotId = dept.toLowerCase() + '_' + rank + '_' + Date.now().toString(36);
     await fbSet('passwords', slotId, { slot: slotId, label, rank, dept, password: code, active: true });
     writeLog('ДОБАВЛЕНИЕ', 'Пароли', slotId, label);
@@ -14554,20 +14768,102 @@
     }
   });
 
-  /* ── Простой toast helper ───────────────────────────────────── */
-  function showToast(msg) {
-    const t = document.createElement('div');
-    t.textContent = msg;
-    Object.assign(t.style, {
-      position:'fixed', bottom:'24px', left:'50%', transform:'translateX(-50%)',
-      background:'var(--navy)', color:'var(--white)', padding:'10px 22px',
-      borderRadius:'10px', fontSize:'13px', fontWeight:'600',
-      boxShadow:'0 4px 20px rgba(26,35,64,0.25)', zIndex:'99999',
-      transition:'opacity 0.3s', opacity:'1'
-    });
-    document.body.appendChild(t);
-    setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 2500);
+  /* ══ Системные уведомления ══ */
+  function showToast(msg, type) {
+    const c = document.getElementById('sys-snack-container'); if (!c) return;
+    const icons = {error:'❌',warn:'⚠️',ok:'✅',info:'ℹ️'}; const t = type||'info';
+    const el = document.createElement('div');
+    el.className = 'sys-snack' + (t!=='info' ? ' type-'+t : '');
+    el.innerHTML = '<span style="font-size:15px;">'+(icons[t]||'ℹ️')+'</span><span>'+msg+'</span>';
+    c.appendChild(el); setTimeout(()=>{ el.classList.add('hiding'); setTimeout(()=>el.remove(),320); }, 3200);
   }
+  function sysAlert(msg, opts) {
+    return new Promise(resolve => {
+      opts = opts||{}; const type = opts.type||'info';
+      const icons = {info:'ℹ️',error:'❌',warn:'⚠️',success:'✅',danger:'🗑️'};
+      const titles = {info:'Внимание',error:'Ошибка',warn:'Предупреждение',success:'Готово',danger:'Подтверждение'};
+      const ov = document.getElementById('sys-modal-overlay');
+      document.getElementById('sys-modal-topbar').className = type==='error'||type==='danger'?'type-danger':type==='warn'?'type-warning':type==='success'?'type-success':'';
+      document.getElementById('sys-modal-icon').textContent = opts.icon||icons[type]||'ℹ️';
+      document.getElementById('sys-modal-title').textContent = opts.title||titles[type]||'Уведомление';
+      document.getElementById('sys-modal-msg').innerHTML = msg;
+      document.getElementById('sys-modal-input-wrap').style.display = 'none';
+      const footer = document.getElementById('sys-modal-footer'); footer.innerHTML = '';
+      const ok = document.createElement('button');
+      ok.className = 'sys-modal-btn sys-modal-btn-ok'+(type==='error'||type==='danger'?' danger':'');
+      ok.textContent = opts.okText||'Понятно';
+      ok.onclick = ()=>{ closeSysModal(); resolve(true); };
+      footer.appendChild(ok); ov.classList.add('open'); setTimeout(()=>ok.focus(),100);
+    });
+  }
+  function sysConfirm(msg, opts) {
+    return new Promise(resolve => {
+      opts = opts||{}; const type = opts.type||'danger';
+      const icons = {danger:'🗑️',warn:'⚠️',info:'❓'};
+      const titles = {danger:'Подтверждение',warn:'Предупреждение',info:'Вопрос'};
+      const ov = document.getElementById('sys-modal-overlay');
+      document.getElementById('sys-modal-topbar').className = type==='danger'?'type-danger':type==='warn'?'type-warning':'';
+      document.getElementById('sys-modal-icon').textContent = opts.icon||icons[type]||'❓';
+      document.getElementById('sys-modal-title').textContent = opts.title||titles[type]||'Подтверждение';
+      document.getElementById('sys-modal-msg').innerHTML = msg;
+      document.getElementById('sys-modal-input-wrap').style.display = 'none';
+      const footer = document.getElementById('sys-modal-footer'); footer.innerHTML = '';
+      const cancel = document.createElement('button');
+      cancel.className = 'sys-modal-btn sys-modal-btn-cancel'; cancel.textContent = opts.cancelText||'Отмена';
+      cancel.onclick = ()=>{ closeSysModal(); resolve(false); };
+      const ok = document.createElement('button');
+      ok.className = 'sys-modal-btn sys-modal-btn-ok'+(type==='danger'?' danger':'');
+      ok.textContent = opts.okText||'Да, продолжить';
+      ok.onclick = ()=>{ closeSysModal(); resolve(true); };
+      footer.appendChild(cancel); footer.appendChild(ok); ov.classList.add('open'); setTimeout(()=>ok.focus(),100);
+    });
+  }
+  function closeSysModal() { const ov = document.getElementById('sys-modal-overlay'); if (ov) ov.classList.remove('open'); }
+
+  function adminResetEditCounter(slot, label) {
+    if (!_auth || _auth.rank < 11) return;
+    sessionStorage.removeItem('editLimit_' + slot + '_' + new Date().toISOString().slice(0,10));
+    showToast('Счётчик сброшен для ' + label, 'ok'); renderAdminTable();
+  }
+
+  function applyInputRestrictions() {
+    ['pf-promoted','er-leave-start','er-leave-end','le-appointed'].forEach(id => {
+      const el = document.getElementById(id); if (!el||el._restricted) return; el._restricted = true;
+      el.setAttribute('maxlength','10'); el.setAttribute('inputmode','numeric');
+      if (!el.placeholder) el.placeholder = 'ДД.ММ.ГГГГ';
+      el.addEventListener('keypress', e => { if (!/[\d.]/.test(e.key) && !['Backspace','Delete','ArrowLeft','ArrowRight','Tab'].includes(e.key)) e.preventDefault(); });
+      el.addEventListener('input', () => { let v=el.value.replace(/[^\d]/g,''); if(v.length>=5)v=v.slice(0,2)+'.'+v.slice(2,4)+'.'+v.slice(4,8); else if(v.length>=3)v=v.slice(0,2)+'.'+v.slice(2); el.value=v; });
+    });
+    ['pf-phone','le-phone'].forEach(id => {
+      const el = document.getElementById(id); if (!el||el._restricted) return; el._restricted = true;
+      el.setAttribute('inputmode','numeric');
+      el.addEventListener('keypress', e => { if (!/[\d]/.test(e.key) && !['Backspace','Delete','ArrowLeft','ArrowRight','Tab'].includes(e.key)) e.preventDefault(); });
+      el.addEventListener('input', () => { el.value = el.value.replace(/\D/g,''); });
+    });
+  }
+
+  function applyDeptRestrictions() {
+    if (!_auth) return;
+    const dept = _auth.dept; const isMVD = dept === 'МВД' || _auth.rank >= 11;
+    // Фильтр-пилюли в разделе личных дел — все видны (просмотр разрешён всем)
+    document.querySelectorAll('.dept-pill[data-dept]').forEach(pill => {
+      pill.style.display = '';
+    });
+    // Карточки департаментов — все доступны для просмотра (блокировка снята)
+    document.querySelectorAll('.dept-card[onclick]').forEach(card => {
+      card.style.opacity = ''; card.style.cursor = ''; card.title = '';
+      const lock = card.querySelector('.dept-lock-badge'); if (lock) lock.remove();
+    });
+    // Фильтр по умолчанию не устанавливается — пользователь видит все департаменты
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const ov = document.getElementById('sys-modal-overlay');
+    if (ov) ov.addEventListener('click', e => { if (e.target === ov) closeSysModal(); });
+    applyInputRestrictions();
+    new MutationObserver(() => applyInputRestrictions()).observe(document.body, {childList:true, subtree:true});
+    setTimeout(() => { if (_auth) applyDeptRestrictions(); }, 500);
+  });
 
   window.addEventListener('load', () => {
     // Уведомления для ВСЕХ — не зависит от авторизации
