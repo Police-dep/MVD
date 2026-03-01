@@ -3396,6 +3396,13 @@
       max-width: 100%;
     }
 
+    /* ── Форматы докладов — моноширинные параграфы без отступов от HTML indentation ── */
+    .note-acc-body p {
+      white-space: normal;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+
     /* ════════════════════════════════════════════════════════
        МОБИЛЬНЫЕ ФИКСЫ (≤ 768px)
     ════════════════════════════════════════════════════════ */
@@ -3447,11 +3454,11 @@
         min-width: 90px;
       }
 
-      /* ── Доклады — прокрутка и перенос ── */
+      /* ── Доклады — убираем лишние отступы от indentation в HTML ── */
       .note-acc-body p {
-        overflow-x: auto;
-        white-space: pre-wrap;
+        white-space: normal;
         word-break: break-word;
+        overflow-wrap: break-word;
       }
       .ak-note-item code {
         word-break: break-all;
@@ -14990,17 +14997,36 @@
   }
 
   function applyInputRestrictions() {
-    ['pf-promoted','er-leave-start','er-leave-end','le-appointed'].forEach(id => {
+    // Все поля дат — фиксированный список + динамический поиск по placeholder
+    const dateIds = ['pf-promoted','er-leave-start','er-leave-end','le-appointed','rpt-leave-start','rpt-leave-end'];
+    
+    // Также находим все input с placeholder содержащим ДД или дд
+    document.querySelectorAll('input[placeholder]').forEach(el => {
+      if (/дд|ДД|ГГГГ|гггг/i.test(el.getAttribute('placeholder'))) {
+        if (el.id && !dateIds.includes(el.id)) dateIds.push(el.id);
+      }
+    });
+
+    dateIds.forEach(id => {
       const el = document.getElementById(id); if (!el||el._restricted) return; el._restricted = true;
       el.setAttribute('maxlength','10'); el.setAttribute('inputmode','numeric');
       if (!el.placeholder) el.placeholder = 'ДД.ММ.ГГГГ';
+      // Блокируем нецифровые символы кроме служебных клавиш
       el.addEventListener('keypress', e => { if (!/[\d.]/.test(e.key) && !['Backspace','Delete','ArrowLeft','ArrowRight','Tab'].includes(e.key)) e.preventDefault(); });
-      el.addEventListener('input', () => { let v=el.value.replace(/[^\d]/g,''); if(v.length>=5)v=v.slice(0,2)+'.'+v.slice(2,4)+'.'+v.slice(4,8); else if(v.length>=3)v=v.slice(0,2)+'.'+v.slice(2); el.value=v; });
+      el.addEventListener('keydown', e => { if (!/[\d.]/.test(e.key) && !['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)) e.preventDefault(); });
+      // Автоформатирование: вставляем точки автоматически
+      el.addEventListener('input', () => {
+        let v = el.value.replace(/[^\d]/g,'');
+        if (v.length >= 5) v = v.slice(0,2)+'.'+v.slice(2,4)+'.'+v.slice(4,8);
+        else if (v.length >= 3) v = v.slice(0,2)+'.'+v.slice(2);
+        el.value = v;
+      });
     });
     ['pf-phone','le-phone'].forEach(id => {
       const el = document.getElementById(id); if (!el||el._restricted) return; el._restricted = true;
       el.setAttribute('inputmode','numeric');
       el.addEventListener('keypress', e => { if (!/[\d]/.test(e.key) && !['Backspace','Delete','ArrowLeft','ArrowRight','Tab'].includes(e.key)) e.preventDefault(); });
+      el.addEventListener('keydown', e => { if (!/[\d]/.test(e.key) && !['Backspace','Delete','ArrowLeft','ArrowRight','Tab'].includes(e.key)) e.preventDefault(); });
       el.addEventListener('input', () => { el.value = el.value.replace(/\D/g,''); });
     });
   }
