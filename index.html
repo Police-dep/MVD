@@ -2843,18 +2843,24 @@
       line-height: 1.65; min-width: 0;
     }
     .article-body .ustav-nakazanie {
-      width: 100%; margin-top: 6px; margin-left: calc(12px + 2.5em);
+      display: block;
+      width: fit-content;
+      max-width: 100%;
+      margin-top: 6px;
+      margin-left: 0;
       font-size: 11.5px; font-weight: 600;
       color: #4A5368; background: var(--grey-light);
       border-radius: 6px; padding: 4px 10px;
-      display: inline-block;
+      box-sizing: border-box;
+      flex-basis: 100%;
     }
 
     /* ── Исключения и примечания в статьях ── */
     .article-body .article-exception {
       display: block;
       width: 100%;
-      margin: 4px 0 2px calc(12px + 2.5em);
+      flex-basis: 100%;
+      margin: 4px 0 2px 0;
       font-size: 12px; color: var(--text-soft); line-height: 1.55;
       box-sizing: border-box;
     }
@@ -2862,7 +2868,8 @@
     .article-body .article-note {
       display: block;
       width: 100%;
-      margin: 4px 0 2px calc(12px + 2.5em);
+      flex-basis: 100%;
+      margin: 4px 0 2px 0;
       font-size: 12px; color: var(--text-soft); line-height: 1.55;
       box-sizing: border-box;
     }
@@ -3006,8 +3013,8 @@
 
     /* ── Tables: always scrollable ── */
     .ranks-wrap,
-    .admin-table-wrap,
-    .article-body table { overflow-x: auto; -webkit-overflow-scrolling: touch; display: block; max-width: 100%; }
+    .admin-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; display: block; max-width: 100%; }
+    .article-body table { overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
     .ranks-table, .admin-table { min-width: 480px; }
 
     /* ── Notif panel: never clipped ── */
@@ -3381,18 +3388,6 @@
       font-size: 12px !important;
     }
 
-    /* ── ustav-nakazanie — фикс переполнения ── */
-    .article-body .ustav-nakazanie {
-      box-sizing: border-box;
-      max-width: calc(100% - 12px - 2.5em);
-    }
-    /* ── article-exception/note — фикс переполнения ── */
-    .article-body .article-exception,
-    .article-body .article-note {
-      box-sizing: border-box;
-      max-width: calc(100% - 12px - 2.5em);
-    }
-
     /* ── code/pre не вылазит за рамки ── */
     code, pre {
       word-break: break-all;
@@ -3426,19 +3421,13 @@
         overflow-x: hidden;
       }
 
-      /* ── ustav-nakazanie и exception/note — на мобиле без отступа слева ── */
+      /* ── ustav-nakazanie и exception/note — мобильные стили ── */
       .article-body .ustav-nakazanie {
-        margin-left: 0 !important;
-        max-width: 100% !important;
-        width: fit-content !important;
-        display: block !important;
         margin-top: 6px !important;
       }
       .article-body .article-exception,
       .article-body .article-note {
-        margin-left: 0 !important;
-        max-width: 100% !important;
-        padding-left: 0 !important;
+        margin-top: 4px !important;
       }
 
       /* ── ak-note-item — не разбивается странно ── */
@@ -3449,12 +3438,11 @@
 
       /* ── Таблицы — горизонтальная прокрутка ── */
       .article-body table {
-        display: block;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
       }
-      .article-body table th,
-      .article-body table td {
+      .article-body th,
+      .article-body td {
         white-space: normal;
         min-width: 90px;
       }
