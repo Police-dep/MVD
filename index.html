@@ -1422,7 +1422,7 @@
       margin-bottom: 0;
     }
     .conditional-field.visible {
-      max-height: 200px;
+      max-height: 800px;
       opacity: 1;
       margin-bottom: 18px;
     }
@@ -1682,16 +1682,24 @@
     .inbox-item-top { display: flex; justify-content: space-between; align-items: center; }
     .inbox-item-name { font-size: 13px; font-weight: 600; color: var(--navy); }
     .inbox-item-date { font-size: 11px; color: var(--grey); }
-    .inbox-item-type { font-size: 11px; color: var(--text-soft); }
+    .inbox-item-type { font-size: 11px; color: var(--grey); font-style: italic; }
     .inbox-item-badge {
-      font-size: 10px; font-weight: 700; padding: 2px 7px;
-      border-radius: 5px; text-transform: uppercase; letter-spacing: 0.05em;
-      margin-top: 2px; display: inline-block; width: fit-content;
+      font-size: 11px; font-weight: 500; padding: 3px 10px 3px 8px;
+      border-radius: 20px; letter-spacing: 0;
+      margin-top: 2px; display: inline-flex; align-items: center; gap: 5px;
+      width: fit-content; white-space: nowrap;
     }
-    .ib-pending  { background: #FEF3C7; color: #92400E; }
-    .ib-approved { background: var(--green-light); color: var(--green); }
-    .ib-rejected { background: var(--red-light); color: var(--red); }
-    .ib-review   { background: #EDE9FE; color: #5B21B6; }
+    .inbox-item-badge::before {
+      content: ''; width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0;
+    }
+    .ib-pending  { background: #F5F5F0; color: #6B7280; border: 1px solid #E5E5E0; }
+    .ib-pending::before  { background: #D1A820; }
+    .ib-approved { background: var(--green-light); color: var(--green); border: 1px solid #A8D8BC; }
+    .ib-approved::before { background: var(--green); }
+    .ib-rejected { background: var(--red-light); color: var(--red); border: 1px solid #F5B8B2; }
+    .ib-rejected::before { background: var(--red); }
+    .ib-review   { background: #F5F0FF; color: #6D28D9; border: 1px solid #DDD6FE; }
+    .ib-review::before   { background: #7C3AED; }
 
     /* Детальный вид */
     .inbox-detail {
@@ -3480,7 +3488,7 @@
 
   <!-- Toast container -->
   <div class="notif-toast-container" id="notif-toast-container"></div>
-  <div id="sys-modal-overlay"><div id="sys-modal-box"><div id="sys-modal-topbar"></div><div id="sys-modal-body"><div id="sys-modal-icon"></div><div id="sys-modal-title"></div><div id="sys-modal-msg"></div><div id="sys-modal-input-wrap" style="display:none"><input id="sys-modal-input" type="text"/></div></div><div id="sys-modal-footer"></div></div></div>
+
   <div id="sys-snack-container"></div>
 
   <header>
@@ -4465,21 +4473,21 @@
               <div class="app-type-icon">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
               </div>
-              <div class="app-type-name">Отчёт на повышение</div>
+              <div class="app-type-name">На повышение</div>
               <div class="app-type-desc">Запрос о присвоении следующего звания</div>
             </div>
             <div class="app-type-card" data-rtype="leave" onclick="selectRType('leave')">
               <div class="app-type-icon">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
               </div>
-              <div class="app-type-name">Заявление на отпуск</div>
+              <div class="app-type-name">На отпуск</div>
               <div class="app-type-desc">Заявление на временный отпуск</div>
             </div>
             <div class="app-type-card" data-rtype="weekly" onclick="selectRType('weekly')">
               <div class="app-type-icon">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
               </div>
-              <div class="app-type-name">Отчёт ст. состава</div>
+              <div class="app-type-name">Ст. состав</div>
               <div class="app-type-desc">Еженедельный отчёт старшего состава</div>
             </div>
           </div>
@@ -4607,7 +4615,7 @@
           </select>
           <select class="inbox-filter-select" id="all-filter-status" onchange="renderAllReports()" style="font-size:12px;">
             <option value="all">Все статусы</option>
-            <option value="pending">На рассмотрении</option>
+            <option value="pending">Рассматривается</option>
             <option value="approved">Одобрено</option>
             <option value="rejected">Отказано</option>
           </select>
@@ -5011,7 +5019,7 @@
         </div>
 
         <div class="form-group">
-          <label>Аккаунт офицера <span class="req">*</span></label>
+          <label>Жетон офицера <span class="req">*</span></label>
           <input type="number" name="officer_account" placeholder="Номер аккаунта нарушителя" required/>
         </div>
 
@@ -5538,7 +5546,7 @@
         <button class="back-btn" onclick="refreshInbox('emp')" title="Обновить из Sheets" style="gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Обновить</button>
         <select class="inbox-filter-select" id="emp-filter" onchange="renderEmpList()">
           <option value="all">Все статусы</option>
-          <option value="pending">На рассмотрении</option>
+          <option value="pending">Рассматривается</option>
           <option value="approved">Одобрено</option>
           <option value="rejected">Отказано</option>
         </select>
@@ -5576,7 +5584,7 @@
         <button class="back-btn" onclick="refreshInbox('complaints')" title="Обновить из Sheets" style="gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Обновить</button>
         <select class="inbox-filter-select" id="complaints-filter" onchange="renderComplaintsList()">
           <option value="all">Все статусы</option>
-          <option value="pending">На рассмотрении</option>
+          <option value="pending">Рассматривается</option>
           <option value="approved">Одобрено</option>
           <option value="rejected">Отказано</option>
         </select>
@@ -5729,7 +5737,7 @@
   let officerAuthed = false;
   const _pending = {};
 
-  const STATUS_LABELS     = { pending:'На рассмотрении', approved:'Одобрено', rejected:'Отказано', review:'Доработка' };
+  const STATUS_LABELS     = { pending:'Рассматривается', approved:'Одобрено', rejected:'Отказано', review:'Доработка' };
   const STATUS_BADGE_CLASS = { pending:'ib-pending', approved:'ib-approved', rejected:'ib-rejected', review:'ib-review' };
 
   function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
@@ -6415,6 +6423,7 @@
           <label style="font-size:12px;font-weight:600;color:var(--navy);margin-bottom:4px;display:block;">Примечание <span style="font-weight:400;color:var(--grey);">(необязательно)</span></label>
           <textarea class="decision-note" id="emp-note-${esc(r.id)}" placeholder="Примечание (необязательно)..." required>${esc(r.note)}</textarea>
           <button class="decision-save-btn" id="emp-save-${esc(r.id)}" onclick="saveDecision('emp','${esc(r.id)}')">Сохранить решение</button>
+          ${canDo('deleteEmployment') ? `<button onclick="deleteEmpRecord('${esc(r.id)}')" style="margin-top:8px;background:var(--red-light);border:1.5px solid var(--red);color:var(--red);padding:7px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;display:block;width:100%;">✕ Удалить заявку</button>` : ''}
         </div>
       ` : `
         <div class="decision-locked">
@@ -6482,14 +6491,20 @@
       </div>
       <div class="detail-fields">
         <div class="detail-field-row"><span class="detail-field-label">Офицер-нарушитель</span><span class="detail-field-value">${esc(r.officer_name)}</span></div>
-        <div class="detail-field-row"><span class="detail-field-label">Аккаунт офицера</span><span class="detail-field-value">${esc(r.officer_account)}</span></div>
+        <div class="detail-field-row"><span class="detail-field-label">Жетон офицера</span><span class="detail-field-value">${esc(r.officer_account)}</span></div>
         <div class="detail-field-row"><span class="detail-field-label">Описание ситуации</span><span class="detail-field-value" style="white-space:pre-wrap;">${esc(r.description)}</span></div>
         <div class="detail-field-row"><span class="detail-field-label">Доказательства</span><a class="detail-field-link" href="${esc(r.evidence_url)}" target="_blank" rel="noopener">${esc(r.evidence_url)||'—'}</a></div>
         ${r.bank_account ? `<div class="detail-field-row"><span class="detail-field-label">Банковский счёт</span><span class="detail-field-value">${esc(r.bank_account)}</span></div>` : ''}
         ${r.note ? `<div class="detail-field-row"><span class="detail-field-label">Вердикт офицера</span><span class="detail-field-value">${esc(r.note)}</span></div>` : ''}
       </div>
       ${r.reviewer ? `<div style="font-size:11px;color:var(--grey);margin-bottom:10px;padding:8px 12px;background:var(--cream);border-radius:8px;">Вердикт вынес: <strong>${esc(r.reviewer)}</strong> · ${esc(r.reviewer_ts||'')}</div>` : ''}
-      ${canDo('approveComplaint') ? `
+      ${(() => {
+        const prevRank = parseInt(r.reviewer_rank) || 0;
+        const myRank   = authRank();
+        const hasBase  = canDo('approveComplaint');
+        // Может менять вердикт: ранг 11 всегда, иначе — только если ранг выше предыдущего проверяющего
+        const canChange = hasBase && (myRank >= 11 || prevRank === 0 || myRank > prevRank);
+        if (canChange) return `
         <div class="decision-panel">
           <div class="decision-panel-title">Решение по жалобе</div>
           <div class="decision-btns">
@@ -6500,14 +6515,20 @@
           <textarea class="decision-note" id="complaint-note-${esc(r.id)}" placeholder="Укажите наказание для офицера или причину отказа..." required>${esc(r.note)}</textarea>
           <button class="decision-save-btn" id="complaint-save-${esc(r.id)}" onclick="saveDecision('complaint','${esc(r.id)}')">Сохранить решение</button>
           ${canDo('deleteComplaint') ? `<button onclick="deleteComplaintRecord('${esc(r.id)}')" style="margin-top:8px;background:var(--red-light);border:1.5px solid var(--red);color:var(--red);padding:7px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;display:block;width:100%;">✕ Удалить жалобу</button>` : ''}
-        </div>
-      ` : `
+        </div>`;
+        if (!hasBase) return `
         <div class="decision-locked">
           <div class="decision-locked-icon">🔐</div>
           <div class="decision-locked-text">Вынесение решений доступно только офицерам 9 ранга и выше.<br/>Войдите с кодом доступа чтобы продолжить.</div>
           <button class="decision-unlock-btn" onclick="openPasswordGate('unlock-complaints')">Войти как офицер</button>
-        </div>
-      `}
+        </div>`;
+        // Имеет базовый доступ, но ранг недостаточен для изменения
+        return `
+        <div class="decision-locked">
+          <div class="decision-locked-icon">🔒</div>
+          <div class="decision-locked-text">Вердикт уже вынес офицер <strong>ранга ${prevRank}</strong>.<br/>Изменить его может только офицер более высокого ранга или ранга 11.</div>
+        </div>`;
+      })()}
       <div class="mobile-back-to-list" style="display:none;margin-top:14px;border-top:1px solid var(--grey-light);padding-top:14px;">
         <button onclick="mobileBackToList('complaints-inbox-list','complaints-inbox-detail')" style="width:100%;padding:12px;background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;font-size:13px;font-weight:600;color:var(--navy);cursor:pointer;font-family:inherit;">← Назад к списку</button>
       </div>`;
@@ -6550,6 +6571,16 @@
       const cItem = complaintsList.find(x => x.id === id);
       const cDept = cItem ? (cItem.dept || cItem.desired_dept || '') : '';
       if (cDept && !canModifyDept(cDept)) { sysAlert('Вы можете проверять жалобы только своего департамента (<b>' + (_auth ? _auth.dept : '') + '</b>).', {type:'error', title:'Нет прав', icon:'🔒'}); return; }
+      // Запрет изменения вердикта: ранг проверяющего должен быть выше предыдущего (исключение — ранг 11)
+      const prevRank = cItem ? (parseInt(cItem.reviewer_rank) || 0) : 0;
+      const myRank   = authRank();
+      if (prevRank > 0 && myRank < 11 && myRank <= prevRank) {
+        sysAlert(
+          'Этот вердикт вынес офицер <b>ранга ' + prevRank + '</b>.<br>Изменить его может только офицер <b>более высокого ранга</b> или ранга 11.',
+          {type:'error', title:'Нет прав', icon:'🔒'}
+        );
+        return;
+      }
     }
 
     if (!newStatus) {
@@ -7380,8 +7411,8 @@
   /* ══ UNIFIED ALL-REPORTS LIST ══ */
   let _selAllId = null;
 
-  const TYPE_ICON  = { promotion: '↑', leave: '◻', weekly: '≡' };
-  const TYPE_LABEL = { promotion: 'Отчёт на повышение', leave: 'Заявление на отпуск', weekly: 'Отчёт ст. состава' };
+  const TYPE_ICON  = { promotion: '↑', leave: '⌗', weekly: '◈' };
+  const TYPE_LABEL = { promotion: 'На повышение', leave: 'На отпуск', weekly: 'Ст. состав' };
   const TYPE_COLOR = { promotion: '#4B6BF5', leave: '#1E7A4A', weekly: '#8A6B20' };
   const TYPE_BG    = { promotion: '#EEF2FF', leave: '#E6F4EC', weekly: '#F0E4C0' };
 
@@ -7436,7 +7467,7 @@
             <span class="inbox-item-date">${fmtTs(r.ts).split(' ')[0]}</span>
           </div>
           <div style="display:flex;align-items:center;gap:6px;margin-top:4px;">
-            <span style="display:inline-flex;align-items:center;gap:4px;background:${bg};color:${color};font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:5px;">${icon} ${label}</span>
+            <span style="display:inline-flex;align-items:center;gap:5px;background:${bg};color:${color};font-size:11px;font-weight:500;padding:2px 9px 2px 7px;border-radius:20px;border:1px solid ${color}22;">${icon} ${label}</span>
           </div>
           <span class="inbox-item-badge ${STATUS_BADGE_CLASS[r.status]||'ib-pending'}" style="margin-top:4px;">${STATUS_LABELS[r.status]||'На рассмотрении'}</span>
         </div>`;
@@ -7487,7 +7518,7 @@
     el.innerHTML = `
       <div style="padding:16px 20px;border-bottom:1px solid var(--grey-light);display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;">
         <div>
-          <div style="display:inline-flex;align-items:center;gap:5px;background:${bg};color:${color};font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:3px 10px;border-radius:6px;margin-bottom:8px;">${icon} ${label}</div>
+          <div style="display:inline-flex;align-items:center;gap:5px;background:${bg};color:${color};font-size:12px;font-weight:500;padding:3px 11px 3px 8px;border-radius:20px;border:1px solid ${color}33;margin-bottom:8px;">${icon} ${label}</div>
           <div class="detail-name">${esc(r.name)}</div>
           <div class="detail-meta">Подано: ${fmtTs(r.ts)}</div>
         </div>
@@ -7605,6 +7636,16 @@
     if (det) det.innerHTML = '<div class="inbox-detail-empty"><div class="inbox-detail-empty-icon">≡</div>Запись удалена.</div>';
   }
 
+  async function deleteEmpRecord(id) {
+    if (!canDo('deleteEmployment')) { sysAlert('Нет прав на удаление заявки.', {type:'error', title:'Доступ запрещён', icon:'🔒'}); return; }
+    if (!await sysConfirm('Удалить заявку на трудоустройство?<br><span style="font-size:12px;color:#888">Необратимо.</span>', {title:'Удаление заявки', okText:'Удалить'})) return;
+    empApplications = empApplications.filter(x => x.id !== id);
+    try { await sheetsPost('deleteRecord', { sheet: 'Employment', id, ...reviewerInfo() }); } catch(_) {}
+    renderEmpList();
+    document.getElementById('emp-inbox-detail').innerHTML = '<div class="inbox-detail-empty"><div class="inbox-detail-empty-icon">📋</div>Заявка удалена.</div>';
+    showToast('Заявка удалена', 'ok');
+  }
+
   async function deleteComplaintRecord(id) {
     if (!canDo('deleteComplaint')) { sysAlert('Нет прав на удаление жалобы.', {type:'error', title:'Доступ запрещён', icon:'🔒'}); return; }
     if (!await sysConfirm('Удалить жалобу?<br><span style="font-size:12px;color:#888">Необратимо.</span>', {title:'Удаление жалобы', okText:'Удалить'})) return;
@@ -7627,6 +7668,11 @@
     card.style.opacity = '1';
     card.style.pointerEvents = 'auto';
     card.style.display = '';
+    // Сбросить состояние формы при новом выборе типа
+    const formEl = card.querySelector('form');
+    if (formEl) { formEl.style.opacity = ''; formEl.style.pointerEvents = ''; }
+    const successEl = document.getElementById('rpt-success');
+    if (successEl) successEl.style.display = 'none';
 
     // Show/hide conditional fields
     ['promotion','leave','weekly'].forEach(t => {
@@ -7900,9 +7946,12 @@
       if (el) el.classList.remove('visible');
     });
     const card = document.getElementById('report-form-card');
-    card.style.opacity = '0.5';
-    card.style.pointerEvents = 'none';
+    card.style.opacity = '1';
+    card.style.pointerEvents = 'auto';
     card.style.display = '';
+    // Скрыть форму (но не success-блок)
+    const formEl = card.querySelector('form');
+    if (formEl) { formEl.style.opacity = '0.5'; formEl.style.pointerEvents = 'none'; }
 
     renderReportsList();
   });
@@ -15065,6 +15114,9 @@
 </script>
 
 
+<!-- SYS MODAL — вынесен в body чтобы не блокировался stacking context page-view -->
+<div id="sys-modal-overlay"><div id="sys-modal-box"><div id="sys-modal-topbar"></div><div id="sys-modal-body"><div id="sys-modal-icon"></div><div id="sys-modal-title"></div><div id="sys-modal-msg"></div><div id="sys-modal-input-wrap" style="display:none"><input id="sys-modal-input" type="text"/></div></div><div id="sys-modal-footer"></div></div></div>
+
 <!-- ══ MODAL: АРХИВ ВХОДЯЩИХ ОТЧЁТОВ ══ -->
 <div id="modal-archive-reports" class="inbox-modal-overlay" onclick="closeInboxOnBg(event,'modal-archive-reports')">
   <div class="inbox-modal">
@@ -15080,7 +15132,7 @@
         <button class="back-btn" onclick="refreshArchiveModal()" title="Обновить" style="gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Обновить</button>
         <select class="inbox-filter-select" id="archive-filter" onchange="renderArchiveModalList()">
           <option value="all">Все статусы</option>
-          <option value="pending">На рассмотрении</option>
+          <option value="pending">Рассматривается</option>
           <option value="approved">Одобрено</option>
           <option value="rejected">Отказано</option>
         </select>
