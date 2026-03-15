@@ -5831,8 +5831,8 @@
     // Для проверки/редактирования — только свой департамент (или МВД/ранг 11+)
     const modOk = canModifyDept(targetDept);
     switch(action) {
-      case 'editPersonnel':       return rank >= 8  && rank <= 10 && modOk;
-      case 'createPersonnel':     return rank >= 8  && rank <= 10 && modOk;
+      case 'editPersonnel':       return rank >= 8 && (rank <= 10 || rank >= 11) && modOk;
+      case 'createPersonnel':     return rank >= 8 && (rank <= 10 || rank >= 11) && modOk;
       case 'deletePersonnel':     return rank >= 11;
       case 'addBlacklist':        return rank >= 11;
       case 'approveReport':       return rank >= 8  && modOk;
@@ -6955,7 +6955,7 @@
         ${(()=>{
           if (!personnelUnlocked) return '<button class="file-edit-btn locked" onclick="requestPersonnelUnlock(\'edit\',\'' + esc(id) + '\')" ><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg> Редактировать</button><button class="file-delete-btn locked" onclick="requestPersonnelUnlock(\'delete\',\'' + esc(id) + '\')"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg> Удалить</button>';
           const deptOk = canModifyDept(p.dept); // только свой деп может редактировать
-          const rankEdit = _auth && _auth.rank >= 8 && _auth.rank <= 10;
+          const rankEdit = _auth && _auth.rank >= 8;
           const rankDel  = _auth && _auth.rank >= 11;
           const alreadyEdited = getEditedPersonnelToday().includes(id);
           const limitOk = _auth && (_auth.rank >= 11 || alreadyEdited || getRemainingEditSlots() > 0);
@@ -6963,7 +6963,7 @@
           if (!deptOk) {
             editBtn = '<button class="file-edit-btn locked" disabled style="opacity:.5;cursor:not-allowed;" title="Чужой департамент"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> ' + p.dept + '</button>';
           } else if (!rankEdit) {
-            editBtn = '<button class="file-edit-btn locked" disabled style="opacity:.5;cursor:not-allowed;" title="Только ранги 8-10"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Нет прав</button>';
+            editBtn = '<button class="file-edit-btn locked" disabled style="opacity:.5;cursor:not-allowed;" title="Только ранг 8 и выше"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Нет прав</button>';
           } else if (!limitOk) {
             editBtn = '<button class="file-edit-btn locked" disabled style="opacity:.5;cursor:not-allowed;" title="Лимит 5 дел/сутки исчерпан"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Лимит</button>';
           } else {
@@ -6998,7 +6998,7 @@
 
   function openPersonnelAdd() {
     if (personnelUnlocked) {
-      if (_auth && (_auth.rank < 8 || _auth.rank > 10)) { sysAlert('Создавать личные дела могут только офицеры рангов <b>8–10</b>.', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
+      if (_auth && _auth.rank < 8) { sysAlert('Создавать личные дела могут только офицеры рангов <b>8+</b>.', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
       showPersonnelForm(null);
     } else {
       requestPersonnelUnlock('add');
@@ -7417,7 +7417,7 @@
     const p = personnelList.find(x => x.id === id);
     if (!p) return;
     // Просмотр личных дел доступен для всех — редактирование ограничено через canDo
-    if (!_auth || _auth.rank < 8 || _auth.rank > 10) { sysAlert('Редактировать личные дела могут только офицеры рангов <b>8–10</b> своего департамента.', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
+    if (!_auth || _auth.rank < 8) { sysAlert('Редактировать личные дела могут только офицеры ранга <b>8 и выше</b>.', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
     if (!canEditPersonnelFile(id)) { sysAlert('Лимит: <b>5 личных дел в сутки</b>.<br>Обратитесь к офицеру ранга 11 для сброса.', {type:'warn', title:'Лимит исчерпан', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'}); return; }
     markPersonnelEdited(id);
     showPersonnelForm(p);
@@ -7448,10 +7448,10 @@
     };
 
     if (isEdit) {
-      if (!canModifyDept(record.dept) || !_auth || _auth.rank < 8 || _auth.rank > 10) { sysAlert('Нет прав редактировать это личное дело.', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
+      if (!canModifyDept(record.dept) || !_auth || _auth.rank < 8) { sysAlert('Нет прав редактировать это личное дело.', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
       if (!canEditPersonnelFile(editingId)) { sysAlert('Лимит редактирований (5 дел в сутки) исчерпан.', {type:'warn', title:'Лимит', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'}); return; }
     } else {
-      if (!_auth || _auth.rank < 8 || _auth.rank > 10) { sysAlert('Создавать личные дела могут только офицеры рангов 8–10.', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
+      if (!_auth || _auth.rank < 8) { sysAlert('Создавать личные дела могут только офицеры ранга 8 и выше.', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
     }
     const _ri = reviewerInfo(); record.reviewer = _ri.reviewer; record.reviewer_rank = _ri.reviewer_rank; record.reviewer_dept = _ri.reviewer_dept; record.reviewer_ts = _ri.reviewer_ts;
     if (isEdit) {
