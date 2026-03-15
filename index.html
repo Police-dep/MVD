@@ -3411,6 +3411,11 @@
     .modal-body {
       overflow-y: auto;
       overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+    }
+    /* modal-body (чёрный список и др.) — ограничение высоты для скролла */
+    .modal-body {
+      max-height: calc(88vh - 120px);
     }
 
     /* ── Нормализация шрифтов в inline блоках мета-данных тренировок/операций ── */
