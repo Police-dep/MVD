@@ -197,7 +197,8 @@
       padding: 32px 18px; text-align: center;
       color: var(--grey); font-size: 13px;
     }
-    .notif-empty-icon { font-size: 28px; margin-bottom: 8px; }
+    .notif-empty-icon { font-size: 28px; margin-bottom: 8px; display:flex; align-items:center; justify-content:center; }
+    .notif-empty-icon svg { width:28px; height:28px; color:var(--grey); }
 
     /* Toast уведомления при загрузке */
     .notif-toast-container {
@@ -422,6 +423,7 @@
       align-items: center; justify-content: center;
       font-size: 19px; flex-shrink: 0; transition: background 0.25s ease;
     }
+    .action-icon svg { width: 20px; height: 20px; color: var(--navy); }
     .action-card:hover .action-icon { background: var(--grey-light); }
     .action-label { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 2px; }
     .action-hint  { font-size: 12px; color: var(--grey); }
@@ -1396,7 +1398,8 @@
     .app-type-card.selected .app-type-icon,
     .app-type-card.selected .app-type-name { color: white; }
     .app-type-card.selected .app-type-desc { color: rgba(255,255,255,0.55); }
-    .app-type-icon { font-size: 26px; margin-bottom: 10px; }
+    .app-type-icon { font-size: 26px; margin-bottom: 10px; display:flex; align-items:center; justify-content:center; }
+    .app-type-icon svg { width: 26px; height: 26px; color: var(--navy); }
     .app-type-name {
       font-family: 'Playfair Display', serif;
       font-size: 16px; font-weight: 600; color: var(--navy); margin-bottom: 4px;
@@ -1711,7 +1714,8 @@
       justify-content: center; height: 100%;
       color: var(--grey); font-size: 14px; line-height: 1.7; text-align: center;
     }
-    .inbox-detail-empty-icon { font-size: 40px; margin-bottom: 14px; }
+    .inbox-detail-empty-icon { font-size: 40px; margin-bottom: 14px; display:flex; align-items:center; justify-content:center; }
+    .inbox-detail-empty-icon svg { width: 40px; height: 40px; color: var(--grey); stroke-width: 1.2; }
 
     .detail-applicant {
       display: flex; align-items: flex-start; justify-content: space-between;
@@ -2026,7 +2030,8 @@
       grid-column: 1/-1; text-align: center; padding: 56px 24px;
       color: var(--grey); font-size: 14px; line-height: 1.8;
     }
-    .personnel-empty-icon { font-size: 40px; margin-bottom: 12px; }
+    .personnel-empty-icon { font-size: 40px; margin-bottom: 12px; display:flex; align-items:center; justify-content:center; }
+    .personnel-empty-icon svg { width: 40px; height: 40px; color: var(--grey); stroke-width: 1.2; }
 
     /* Модалка детального просмотра личного дела */
     .file-modal-overlay {
@@ -2357,7 +2362,7 @@
       padding: 14px 18px;
       display: flex; align-items: flex-start; gap: 12px;
     }
-    .lead-info-item-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .lead-info-item-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; display:flex; align-items:center; }
     .lead-info-item-body {}
     .lead-info-item-title { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--navy); margin-bottom: 4px; }
     .lead-info-item-desc { font-size: 12px; color: var(--text-soft); line-height: 1.5; }
@@ -2664,7 +2669,8 @@
       background: var(--cream); border-top: 1px solid var(--grey-light);
       padding: 20px; text-align: center;
     }
-    .decision-locked-icon { font-size: 26px; margin-bottom: 8px; }
+    .decision-locked-icon { font-size: 26px; margin-bottom: 8px; display:flex; align-items:center; justify-content:center; }
+    .decision-locked-icon svg { width: 26px; height: 26px; color: var(--grey); }
     .decision-locked-text {
       font-size: 13px; color: var(--text-soft); margin-bottom: 14px; line-height: 1.6;
     }
@@ -3504,10 +3510,10 @@
         <span id="officer-badge" style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:var(--navy);color:var(--accent);font-size:11px;font-weight:700;letter-spacing:0.06em;border-radius:8px;white-space:nowrap;max-width:160px;overflow:hidden;text-overflow:ellipsis;"></span>
         <button onclick="doLogout()" style="padding:5px 10px;background:transparent;border:1.5px solid var(--grey-light);border-radius:8px;font-size:11px;font-weight:600;color:var(--grey);cursor:pointer;white-space:nowrap;transition:all 0.15s;" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='var(--grey-light)';this.style.color='var(--grey)'">Выйти</button>
       </div>
-      <button id="global-login-btn" onclick="openPasswordGate('login')" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:var(--navy);color:white;border:none;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;">🔑 Войти</button>
+      <button id="global-login-btn" onclick="openPasswordGate('login')" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:var(--navy);color:white;border:none;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="M21 2l-9.6 9.6"/><path d="M15.5 7.5l3 3L22 7l-3-3"/></svg> Войти</button>
       <div class="notif-bell-wrap" id="notif-bell-wrap">
         <button class="notif-bell-btn" id="notif-bell-btn" onclick="toggleNotifPanel()" title="Уведомления">
-          🔔
+          <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
           <span class="notif-count-badge" id="notif-count-badge"></span>
         </button>
         <div class="notif-panel" id="notif-panel">
@@ -3516,7 +3522,7 @@
             <button class="notif-panel-clear" onclick="clearAllNotifs()">Отметить все прочитанными</button>
           </div>
           <div class="notif-list" id="notif-list">
-            <div class="notif-empty"><div class="notif-empty-icon">🔕</div>Нет новых уведомлений</div>
+            <div class="notif-empty"><div class="notif-empty-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.73 21a2 2 0 0 1-3.46 0"/><path d="M18.63 13A17.89 17.89 0 0 1 18 8"/><path d="M6.26 6.26A5.86 5.86 0 0 0 6 8c0 7-3 9-3 9h14"/><path d="M18 8a6 6 0 0 0-9.33-5"/><line x1="1" y1="1" x2="23" y2="23"/></svg></div>Нет новых уведомлений</div>
           </div>
         </div>
       </div>
@@ -3543,21 +3549,21 @@
   <!-- QUICK ACTIONS — ряд 1 -->
   <div class="quick-actions">
     <a href="#" class="action-card" id="go-handbook">
-      <div class="action-icon">🗂</div>
+      <div class="action-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4a2 2 0 0 1 2-2h4l2 3h10a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg></div>
       <div class="action-info">
         <div class="action-label">Справочник МВД</div>
         <div class="action-hint">База нормативных документов</div>
       </div>
     </a>
     <a href="#" class="action-card" id="go-employment">
-      <div class="action-icon">💼</div>
+      <div class="action-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
       <div class="action-info">
         <div class="action-label">Трудоустройство</div>
         <div class="action-hint">Вакансии и приём на службу</div>
       </div>
     </a>
     <a href="#" class="action-card" id="go-complaints">
-      <div class="action-icon">📋</div>
+      <div class="action-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></div>
       <div class="action-info">
         <div class="action-label">Подать жалобу</div>
         <div class="action-hint">Обращения и заявления</div>
@@ -3569,14 +3575,14 @@
   <div class="quick-actions-secondary">
     <div class="quick-actions-secondary-inner">
       <a href="#" class="action-card action-card-danger" id="open-blacklist">
-        <div class="action-icon">⛔</div>
+        <div class="action-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></div>
         <div class="action-info">
           <div class="action-label">Черный список</div>
           <div class="action-hint">Перечень лиц, запрещённых к службе</div>
         </div>
       </a>
       <a href="#" class="action-card" id="go-personnel">
-        <div class="action-icon">📁</div>
+        <div class="action-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
         <div class="action-info">
           <div class="action-label">Личные дела</div>
           <div class="action-hint">Архив сотрудников и история</div>
@@ -3657,7 +3663,7 @@
         <span id="footer-online-text">— онлайн</span>
       </div>
       <div class="footer-stat-chip" id="footer-visits-chip" title="Всего посетителей">
-        <span>👁</span>
+        <span><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span>
         <span id="footer-visits-text">—</span>
       </div>
     </div>
@@ -3687,7 +3693,7 @@
         <span class="breadcrumb-sep">›</span>
         <span class="breadcrumb-current" id="bc-dept-name">—</span>
       </div>
-      <button class="global-login-btn-secondary" onclick="openPasswordGate('login')" id="login-btn-dept">🔑 Войти</button>
+      <button class="global-login-btn-secondary" onclick="openPasswordGate('login')" id="login-btn-dept"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="M21 2l-9.6 9.6"/><path d="M15.5 7.5l3 3L22 7l-3-3"/></svg> Войти</button>
       <button class="back-btn" id="back-btn-dept">← Назад</button>
     </div>
   </header>
@@ -3714,21 +3720,21 @@
         <p class="dept-section-sub">Действующий командный состав. Нажмите на карточку для подробной информации.</p>
         <div class="lead-info-bar">
           <div class="lead-info-item">
-            <div class="lead-info-item-icon">⚖️</div>
+            <div class="lead-info-item-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"/><path d="M6 21h12"/><path d="M3 9l9-6 9 6"/><polyline points="3 9 7.5 17 3 17"/><polyline points="21 9 16.5 17 21 17"/></svg></div>
             <div class="lead-info-item-body">
               <div class="lead-info-item-title">Назначения</div>
               <div class="lead-info-item-desc">Все должности заполняются решением вышестоящего командования МВД.</div>
             </div>
           </div>
           <div class="lead-info-item">
-            <div class="lead-info-item-icon">📋</div>
+            <div class="lead-info-item-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></div>
             <div class="lead-info-item-body">
               <div class="lead-info-item-title">Карточка сотрудника</div>
               <div class="lead-info-item-desc">Нажмите на карточку чтобы увидеть: имя, жетон, дату назначения, контакты.</div>
             </div>
           </div>
           <div class="lead-info-item">
-            <div class="lead-info-item-icon">💬</div>
+            <div class="lead-info-item-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
             <div class="lead-info-item-body">
               <div class="lead-info-item-title">По вопросам</div>
               <div class="lead-info-item-desc">Обращайтесь к действующему руководству департамента или Министру МВД.</div>
@@ -4377,7 +4383,7 @@
 
       <div class="exam-card">
         <div class="exam-top">
-          <span class="exam-badge req">⚡ Обязательный</span>
+          <span class="exam-badge req"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Обязательный</span>
           <div class="exam-name">ЗР — Закон Республики</div>
           <div class="exam-desc">Базовый экзамен по законодательству штата: ПДД, уголовный кодекс, права задержанных. Обязателен для перехода с Кадета в Сержант.</div>
         </div>
@@ -4389,7 +4395,7 @@
 
       <div class="exam-card">
         <div class="exam-top">
-          <span class="exam-badge req">⚡ Обязательный</span>
+          <span class="exam-badge req"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Обязательный</span>
           <div class="exam-name">УП — Устав Полиции</div>
           <div class="exam-desc">Экзамен по внутреннему уставу: права офицера, дисциплина, субординация, работа с задержанными. Обязателен для звания Лейтенант.</div>
         </div>
@@ -4401,7 +4407,7 @@
 
       <div class="exam-card">
         <div class="exam-top">
-          <span class="exam-badge req">⚡ Обязательный</span>
+          <span class="exam-badge req"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Обязательный</span>
           <div class="exam-name">ЭСС — Экзамен старшего состава</div>
           <div class="exam-desc">Расширенный экзамен для перехода в старший состав. Тактические задачи, управление личным составом, разбор ситуаций.</div>
         </div>
@@ -4459,6 +4465,7 @@
       <button class="reports-subtab active" data-stab="submit"  onclick="switchSubtab(this,'submit')">Подать отчёт</button>
       <button class="reports-subtab"        data-stab="all"     onclick="switchSubtab(this,'all')">Все отчёты</button>
       <button class="reports-subtab"        data-stab="edit"    onclick="switchSubtab(this,'edit')">Редактировать отчёт</button>
+      <button class="reports-subtab"        data-stab="points"  onclick="switchSubtab(this,'points')">Таблица баллов</button>
     </div>
 
     <!-- ──────────── SUB: ПОДАТЬ ОТЧЁТ ──────────── -->
@@ -4624,10 +4631,10 @@
       </div>
       <div class="inbox-modal-body" style="border:1.5px solid var(--grey-light);border-radius:14px;overflow:hidden;min-height:460px;">
         <div class="inbox-list" id="all-reports-list">
-          <div class="inbox-detail-empty"><div class="inbox-detail-empty-icon">📋</div>Отчётов пока нет.</div>
+          <div class="inbox-detail-empty"><div class="inbox-detail-empty-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></div>Отчётов пока нет.</div>
         </div>
         <div class="inbox-detail" id="all-reports-detail">
-          <div class="inbox-detail-empty"><div class="inbox-detail-empty-icon">📋</div>Выберите отчёт из списка.</div>
+          <div class="inbox-detail-empty"><div class="inbox-detail-empty-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></div>Выберите отчёт из списка.</div>
         </div>
       </div>
     </div>
@@ -4647,6 +4654,141 @@
         <div id="edit-rpt-result" style="display:none;margin-top:14px;"></div>
       </div>
     </div>
+
+    <!-- ──────────── SUB: ТАБЛИЦА БАЛЛОВ ──────────── -->
+    <div class="reports-subpanel" id="subpanel-points">
+      <div class="dept-section-title" style="margin-bottom:6px;">Таблица баллов — Старший состав</div>
+      <p class="dept-section-sub" style="margin-bottom:20px;">Минимум для <strong>8 ранга — 15 баллов</strong>, для <strong>9 ранга — 20 баллов</strong> в неделю. При невыполнении нормы или неполноте отчёта Генерал вправе применить наказание согласно УМВД.</p>
+
+      <!-- Предупреждение о наказании -->
+      <div style="display:flex;align-items:flex-start;gap:12px;background:var(--red-light);border:1.5px solid #F5C0BC;border-radius:12px;padding:14px 16px;margin-bottom:22px;">
+        <div style="flex-shrink:0;margin-top:1px;width:22px;height:22px;color:var(--red);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--red);margin-bottom:3px;">Внимание</div>
+          <div style="font-size:12.5px;color:#7A2020;line-height:1.55;">Невыполнение минимума баллов, неполный или не поданный отчёт являются нарушением. Генерал вправе назначить наказание (выговор, наряд, понижение) в соответствии с Уставом УМВД.</div>
+        </div>
+      </div>
+
+      <!-- Минимумы рангов -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;">
+        <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:14px;">
+          <div style="width:46px;height:46px;background:var(--navy);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <span style="color:var(--accent);font-family:'Playfair Display',serif;font-size:18px;font-weight:700;">8</span>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--grey);text-transform:uppercase;letter-spacing:.1em;font-weight:600;margin-bottom:2px;">Ранг 8</div>
+            <div style="font-size:22px;font-weight:700;color:var(--navy);line-height:1;">15 <span style="font-size:13px;color:var(--text-soft);font-weight:500;">баллов/нед.</span></div>
+          </div>
+        </div>
+        <div style="background:var(--white);border:1.5px solid var(--accent-light);border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:14px;">
+          <div style="width:46px;height:46px;background:var(--accent);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <span style="color:var(--navy);font-family:'Playfair Display',serif;font-size:18px;font-weight:700;">9</span>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--grey);text-transform:uppercase;letter-spacing:.1em;font-weight:600;margin-bottom:2px;">Ранг 9</div>
+            <div style="font-size:22px;font-weight:700;color:var(--navy);line-height:1;">20 <span style="font-size:13px;color:var(--text-soft);font-weight:500;">баллов/нед.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Таблицы баллов -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
+
+        <!-- Спец. операции -->
+        <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:14px;overflow:hidden;">
+          <div style="background:var(--navy);padding:12px 16px;display:flex;align-items:center;gap:9px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:var(--white);letter-spacing:.02em;">Спец. операции</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:1px;">Special Operations</div>
+            </div>
+          </div>
+          <table style="width:100%;border-collapse:collapse;">
+            <thead>
+              <tr style="background:var(--cream);">
+                <th style="padding:9px 14px;text-align:left;font-size:11px;font-weight:700;color:var(--grey);text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--grey-light);">Задание</th>
+                <th style="padding:9px 14px;text-align:center;font-size:11px;font-weight:700;color:var(--grey);text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--grey-light);white-space:nowrap;">Баллы</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid var(--grey-light);"><td style="padding:9px 14px;font-size:13px;color:var(--text);">Торговец</td><td style="padding:9px 14px;text-align:center;"><span style="display:inline-flex;align-items:center;justify-content:center;background:#EEF2FF;color:var(--navy);font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">6</span></td></tr>
+              <tr style="border-bottom:1px solid var(--grey-light);background:var(--cream);"><td style="padding:9px 14px;font-size:13px;color:var(--text);">Задержание ООП</td><td style="padding:9px 14px;text-align:center;"><span style="display:inline-flex;align-items:center;justify-content:center;background:#EEF2FF;color:var(--navy);font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">4</span></td></tr>
+              <tr style="border-bottom:1px solid var(--grey-light);"><td style="padding:9px 14px;font-size:13px;color:var(--text);">Угонщик</td><td style="padding:9px 14px;text-align:center;"><span style="display:inline-flex;align-items:center;justify-content:center;background:#EEF2FF;color:var(--navy);font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">3</span></td></tr>
+              <tr style="border-bottom:1px solid var(--grey-light);background:var(--cream);"><td style="padding:9px 14px;font-size:13px;color:var(--text);">Освобождение заложников</td><td style="padding:9px 14px;text-align:center;"><span style="display:inline-flex;align-items:center;justify-content:center;background:#EEF2FF;color:var(--navy);font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">6</span></td></tr>
+              <tr style="border-bottom:1px solid var(--grey-light);"><td style="padding:9px 14px;font-size:13px;color:var(--text);">Дезертир</td><td style="padding:9px 14px;text-align:center;"><span style="display:inline-flex;align-items:center;justify-content:center;background:#EEF2FF;color:var(--navy);font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">5</span></td></tr>
+              <tr style="border-bottom:1px solid var(--grey-light);background:var(--cream);"><td style="padding:9px 14px;font-size:13px;color:var(--text);">Карьер</td><td style="padding:9px 14px;text-align:center;"><span style="display:inline-flex;align-items:center;justify-content:center;background:#EEF2FF;color:var(--navy);font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">3</span></td></tr>
+              <tr style="border-bottom:1px solid var(--grey-light);"><td style="padding:9px 14px;font-size:13px;color:var(--text);">Искра</td><td style="padding:9px 14px;text-align:center;"><span style="display:inline-flex;align-items:center;justify-content:center;background:#EEF2FF;color:var(--navy);font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">6</span></td></tr>
+              <tr style="border-bottom:1px solid var(--grey-light);background:var(--cream);"><td style="padding:9px 14px;font-size:13px;color:var(--text);">Рейд по точкам</td><td style="padding:9px 14px;text-align:center;"><span style="display:inline-flex;align-items:center;justify-content:center;background:#EEF2FF;color:var(--navy);font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">4</span></td></tr>
+              <tr style="border-bottom:1px solid var(--grey-light);"><td style="padding:9px 14px;font-size:13px;color:var(--text);">Рейд гетто</td><td style="padding:9px 14px;text-align:center;"><span style="display:inline-flex;align-items:center;justify-content:center;background:#EEF2FF;color:var(--navy);font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">6</span></td></tr>
+              <tr><td style="padding:9px 14px;font-size:13px;color:var(--text);background:var(--cream);">Рейд города</td><td style="padding:9px 14px;text-align:center;background:var(--cream);"><span style="display:inline-flex;align-items:center;justify-content:center;background:#EEF2FF;color:var(--navy);font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">5</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Тренировки -->
+        <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:14px;overflow:hidden;">
+          <div style="background:var(--navy-mid);padding:12px 16px;display:flex;align-items:center;gap:9px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:var(--white);letter-spacing:.02em;">Тренировки</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:1px;">Training Activities</div>
+            </div>
+          </div>
+          <table style="width:100%;border-collapse:collapse;">
+            <thead>
+              <tr style="background:var(--cream);">
+                <th style="padding:9px 14px;text-align:left;font-size:11px;font-weight:700;color:var(--grey);text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--grey-light);">Задание</th>
+                <th style="padding:9px 14px;text-align:center;font-size:11px;font-weight:700;color:var(--grey);text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--grey-light);white-space:nowrap;">Баллы</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid var(--grey-light);"><td style="padding:9px 14px;font-size:13px;color:var(--text);">Командный бой</td><td style="padding:9px 14px;text-align:center;"><span style="display:inline-flex;align-items:center;justify-content:center;background:var(--green-light);color:var(--green);font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">4</span></td></tr>
+              <tr style="border-bottom:1px solid var(--grey-light);background:var(--cream);"><td style="padding:9px 14px;font-size:13px;color:var(--text);">Бейсджампинг</td><td style="padding:9px 14px;text-align:center;"><span style="display:inline-flex;align-items:center;justify-content:center;background:var(--green-light);color:var(--green);font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">2</span></td></tr>
+              <tr style="border-bottom:1px solid var(--grey-light);"><td style="padding:9px 14px;font-size:13px;color:var(--text);">Форсаж</td><td style="padding:9px 14px;text-align:center;"><span style="display:inline-flex;align-items:center;justify-content:center;background:var(--green-light);color:var(--green);font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">4</span></td></tr>
+              <tr style="border-bottom:1px solid var(--grey-light);background:var(--cream);"><td style="padding:9px 14px;font-size:13px;color:var(--text);">Ралли</td><td style="padding:9px 14px;text-align:center;"><span style="display:inline-flex;align-items:center;justify-content:center;background:var(--green-light);color:var(--green);font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">2</span></td></tr>
+              <tr style="border-bottom:1px solid var(--grey-light);"><td style="padding:9px 14px;font-size:13px;color:var(--text);">Дерби</td><td style="padding:9px 14px;text-align:center;"><span style="display:inline-flex;align-items:center;justify-content:center;background:var(--green-light);color:var(--green);font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">2</span></td></tr>
+              <tr style="border-bottom:1px solid var(--grey-light);background:var(--cream);"><td style="padding:9px 14px;font-size:13px;color:var(--text);">Гонки</td><td style="padding:9px 14px;text-align:center;"><span style="display:inline-flex;align-items:center;justify-content:center;background:var(--green-light);color:var(--green);font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">4</span></td></tr>
+              <tr style="border-bottom:1px solid var(--grey-light);"><td style="padding:9px 14px;font-size:13px;color:var(--text);">Ложный вызов</td><td style="padding:9px 14px;text-align:center;"><span style="display:inline-flex;align-items:center;justify-content:center;background:var(--green-light);color:var(--green);font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">2</span></td></tr>
+              <tr style="border-bottom:1px solid var(--grey-light);background:var(--cream);"><td style="padding:9px 14px;font-size:13px;color:var(--text);">Манёвры</td><td style="padding:9px 14px;text-align:center;"><span style="display:inline-flex;align-items:center;justify-content:center;background:var(--green-light);color:var(--green);font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">2</span></td></tr>
+              <tr style="border-bottom:1px solid var(--grey-light);"><td style="padding:9px 14px;font-size:13px;color:var(--text);">Тактические учения</td><td style="padding:9px 14px;text-align:center;"><span style="display:inline-flex;align-items:center;justify-content:center;background:var(--green-light);color:var(--green);font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">4</span></td></tr>
+              <tr><td style="padding:9px 14px;font-size:13px;color:var(--text);background:var(--cream);">Учебный захват</td><td style="padding:9px 14px;text-align:center;background:var(--cream);"><span style="display:inline-flex;align-items:center;justify-content:center;background:var(--green-light);color:var(--green);font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">4</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Дополнительная работа -->
+        <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:14px;overflow:hidden;">
+          <div style="background:linear-gradient(135deg,#7A5C18,var(--accent));padding:12px 16px;display:flex;align-items:center;gap:9px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:var(--white);letter-spacing:.02em;">Дополнительная работа</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.6);margin-top:1px;">Additional Duties</div>
+            </div>
+          </div>
+          <table style="width:100%;border-collapse:collapse;">
+            <thead>
+              <tr style="background:var(--cream);">
+                <th style="padding:9px 14px;text-align:left;font-size:11px;font-weight:700;color:var(--grey);text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--grey-light);">Задание</th>
+                <th style="padding:9px 14px;text-align:center;font-size:11px;font-weight:700;color:var(--grey);text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--grey-light);white-space:nowrap;">Баллы</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid var(--grey-light);"><td style="padding:9px 14px;font-size:12.5px;color:var(--text);line-height:1.4;">Присутствие на активности от министра<br><span style="font-size:11px;color:var(--grey);">тренировки, акции, БП или СО</span></td><td style="padding:9px 14px;text-align:center;vertical-align:middle;"><span style="display:inline-flex;align-items:center;justify-content:center;background:var(--accent-light);color:#7A5C18;font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">4</span><br><span style="font-size:10px;color:var(--grey);">акция: 5</span></td></tr>
+              <tr style="border-bottom:1px solid var(--grey-light);background:var(--cream);"><td style="padding:9px 14px;font-size:12.5px;color:var(--text);">RP ситуация с другими фракциями</td><td style="padding:9px 14px;text-align:center;"><span style="display:inline-flex;align-items:center;justify-content:center;background:var(--accent-light);color:#7A5C18;font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">5</span></td></tr>
+              <tr style="border-bottom:1px solid var(--grey-light);"><td style="padding:9px 14px;font-size:12.5px;color:var(--text);">Проведение Блок-поста</td><td style="padding:9px 14px;text-align:center;"><span style="display:inline-flex;align-items:center;justify-content:center;background:var(--accent-light);color:#7A5C18;font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">5</span></td></tr>
+              <tr style="border-bottom:1px solid var(--grey-light);background:var(--cream);"><td style="padding:9px 14px;font-size:12.5px;color:var(--text);">Проведение пригородного Блок-поста</td><td style="padding:9px 14px;text-align:center;"><span style="display:inline-flex;align-items:center;justify-content:center;background:var(--accent-light);color:#7A5C18;font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">4</span></td></tr>
+              <tr style="border-bottom:1px solid var(--grey-light);"><td style="padding:9px 14px;font-size:12.5px;color:var(--text);">Принятие во фракцию</td><td style="padding:9px 14px;text-align:center;"><span style="display:inline-flex;align-items:center;justify-content:center;background:var(--accent-light);color:#7A5C18;font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">2</span></td></tr>
+              <tr style="border-bottom:1px solid var(--grey-light);background:var(--cream);"><td style="padding:9px 14px;font-size:12.5px;color:var(--text);">Охрана собеседования<br><span style="font-size:11px;color:var(--grey);">за 30 минут</span></td><td style="padding:9px 14px;text-align:center;vertical-align:middle;"><span style="display:inline-flex;align-items:center;justify-content:center;background:var(--accent-light);color:#7A5C18;font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">3</span></td></tr>
+              <tr style="border-bottom:1px solid var(--grey-light);"><td style="padding:9px 14px;font-size:12.5px;color:var(--text);">Охрана акции<br><span style="font-size:11px;color:var(--grey);">за 20 минут</span></td><td style="padding:9px 14px;text-align:center;vertical-align:middle;"><span style="display:inline-flex;align-items:center;justify-content:center;background:var(--accent-light);color:#7A5C18;font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">2</span></td></tr>
+              <tr style="border-bottom:1px solid var(--grey-light);background:var(--cream);"><td style="padding:9px 14px;font-size:12.5px;color:var(--text);">Реклама ПД в объявлениях<br><span style="font-size:11px;color:var(--grey);">за 3 объявления; макс. 15 баллов</span></td><td style="padding:9px 14px;text-align:center;vertical-align:middle;"><span style="display:inline-flex;align-items:center;justify-content:center;background:var(--accent-light);color:#7A5C18;font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">1</span></td></tr>
+              <tr style="border-bottom:1px solid var(--grey-light);"><td style="padding:9px 14px;font-size:12.5px;color:var(--text);">Реклама ПД на билбордах<br><span style="font-size:11px;color:var(--grey);">за 1 билборд</span></td><td style="padding:9px 14px;text-align:center;vertical-align:middle;"><span style="display:inline-flex;align-items:center;justify-content:center;background:var(--accent-light);color:#7A5C18;font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">2</span></td></tr>
+              <tr><td style="padding:9px 14px;font-size:12.5px;color:var(--text);background:var(--cream);">Совместный кортеж с мэрией</td><td style="padding:9px 14px;text-align:center;background:var(--cream);"><span style="display:inline-flex;align-items:center;justify-content:center;background:var(--accent-light);color:#7A5C18;font-size:12px;font-weight:700;border-radius:6px;padding:3px 10px;min-width:36px;">5</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div><!-- /grid -->
+    </div><!-- /subpanel-points -->
 
   </div>
 </div><!-- /page-dept -->
@@ -4891,7 +5033,7 @@
         <div class="modal-title">Чёрный список</div>
       </div>
       <div style="display:flex;align-items:center;gap:10px;">
-        <button id="bl-add-btn" onclick="openBlacklistAdd()" style="display:none;align-items:center;gap:6px;padding:7px 14px;background:var(--red);color:white;border:none;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;">⛔ Добавить</button>
+        <button id="bl-add-btn" onclick="openBlacklistAdd()" style="display:none;align-items:center;gap:6px;padding:7px 14px;background:var(--red);color:white;border:none;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg> Добавить</button>
         <button class="modal-close" onclick="document.getElementById('modal-blacklist').classList.remove('open')">✕</button>
       </div>
     </div>
@@ -5057,7 +5199,7 @@
 
       <div class="rules-card">
         <div class="rules-card-header">
-          <div class="rules-icon navy">📋</div>
+          <div class="rules-icon navy"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></div>
           <div class="rules-card-title">Правила оформления</div>
         </div>
         <div class="rules-body">
@@ -5090,7 +5232,7 @@
   <div class="complaints-footer-row">
 
     <a href="#" class="archive-card" id="open-complaints-inbox">
-      <div class="archive-icon">📥</div>
+      <div class="archive-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
       <div class="archive-text">
         <div class="archive-label">Просмотр</div>
         <div class="archive-title">Входящие жалобы</div>
@@ -5100,7 +5242,7 @@
     </a>
 
     <div class="note-card">
-      <div class="note-icon">⚠️</div>
+      <div class="note-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
       <div class="note-text">
         <div class="note-label">Обратите внимание</div>
         <div class="note-body">Наказание приводит в действие Генерал, Полковник или Подполковник. Если штраф выписан неправомерно — сумма возвращается. Для разбирательств пишите в кабинет Министра.</div>
@@ -5146,17 +5288,17 @@
   <!-- ТИП ЗАЯВЛЕНИЯ -->
   <div class="app-type-grid">
     <div class="app-type-card" data-type="resume" onclick="selectAppType('resume')">
-      <div class="app-type-icon">📄</div>
+      <div class="app-type-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
       <div class="app-type-name">Резюме</div>
       <div class="app-type-desc">Первичное трудоустройство на службу в МВД</div>
     </div>
     <div class="app-type-card" data-type="reinstate" onclick="selectAppType('reinstate')">
-      <div class="app-type-icon">🔄</div>
+      <div class="app-type-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></div>
       <div class="app-type-name">Восстановление</div>
       <div class="app-type-desc">Возвращение на службу после увольнения</div>
     </div>
     <div class="app-type-card" data-type="transfer" onclick="selectAppType('transfer')">
-      <div class="app-type-icon">↔️</div>
+      <div class="app-type-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div>
       <div class="app-type-name">Перевод</div>
       <div class="app-type-desc">Переход из другого департамента или организации</div>
     </div>
@@ -5196,7 +5338,7 @@
         <div class="form-row">
           <div class="form-group">
             <label>Трудовая книга <span class="req">*</span></label>
-            <div style="font-size:11.5px;color:var(--grey);margin-bottom:6px;">Ссылка на форумную тему трудовой книги</div>
+            <div style="font-size:11.5px;color:var(--grey);margin-bottom:6px;">Ссылка на скриншот трудовой книги</div>
             <input type="text" name="labor_book" placeholder="" required/>
           </div>
           <div class="form-group">
@@ -5256,7 +5398,7 @@
 
       <div class="req-card">
         <div class="req-card-header">
-          <div class="req-icon navy">📋</div>
+          <div class="req-icon navy"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></div>
           <div class="req-card-title">Минимальные требования</div>
         </div>
         <div class="req-body">
@@ -5272,7 +5414,7 @@
 
       <div class="req-card">
         <div class="req-card-header">
-          <div class="req-icon accent">❕</div>
+          <div class="req-icon accent"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/><circle cx="12" cy="12" r="10"/></svg></div>
           <div class="req-card-title">Важные примечания</div>
         </div>
         <div class="note-accordion">
@@ -5313,7 +5455,7 @@
   <div class="employment-footer-row">
 
     <a href="#" class="archive-card" id="open-emp-inbox">
-      <div class="archive-icon">📥</div>
+      <div class="archive-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
       <div class="archive-text">
         <div class="archive-label">Просмотр</div>
         <div class="archive-title">Входящие заявления</div>
@@ -5323,7 +5465,7 @@
     </a>
 
     <div class="note-card">
-      <div class="note-icon">⚠️</div>
+      <div class="note-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
       <div class="note-text">
         <div class="note-label">Обратите внимание</div>
         <div class="note-body">Решение принимается Генералом, Полковником или Подполковником. Заявления рассматриваются в порядке очерёдности. Повторная подача возможна не ранее чем через 7 дней после отказа.</div>
@@ -5369,7 +5511,7 @@
       Раздел МВД
     </div>
     <h1 class="page-title">Личные дела сотрудников</h1>
-    <p class="page-desc">Введите жетон (номер аккаунта) или имя и фамилию сотрудника для поиска личного дела. Редактирование доступно только с кодом доступа.</p>
+    <p class="page-desc">Введите жетон (номер аккаунта) или имя и фамилию сотрудника для поиска личного дела.</p>
   </div>
 
   <!-- ПОИСК -->
@@ -5379,7 +5521,7 @@
         placeholder="Введите жетон (номер аккаунта) или Имя Фамилию..."
         oninput="onPersonnelSearch()" onkeydown="if(event.key==='Enter')doPersonnelSearch()"/>
       <button class="personnel-search-btn" onclick="doPersonnelSearch()">
-        🔍 Найти
+        <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Найти
       </button>
       <button class="personnel-search-btn" onclick="doPersonnelSearch(true)"
         style="background:var(--cream);color:var(--navy);border:1.5px solid var(--grey-light);">
@@ -5399,12 +5541,12 @@
     <div class="personnel-results-header">
       <div class="personnel-results-title" id="personnel-results-title">Сотрудники</div>
       <button class="personnel-add-btn locked" id="personnel-add-btn" onclick="openPersonnelAdd()">
-        🔐 Добавить дело
+        <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg> Добавить дело
       </button>
     </div>
     <div class="personnel-grid" id="personnel-grid">
       <div class="personnel-empty">
-        <div class="personnel-empty-icon">🔍</div>
+        <div class="personnel-empty-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
         Введите данные сотрудника для поиска<br/>или нажмите «Все» чтобы показать всех.
       </div>
     </div>
@@ -5518,7 +5660,7 @@
 ═══════════════════════════════════════ -->
 <div id="modal-pw-gate" class="pw-overlay">
   <div class="pw-box">
-    <div class="pw-icon">🔐</div>
+    <div class="pw-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg></div>
     <div class="pw-title">Код доступа</div>
     <div class="pw-desc">Введите персональный код доступа. Уровень прав определяется автоматически.</div>
     <input type="password" class="pw-input" id="pw-input" placeholder="••••••••" maxlength="32"
@@ -5559,7 +5701,7 @@
       </div>
       <div class="inbox-detail" id="emp-inbox-detail">
         <div class="inbox-detail-empty">
-          <div class="inbox-detail-empty-icon">📋</div>
+          <div class="inbox-detail-empty-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></div>
           Выберите заявление из списка выше, чтобы просмотреть.
         </div>
       </div>
@@ -5597,7 +5739,7 @@
       </div>
       <div class="inbox-detail" id="complaints-inbox-detail">
         <div class="inbox-detail-empty">
-          <div class="inbox-detail-empty-icon">📋</div>
+          <div class="inbox-detail-empty-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></div>
           Выберите жалобу из списка выше, чтобы просмотреть.
         </div>
       </div>
@@ -5991,7 +6133,7 @@
   }
 
   function openBlacklistAdd() {
-    if (!_auth || _auth.rank < 11) { sysAlert('Добавлять в чёрный список могут только офицеры <b>ранга 11</b>.', {type:'error', title:'Нет прав', icon:'🔒'}); return; }
+    if (!_auth || _auth.rank < 11) { sysAlert('Добавлять в чёрный список могут только офицеры <b>ранга 11</b>.', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
     const form = document.getElementById('bl-add-form');
     form.style.display = form.style.display === 'none' ? 'block' : 'none';
     if (form.style.display !== 'none') {
@@ -6019,8 +6161,8 @@
   }
 
   async function deleteBlacklistEntry(id) {
-    if (!_auth || _auth.rank < 11) { sysAlert('Удалять из чёрного списка могут только офицеры <b>ранга 11</b>.', {type:'error', title:'Нет прав', icon:'🔒'}); return; }
-    if (!await sysConfirm('Удалить запись из чёрного списка?', {title:'Удаление из ЧС', icon:'🚫', okText:'Удалить'})) return;
+    if (!_auth || _auth.rank < 11) { sysAlert('Удалять из чёрного списка могут только офицеры <b>ранга 11</b>.', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
+    if (!await sysConfirm('Удалить запись из чёрного списка?', {title:'Удаление из ЧС', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>', okText:'Удалить'})) return;
     try {
       await fbDelete('blacklist', id);
       writeLog('УДАЛЕНИЕ', 'ЧС', id, '');
@@ -6333,7 +6475,7 @@
       }
       renderEmpList();
       document.getElementById('emp-inbox-detail').innerHTML =
-        '<div class="inbox-detail-empty"><div class="inbox-detail-empty-icon">📋</div>Выберите заявление из списка.</div>';
+        '<div class="inbox-detail-empty"><div class="inbox-detail-empty-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></div>Выберите заявление из списка.</div>';
     } else {
       showLoading('complaints-inbox-list', 'complaints-inbox-detail');
       selectedComplaintId = null;
@@ -6345,7 +6487,7 @@
       }
       renderComplaintsList();
       document.getElementById('complaints-inbox-detail').innerHTML =
-        '<div class="inbox-detail-empty"><div class="inbox-detail-empty-icon">📋</div>Выберите жалобу из списка.</div>';
+        '<div class="inbox-detail-empty"><div class="inbox-detail-empty-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></div>Выберите жалобу из списка.</div>';
     }
   }
 
@@ -6427,7 +6569,7 @@
         </div>
       ` : `
         <div class="decision-locked">
-          <div class="decision-locked-icon">🔐</div>
+          <div class="decision-locked-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg></div>
           <div class="decision-locked-text">Вынесение решений доступно только офицерам.<br/>Войдите с кодом доступа чтобы продолжить.</div>
           <button class="decision-unlock-btn" onclick="openPasswordGate('unlock-emp')">Войти как офицер</button>
         </div>
@@ -6518,14 +6660,14 @@
         </div>`;
         if (!hasBase) return `
         <div class="decision-locked">
-          <div class="decision-locked-icon">🔐</div>
+          <div class="decision-locked-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg></div>
           <div class="decision-locked-text">Вынесение решений доступно только офицерам 9 ранга и выше.<br/>Войдите с кодом доступа чтобы продолжить.</div>
           <button class="decision-unlock-btn" onclick="openPasswordGate('unlock-complaints')">Войти как офицер</button>
         </div>`;
         // Имеет базовый доступ, но ранг недостаточен для изменения
         return `
         <div class="decision-locked">
-          <div class="decision-locked-icon">🔒</div>
+          <div class="decision-locked-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
           <div class="decision-locked-text">Вердикт уже вынес офицер <strong>ранга ${prevRank}</strong>.<br/>Изменить его может только офицер более высокого ранга или ранга 11.</div>
         </div>`;
       })()}
@@ -6566,25 +6708,25 @@
     if (type === 'emp') {
       const app = empApplications.find(x => x.id === id);
       const appDept = app ? (app.desired_dept || '') : '';
-      if (appDept && !canModifyDept(appDept)) { sysAlert('Вы можете проверять заявки только своего департамента (<b>' + (_auth ? _auth.dept : '') + '</b>).', {type:'error', title:'Нет прав', icon:'🔒'}); return; }
+      if (appDept && !canModifyDept(appDept)) { sysAlert('Вы можете проверять заявки только своего департамента (<b>' + (_auth ? _auth.dept : '') + '</b>).', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
     } else if (type === 'complaint') {
       const cItem = complaintsList.find(x => x.id === id);
       const cDept = cItem ? (cItem.dept || cItem.desired_dept || '') : '';
-      if (cDept && !canModifyDept(cDept)) { sysAlert('Вы можете проверять жалобы только своего департамента (<b>' + (_auth ? _auth.dept : '') + '</b>).', {type:'error', title:'Нет прав', icon:'🔒'}); return; }
+      if (cDept && !canModifyDept(cDept)) { sysAlert('Вы можете проверять жалобы только своего департамента (<b>' + (_auth ? _auth.dept : '') + '</b>).', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
       // Запрет изменения вердикта: ранг проверяющего должен быть выше предыдущего (исключение — ранг 11)
       const prevRank = cItem ? (parseInt(cItem.reviewer_rank) || 0) : 0;
       const myRank   = authRank();
       if (prevRank > 0 && myRank < 11 && myRank <= prevRank) {
         sysAlert(
           'Этот вердикт вынес офицер <b>ранга ' + prevRank + '</b>.<br>Изменить его может только офицер <b>более высокого ранга</b> или ранга 11.',
-          {type:'error', title:'Нет прав', icon:'🔒'}
+          {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}
         );
         return;
       }
     }
 
     if (!newStatus) {
-      sysAlert('Сначала нажмите <b>«Одобрить»</b> или <b>«Отказать»</b>.', {type:'warn', title:'Решение не выбрано', icon:'⚖️'});
+      sysAlert('Сначала нажмите <b>«Одобрить»</b> или <b>«Отказать»</b>.', {type:'warn', title:'Решение не выбрано', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"/><path d="M6 21h12"/><path d="M3 9l9-6 9 6"/><polyline points="3 9 7.5 17 3 17"/><polyline points="21 9 16.5 17 21 17"/></svg>'});
       return;
     }
 
@@ -6693,7 +6835,7 @@
     title.textContent = `Сотрудники (${list.length})`;
 
     if (!list.length) {
-      grid.innerHTML = `<div class="personnel-empty"><div class="personnel-empty-icon">📭</div>Сотрудников не найдено.<br/><span style="font-size:12px;color:var(--grey);">Попробуйте изменить запрос или фильтр.</span></div>`;
+      grid.innerHTML = `<div class="personnel-empty"><div class="personnel-empty-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></div>Сотрудников не найдено.<br/><span style="font-size:12px;color:var(--grey);">Попробуйте изменить запрос или фильтр.</span></div>`;
       return;
     }
 
@@ -6764,7 +6906,7 @@
       </div>
       <div class="file-modal-actions">
         ${(()=>{
-          if (!personnelUnlocked) return '<button class="file-edit-btn locked" onclick="requestPersonnelUnlock(\'edit\',\'' + esc(id) + '\')" >🔐 Редактировать</button><button class="file-delete-btn locked" onclick="requestPersonnelUnlock(\'delete\',\'' + esc(id) + '\')">🗑 Удалить</button>';
+          if (!personnelUnlocked) return '<button class="file-edit-btn locked" onclick="requestPersonnelUnlock(\'edit\',\'' + esc(id) + '\')" ><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg> Редактировать</button><button class="file-delete-btn locked" onclick="requestPersonnelUnlock(\'delete\',\'' + esc(id) + '\')"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg> Удалить</button>';
           const deptOk = canModifyDept(p.dept); // только свой деп может редактировать
           const rankEdit = _auth && _auth.rank >= 8 && _auth.rank <= 10;
           const rankDel  = _auth && _auth.rank >= 11;
@@ -6772,18 +6914,18 @@
           const limitOk = _auth && (_auth.rank >= 11 || alreadyEdited || getRemainingEditSlots() > 0);
           let editBtn;
           if (!deptOk) {
-            editBtn = '<button class="file-edit-btn locked" disabled style="opacity:.5;cursor:not-allowed;" title="Чужой департамент">🔒 ' + p.dept + '</button>';
+            editBtn = '<button class="file-edit-btn locked" disabled style="opacity:.5;cursor:not-allowed;" title="Чужой департамент"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> ' + p.dept + '</button>';
           } else if (!rankEdit) {
-            editBtn = '<button class="file-edit-btn locked" disabled style="opacity:.5;cursor:not-allowed;" title="Только ранги 8-10">🔒 Нет прав</button>';
+            editBtn = '<button class="file-edit-btn locked" disabled style="opacity:.5;cursor:not-allowed;" title="Только ранги 8-10"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Нет прав</button>';
           } else if (!limitOk) {
-            editBtn = '<button class="file-edit-btn locked" disabled style="opacity:.5;cursor:not-allowed;" title="Лимит 5 дел/сутки исчерпан">⏱ Лимит</button>';
+            editBtn = '<button class="file-edit-btn locked" disabled style="opacity:.5;cursor:not-allowed;" title="Лимит 5 дел/сутки исчерпан"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Лимит</button>';
           } else {
             const hint = (_auth.rank < 11 && !alreadyEdited) ? ' (' + getRemainingEditSlots() + ')' : '';
-            editBtn = '<button class="file-edit-btn" onclick="openPersonnelEdit(\'' + esc(id) + '\')">✏️ Редактировать' + hint + '</button>';
+            editBtn = '<button class="file-edit-btn" onclick="openPersonnelEdit(\'' + esc(id) + '\')"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> Редактировать' + hint + '</button>';
           }
           const delBtn = rankDel
-            ? '<button class="file-delete-btn" onclick="confirmDeletePersonnel(\'' + esc(id) + '\')">🗑 Удалить</button>'
-            : '<button class="file-delete-btn locked" disabled style="opacity:.5;cursor:not-allowed;" title="Только ранг 11">🔒 Удалить</button>';
+            ? '<button class="file-delete-btn" onclick="confirmDeletePersonnel(\'' + esc(id) + '\')"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg> Удалить</button>'
+            : '<button class="file-delete-btn locked" disabled style="opacity:.5;cursor:not-allowed;" title="Только ранг 11"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Удалить</button>';
           return editBtn + delBtn;
         })()}
       </div>
@@ -6809,7 +6951,7 @@
 
   function openPersonnelAdd() {
     if (personnelUnlocked) {
-      if (_auth && (_auth.rank < 8 || _auth.rank > 10)) { sysAlert('Создавать личные дела могут только офицеры рангов <b>8–10</b>.', {type:'error', title:'Нет прав', icon:'🔒'}); return; }
+      if (_auth && (_auth.rank < 8 || _auth.rank > 10)) { sysAlert('Создавать личные дела могут только офицеры рангов <b>8–10</b>.', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
       showPersonnelForm(null);
     } else {
       requestPersonnelUnlock('add');
@@ -7228,8 +7370,8 @@
     const p = personnelList.find(x => x.id === id);
     if (!p) return;
     // Просмотр личных дел доступен для всех — редактирование ограничено через canDo
-    if (!_auth || _auth.rank < 8 || _auth.rank > 10) { sysAlert('Редактировать личные дела могут только офицеры рангов <b>8–10</b> своего департамента.', {type:'error', title:'Нет прав', icon:'🔒'}); return; }
-    if (!canEditPersonnelFile(id)) { sysAlert('Лимит: <b>5 личных дел в сутки</b>.<br>Обратитесь к офицеру ранга 11 для сброса.', {type:'warn', title:'Лимит исчерпан', icon:'⏱'}); return; }
+    if (!_auth || _auth.rank < 8 || _auth.rank > 10) { sysAlert('Редактировать личные дела могут только офицеры рангов <b>8–10</b> своего департамента.', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
+    if (!canEditPersonnelFile(id)) { sysAlert('Лимит: <b>5 личных дел в сутки</b>.<br>Обратитесь к офицеру ранга 11 для сброса.', {type:'warn', title:'Лимит исчерпан', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'}); return; }
     markPersonnelEdited(id);
     showPersonnelForm(p);
   }
@@ -7259,10 +7401,10 @@
     };
 
     if (isEdit) {
-      if (!canModifyDept(record.dept) || !_auth || _auth.rank < 8 || _auth.rank > 10) { sysAlert('Нет прав редактировать это личное дело.', {type:'error', title:'Нет прав', icon:'🔒'}); return; }
-      if (!canEditPersonnelFile(editingId)) { sysAlert('Лимит редактирований (5 дел в сутки) исчерпан.', {type:'warn', title:'Лимит', icon:'⏱'}); return; }
+      if (!canModifyDept(record.dept) || !_auth || _auth.rank < 8 || _auth.rank > 10) { sysAlert('Нет прав редактировать это личное дело.', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
+      if (!canEditPersonnelFile(editingId)) { sysAlert('Лимит редактирований (5 дел в сутки) исчерпан.', {type:'warn', title:'Лимит', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'}); return; }
     } else {
-      if (!_auth || _auth.rank < 8 || _auth.rank > 10) { sysAlert('Создавать личные дела могут только офицеры рангов 8–10.', {type:'error', title:'Нет прав', icon:'🔒'}); return; }
+      if (!_auth || _auth.rank < 8 || _auth.rank > 10) { sysAlert('Создавать личные дела могут только офицеры рангов 8–10.', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
     }
     const _ri = reviewerInfo(); record.reviewer = _ri.reviewer; record.reviewer_rank = _ri.reviewer_rank; record.reviewer_dept = _ri.reviewer_dept; record.reviewer_ts = _ri.reviewer_ts;
     if (isEdit) {
@@ -7287,7 +7429,7 @@
 
   /* ── Удаление ── */
   async function confirmDeletePersonnel(id) {
-    if (!_auth || _auth.rank < 11) { sysAlert('Удалять личные дела может только офицер <b>ранга 11</b>.', {type:'error', title:'Нет прав', icon:'🔒'}); return; }
+    if (!_auth || _auth.rank < 11) { sysAlert('Удалять личные дела может только офицер <b>ранга 11</b>.', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
     const p = personnelList.find(x => x.id === id);
     if (!p) return;
     const ok = await sysConfirm('Удалить личное дело <b>«' + p.name + '»</b>?<br><span style="font-size:12px;color:#888">Необратимо.</span>', {title:'Удаление', okText:'Удалить'});
@@ -7451,7 +7593,7 @@
     );
 
     if (!list.length) {
-      el.innerHTML = '<div class="inbox-detail-empty"><div class="inbox-detail-empty-icon">📋</div>Отчётов не найдено.</div>';
+      el.innerHTML = '<div class="inbox-detail-empty"><div class="inbox-detail-empty-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></div>Отчётов не найдено.</div>';
       return;
     }
 
@@ -7579,11 +7721,11 @@
 
   async function saveAllReportDecision(id) {
     const newStatus = _pending['rpt_'+id];
-    if (!newStatus) { sysAlert('Выберите решение.', {type:'warn', title:'Решение не выбрано', icon:'⚖️'}); return; }
+    if (!newStatus) { sysAlert('Выберите решение.', {type:'warn', title:'Решение не выбрано', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"/><path d="M6 21h12"/><path d="M3 9l9-6 9 6"/><polyline points="3 9 7.5 17 3 17"/><polyline points="21 9 16.5 17 21 17"/></svg>'}); return; }
     const noteEl = document.getElementById('rpt-note-' + id);
     const note = noteEl ? noteEl.value.trim() : '';
     if (newStatus === 'review' && !note) {
-      sysAlert('При «Доработке» заполните примечание.', {type:'warn', title:'Примечание обязательно', icon:'📝'});
+      sysAlert('При «Доработке» заполните примечание.', {type:'warn', title:'Примечание обязательно', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>'});
       if (noteEl) { noteEl.focus(); noteEl.style.borderColor = 'var(--red)'; setTimeout(() => { noteEl.style.borderColor = ''; }, 2000); }
       return;
     }
@@ -7603,11 +7745,11 @@
 
   async function saveSeniorReportDecision(id) {
     const newStatus = _pending['rpt_'+id];
-    if (!newStatus) { sysAlert('Выберите решение.', {type:'warn', title:'Решение не выбрано', icon:'⚖️'}); return; }
+    if (!newStatus) { sysAlert('Выберите решение.', {type:'warn', title:'Решение не выбрано', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"/><path d="M6 21h12"/><path d="M3 9l9-6 9 6"/><polyline points="3 9 7.5 17 3 17"/><polyline points="21 9 16.5 17 21 17"/></svg>'}); return; }
     const noteEl = document.getElementById('rpt-note-' + id);
     const note = noteEl ? noteEl.value.trim() : '';
     if (newStatus === 'review' && !note) {
-      sysAlert('При «Доработке» заполните примечание.', {type:'warn', title:'Примечание обязательно', icon:'📝'});
+      sysAlert('При «Доработке» заполните примечание.', {type:'warn', title:'Примечание обязательно', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>'});
       if (noteEl) { noteEl.focus(); noteEl.style.borderColor = 'var(--red)'; setTimeout(() => { noteEl.style.borderColor = ''; }, 2000); }
       return;
     }
@@ -7626,7 +7768,7 @@
   }
 
   async function deleteReportRecord(id, sheetName) {
-    if (!canDo('deleteReport', currentDept)) { sysAlert('Нет прав на удаление.', {type:'error', title:'Доступ запрещён', icon:'🔒'}); return; }
+    if (!canDo('deleteReport', currentDept)) { sysAlert('Нет прав на удаление.', {type:'error', title:'Доступ запрещён', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
     if (!await sysConfirm('Удалить запись?<br><span style="font-size:12px;color:#888">Необратимо.</span>', {title:'Удаление', okText:'Удалить'})) return;
     allReports    = allReports.filter(x => x.id !== id);
     seniorReports = seniorReports.filter(x => x.id !== id);
@@ -7637,17 +7779,17 @@
   }
 
   async function deleteEmpRecord(id) {
-    if (!canDo('deleteEmployment')) { sysAlert('Нет прав на удаление заявки.', {type:'error', title:'Доступ запрещён', icon:'🔒'}); return; }
+    if (!canDo('deleteEmployment')) { sysAlert('Нет прав на удаление заявки.', {type:'error', title:'Доступ запрещён', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
     if (!await sysConfirm('Удалить заявку на трудоустройство?<br><span style="font-size:12px;color:#888">Необратимо.</span>', {title:'Удаление заявки', okText:'Удалить'})) return;
     empApplications = empApplications.filter(x => x.id !== id);
     try { await sheetsPost('deleteRecord', { sheet: 'Employment', id, ...reviewerInfo() }); } catch(_) {}
     renderEmpList();
-    document.getElementById('emp-inbox-detail').innerHTML = '<div class="inbox-detail-empty"><div class="inbox-detail-empty-icon">📋</div>Заявка удалена.</div>';
+    document.getElementById('emp-inbox-detail').innerHTML = '<div class="inbox-detail-empty"><div class="inbox-detail-empty-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></div>Заявка удалена.</div>';
     showToast('Заявка удалена', 'ok');
   }
 
   async function deleteComplaintRecord(id) {
-    if (!canDo('deleteComplaint')) { sysAlert('Нет прав на удаление жалобы.', {type:'error', title:'Доступ запрещён', icon:'🔒'}); return; }
+    if (!canDo('deleteComplaint')) { sysAlert('Нет прав на удаление жалобы.', {type:'error', title:'Доступ запрещён', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
     if (!await sysConfirm('Удалить жалобу?<br><span style="font-size:12px;color:#888">Необратимо.</span>', {title:'Удаление жалобы', okText:'Удалить'})) return;
     complaintsList = complaintsList.filter(x => x.id !== id);
     try { await sheetsPost('deleteRecord', { sheet: 'Complaints', id, ...reviewerInfo() }); } catch(_) {}
@@ -7817,12 +7959,12 @@
 
   async function saveReportDecision(id, idx) {
     const newStatus = _pending['rpt_'+id];
-    if (!newStatus) { sysAlert('Выберите решение.', {type:'warn', title:'Решение не выбрано', icon:'⚖️'}); return; }
+    if (!newStatus) { sysAlert('Выберите решение.', {type:'warn', title:'Решение не выбрано', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"/><path d="M6 21h12"/><path d="M3 9l9-6 9 6"/><polyline points="3 9 7.5 17 3 17"/><polyline points="21 9 16.5 17 21 17"/></svg>'}); return; }
     const noteEl = document.getElementById('rpt-note-' + id) || document.getElementById('rpt-note-' + idx);
     const note = noteEl ? noteEl.value.trim() : '';
 
     if (!note) {
-      sysAlert('Поле «Вердикт» обязательно.', {type:'warn', title:'Вердикт не указан', icon:'⚖️'});
+      sysAlert('Поле «Вердикт» обязательно.', {type:'warn', title:'Вердикт не указан', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"/><path d="M6 21h12"/><path d="M3 9l9-6 9 6"/><polyline points="3 9 7.5 17 3 17"/><polyline points="21 9 16.5 17 21 17"/></svg>'});
       if (noteEl) { noteEl.focus(); noteEl.style.borderColor = 'var(--red)'; setTimeout(() => { noteEl.style.borderColor = ''; }, 2000); }
       return;
     }
@@ -7870,7 +8012,7 @@
   /* ── Submit report form (unified) ── */
   document.getElementById('submit-report-form').addEventListener('submit', async function(e) {
     e.preventDefault();
-    if (!currentRType) { sysAlert('Выберите тип отчёта.', {type:'warn', title:'Тип не выбран', icon:'📋'}); return; }
+    if (!currentRType) { sysAlert('Выберите тип отчёта.', {type:'warn', title:'Тип не выбран', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>'}); return; }
     const typeLabels = { promotion:'Отчёт на повышение', leave:'Заявление на отпуск', weekly:'Отчёт ст. состава' };
     const name = document.getElementById('rpt-name').value.trim();
     const rank = document.getElementById('rpt-rank').value.trim();
@@ -7978,9 +8120,9 @@
         const ok = document.execCommand('copy');
         document.body.removeChild(ta);
         if (ok) showToast('Код скопирован: ' + code);
-        else sysAlert('Скопируйте код вручную: <b>' + code + '</b>', {title:'Код отчёта', icon:'📋'});
+        else sysAlert('Скопируйте код вручную: <b>' + code + '</b>', {title:'Код отчёта', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>'});
       } catch(e) {
-        sysAlert('Скопируйте код вручную: <b>' + code + '</b>', {title:'Код отчёта', icon:'📋'});
+        sysAlert('Скопируйте код вручную: <b>' + code + '</b>', {title:'Код отчёта', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>'});
       }
     }
 
@@ -8002,7 +8144,7 @@
     const codeInput = document.getElementById('edit-rpt-code');
     const resultEl  = document.getElementById('edit-rpt-result');
     const code = (codeInput.value || '').trim().toUpperCase();
-    if (!code) { sysAlert('Введите код отчёта.', {type:'warn', title:'Код не введён', icon:'🔍'}); return; }
+    if (!code) { sysAlert('Введите код отчёта.', {type:'warn', title:'Код не введён', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>'}); return; }
 
     resultEl.style.display = 'block';
     resultEl.innerHTML = '<div style="color:var(--grey);font-size:13px;">Поиск...</div>';
@@ -9564,11 +9706,11 @@
         <h3>Минимальный состав</h3>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0;">
           <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 16px;">
-            <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);margin-bottom:8px;">🚔 Полиция</div>
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);margin-bottom:8px;"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg> Полиция</div>
             <p style="font-size:13px;color:var(--text-soft);">Минимум <strong>2 офицера</strong> от звания Старший сержант [3], включая проводящего.</p>
           </div>
           <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 16px;">
-            <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);margin-bottom:8px;">🪖 Военные</div>
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);margin-bottom:8px;"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.5 2 2 6.5 2 12v2h20v-2c0-5.5-4.5-10-10-10z"/><line x1="2" y1="14" x2="22" y2="14"/></svg> Военные</div>
             <p style="font-size:13px;color:var(--text-soft);"><strong>2 военнослужащих</strong> от звания:<br>ВМФ — Старшина 2ст. [3]<br>ВВС/СВ — Ст.Сержант [3]</p>
           </div>
         </div>
@@ -11486,17 +11628,17 @@
         <h3>Упражнения</h3>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:16px 0;">
           <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 16px;text-align:center;">
-            <div style="font-size:24px;margin-bottom:8px;">💪</div>
+            <div style="font-size:24px;margin-bottom:8px;"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
             <div style="font-size:14px;font-weight:700;color:var(--navy);">Отжимания</div>
             <div style="font-size:12px;color:var(--text-soft);margin-top:4px;">от 5 повторений</div>
           </div>
           <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 16px;text-align:center;">
-            <div style="font-size:24px;margin-bottom:8px;">🏋️</div>
+            <div style="font-size:24px;margin-bottom:8px;"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div>
             <div style="font-size:14px;font-weight:700;color:var(--navy);">Приседания</div>
             <div style="font-size:12px;color:var(--text-soft);margin-top:4px;">от 5 повторений</div>
           </div>
           <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 16px;text-align:center;">
-            <div style="font-size:24px;margin-bottom:8px;">🏃</div>
+            <div style="font-size:24px;margin-bottom:8px;"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
             <div style="font-size:14px;font-weight:700;color:var(--navy);">Бег</div>
             <div style="font-size:12px;color:var(--text-soft);margin-top:4px;">вокруг департамента, от 2 кругов</div>
           </div>
@@ -12313,13 +12455,13 @@
         <p>Функционально доступно от <strong>Старшего лейтенанта [5]</strong>. Два варианта взлома:</p>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0;">
           <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
-            <div style="background:var(--cream);padding:9px 16px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);border-bottom:1px solid var(--grey-light);">🔨 Ручной таран</div>
+            <div style="background:var(--cream);padding:9px 16px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);border-bottom:1px solid var(--grey-light);"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg> Ручной таран</div>
             <div style="padding:14px 16px;">
               <code style="display:block;font-family:monospace;font-size:12px;background:var(--cream);padding:10px 14px;border-radius:8px;color:var(--navy);line-height:2;">/я достал ручной таран из-за спины<br>/я бьет ручным тараном в дверь<br>/я выбил дверь<br>/я убрал ручной таран за спину</code>
             </div>
           </div>
           <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;">
-            <div style="background:var(--cream);padding:9px 16px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);border-bottom:1px solid var(--grey-light);">🔫 Выстрел в замок</div>
+            <div style="background:var(--cream);padding:9px 16px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey);border-bottom:1px solid var(--grey-light);"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 3H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V6a3 3 0 0 0-3-3z"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="12" y1="8" x2="12" y2="16"/></svg> Выстрел в замок</div>
             <div style="padding:14px 16px;">
               <code style="display:block;font-family:monospace;font-size:12px;background:var(--cream);padding:10px 14px;border-radius:8px;color:var(--navy);line-height:2;">/я достал пистолет "Desert Eagle" и снял с предохранителя<br>/я навелся на дверной замок и произвел выстрел<br>/я выбил дверь</code>
               <p style="font-size:12px;color:var(--text-soft);margin-top:6px;">Если пистолет уже был отыгран ранее — повторно не отыгрывать.</p>
@@ -13945,7 +14087,7 @@
       title: '[МВД] Руководство для старшего состава',
       meta: 'Автор: meow zanetti · 27 июня 2022',
       eyebrow: 'Справочные материалы',
-      body: `<div class="article-highlight">🔒 Данный документ доступен только для офицеров в звании 10 ранга и выше.</div><p><em>Содержание защищено.</em></p>`
+      body: `<div class="article-highlight"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Данный документ доступен только для офицеров в звании 10 ранга и выше.</div><p><em>Содержание защищено.</em></p>`
     },
     allpd: {
       title: '[МВД] AllPD [биндер]',
@@ -13978,7 +14120,7 @@
             style="display:inline-flex;align-items:center;gap:12px;background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 18px;text-decoration:none;color:var(--navy);transition:all 0.2s;"
             onmouseover="this.style.borderColor='var(--navy)';this.style.transform='translateY(-1px)'"
             onmouseout="this.style.borderColor='var(--grey-light)';this.style.transform='translateY(0)'">
-            <span style="width:36px;height:36px;background:#0077FF;border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-size:17px;flex-shrink:0;">💬</span>
+            <span style="width:36px;height:36px;background:#0077FF;border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-size:17px;flex-shrink:0;"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
             <div>
               <div style="font-weight:600;font-size:14px;">Конференция ВКонтакте</div>
               <div style="font-size:12px;color:var(--grey);margin-top:2px;">Задайте вопросы по биндеру — наши сотрудники помогут</div>
@@ -13989,7 +14131,7 @@
             style="display:inline-flex;align-items:center;gap:12px;background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:14px 18px;text-decoration:none;color:var(--navy);transition:all 0.2s;"
             onmouseover="this.style.borderColor='var(--navy)';this.style.transform='translateY(-1px)'"
             onmouseout="this.style.borderColor='var(--grey-light)';this.style.transform='translateY(0)'">
-            <span style="width:36px;height:36px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-size:17px;flex-shrink:0;">📖</span>
+            <span style="width:36px;height:36px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-size:17px;flex-shrink:0;"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
             <div>
               <div style="font-weight:600;font-size:14px;">Инструкция по использованию биндера</div>
               <div style="font-size:12px;color:var(--grey);margin-top:2px;">Подробное руководство по установке и настройке AllPD</div>
@@ -14053,7 +14195,7 @@
         <h2>Разрешённые и запрещённые биндеры</h2>
         <p>Использование сторонних биндеров не запрещено. Однако в них <strong>не должно быть следующего функционала:</strong></p>
         <div style="background:var(--red-light);border:1.5px solid #F0BABA;border-radius:10px;padding:16px 20px;margin:16px 0;">
-          <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--red);margin-bottom:12px;">⛔ Запрещено</div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--red);margin-bottom:12px;"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg> Запрещено</div>
           <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:7px;">
             <li style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text-soft);">
               <span style="width:5px;height:5px;border-radius:50%;background:var(--red);flex-shrink:0;"></span>
@@ -14088,15 +14230,36 @@
           Обязательно к ознакомлению для действующих лидеров и кандидатов на руководящие позиции. Дополнительно ознакомьтесь с общими правилами для лидеров и правилами проведения собеседований.
         </div>
 
-        <h2>Понятие «Блат»</h2>
-        <p><strong>Блат</strong> — полезные связи, благодаря которым можно получить блага в обход правил и законов. Блат не всегда происходит осознанно. Примеры:</p>
+        <h2>Привет будущий лидер!</h2>
+        <p>Для начала, давай расскажем тебе как вести себя на обзвоне. Первым делом будь спокоен и расслаблен, не волнуйся и не нервничай. На обзвоне присутствует администрация и Министр — это абсолютно такие же люди как и ты. Все прекрасно всё понимают.</p>
+        <h3>Что нужно сделать перед обзвоном</h3>
         <ul>
-          <li>Принятие на службу вне набора.</li>
-          <li>Принятие гражданина, не подходящего по требованиям.</li>
-          <li>Восстановление после ухода по собственному желанию (исключение: п. 2.14 УМВД).</li>
+          <li>Установить Discord и зайти в канал Aurum: <a href="https://discord.com/invite/3CXmWyyWQ8" target="_blank" style="color:var(--accent);">discord.com/invite/3CXmWyyWQ8</a></li>
+          <li>Изучить <a href="https://forum.sa-mp.ru/index.php?/topic/994864-%D1%80%D0%B0%D1%81%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5-%D0%B8-%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0-%D0%B3%D0%BE%D1%81-%D0%BD%D0%BE%D0%B2%D0%BE%D1%81%D1%82%D0%B5%D0%B9%D0%B4%D0%BD%D1%8F-%D0%BE%D1%82%D0%BA%D1%80%D1%8B%D1%82%D1%8B%D1%85-%D0%B4%D0%B2%D0%B5%D1%80%D0%B5%D0%B9/" target="_blank" style="color:var(--accent);">«Правила и примеры собеседований»</a> — как проводятся собеседования, общие положения, что разрешено и что запрещено. В этом же разделе изучи как проводится «День открытых дверей».</li>
+          <li>Изучить <a href="https://forum.sa-mp.ru/index.php?/topic/1026690-%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0-%D0%B4%D0%BB%D1%8F-%D0%BB%D0%B8%D0%B4%D0%B5%D1%80%D0%BE%D0%B2-%D0%B8-%D0%BC%D0%B8%D0%BD%D0%B8%D1%81%D1%82%D1%80%D0%BE%D0%B2/" target="_blank" style="color:var(--accent);">«Общие правила для лидеров»</a> — прочитай всё внимательно, пойми что предстоит делать на сроке и какое наказание ты можешь понести за несоблюдение правил.</li>
+        </ul>
+        <h3>Разделы МВД обязательные для изучения</h3>
+        <p>По данным разделам собраны в основном вопросы которые спрашиваются на обзвоне. Эти разделы нужно знать в точности.</p>
+        <ul>
+          <li><strong>Устав МВД</strong> — все положения полиции и наказания за несоблюдение. Желательно ознакомиться со всеми пунктами.</li>
+          <li><strong>Специальные операции</strong> — как будущий лидер обязан уметь проводить любую спецоперацию из перечисленных.</li>
+          <li><strong>Правила проведения тренировок</strong> — знать и понимать как и что проводится.</li>
+          <li><strong>Инструкции реагирования офицеров</strong> — правила которые обязан соблюдать каждый офицер.</li>
+          <li><strong>Административный кодекс</strong> и <strong>Уголовный кодекс</strong>.</li>
+        </ul>
+        <div class="article-highlight">
+          Не бойся лидерства — на первый взгляд только кажется, что это всё сложно, но это только в твоей голове. Пробуй и не бойся. Лидерство — это новые знакомства и драгоценный опыт, который можно получить только у нас.
+        </div>
+
+        <h2>Понятие «Блат»</h2>
+        <p><strong>Блат</strong> — полезные связи, знакомства, благодаря которым можно получить блага в обход правил и законов. Блат не всегда происходит осознанно — лидеры сами того не подозревая могут заблатить. Примеры:</p>
+        <ul>
+          <li>Принятие человека на службу вне набора.</li>
+          <li>Принятие в организацию гражданина, не подходящего по требованиям.</li>
+          <li>Восстановление гражданина на службу после того, как он ушёл по собственному желанию (исключение: п. 2.14 УМВД).</li>
           <li>Повышение без одобренного отчёта.</li>
           <li>Выдача формы, не соответствующей отделу.</li>
-          <li>Разное наказание для двух сотрудников с идентичными нарушениями.</li>
+          <li>Разное наказание для двух сотрудников с полностью идентичными нарушениями.</li>
           <li>Выгораживание сотрудника в ситуации, где он не прав.</li>
         </ul>
 
@@ -14104,32 +14267,30 @@
         <table>
           <thead><tr><th>№</th><th>Правило</th></tr></thead>
           <tbody>
-            <tr><td><strong>1</strong></td><td>В разделе каждого департамента обязательны темы: «Заявления на трудоустройство», «Заявления на перевод», «Система повышения», «Отчётность старшего состава», «Заявления на отпуск», «Заявления на восстановление». Другие названия допустимы при сохранении смысла. Тема «Прощальные письма Генералов» — не удалять.</td></tr>
-            <tr><td><strong>2</strong></td><td>Лидер, вставший на пост, обязан обнулить все наказания сотрудников 2–9 рангов.</td></tr>
-            <tr><td><strong>3</strong></td><td>Лидер обязан обнулить чёрный список фракции (за исключением внесённых за очень грубые нарушения).</td></tr>
-            <tr><td><strong>4</strong></td><td>Лидер обязан своевременно публиковать отчёт в тему «Отчётность Генералов».</td></tr>
-            <tr><td><strong>5</strong></td><td>Лидер совместно с Министром обязан своевременно проверять жалобы на сотрудников.</td></tr>
-            <tr><td><strong>6</strong></td><td>Лидер обязан уделять достаточно времени игрокам фракции, обучать и помогать им.</td></tr>
-            <tr><td><strong>7</strong></td><td>Лидер обязан соблюдать систему наказания, описанную в уставе, и основные правила для старшего состава.</td></tr>
-            <tr><td><strong>8</strong></td><td>Лидер обязан поддерживать и повышать онлайн фракции. При численности менее 40 сотрудников — выговор от Министра.</td></tr>
-            <tr><td><strong>9</strong></td><td>Запрещено оскорблять, грубить, хамить игрокам или проявлять неадекватное поведение.</td></tr>
-            <tr><td><strong>10</strong></td><td>Запрещено игнорировать нарушения своих сотрудников.</td></tr>
-            <tr><td><strong>11</strong></td><td>Лидер вправе менять систему повышения самостоятельно, без согласования с администрацией.</td></tr>
-            <tr><td><strong>12</strong></td><td>Лидер вправе, но не обязан выполнять работу состава (патрули, спецоперации и т.д.).</td></tr>
-            <tr><td><strong>13</strong></td><td>При отсутствии лидера ответственность за департамент переходит на Министра.</td></tr>
-            <tr><td><strong>14</strong></td><td>Наборы во фракцию проводятся по заявкам на форуме и на наборах в игре.</td></tr>
-            <tr><td><strong>15</strong></td><td>Допускается принимать nonRP-ники только на 1 ранг. Сотруднику даётся 24 часа на смену ника — иначе увольнение.</td></tr>
-            <tr><td><strong>16</strong></td><td>Запрещено вносить в чёрный список игроков, покинувших фракцию через меню (Y → Фракция → Покинуть).</td></tr>
-            <tr><td><strong>17</strong></td><td>Запрещено наказывать сотрудников по логам администрации. Все нарушения фиксируются по факту.</td></tr>
-            <tr><td><strong>18</strong></td><td>Разрешено увольнять по собственному желанию после доклада в рацию: <code>![ТЭГ] Прошу уволить меня по собственному желанию.</code></td></tr>
-            <tr><td><strong>19</strong></td><td>Лидер без старшего состава вправе взять один 8 и один 9 ранг. При наличии одного сотрудника — взять недостающий ранг.</td></tr>
+            <tr><td><strong>1</strong></td><td>Лидер, только вставший на пост, обязан обнулить чёрный список фракции. (Внесённых за очень грубые нарушения разрешается не обнулять.)</td></tr>
+            <tr><td><strong>2</strong></td><td>Лидер обязан вовремя выкладывать свой отчёт в тему «Отчётность Генералов».</td></tr>
+            <tr><td><strong>3</strong></td><td>Лидер с помощью Министра обязан своевременно проверять жалобы на своих сотрудников в разделе «Жалобы на сотрудников».</td></tr>
+            <tr><td><strong>4</strong></td><td>Лидер обязан уделять достаточно времени игрокам своей фракции, обучать и помогать им.</td></tr>
+            <tr><td><strong>5</strong></td><td>Лидер обязан соблюдать систему наказания своих сотрудников, описанную в уставе, а также основные правила для сотрудников старшего состава.</td></tr>
+            <tr><td><strong>6</strong></td><td>Лидер обязан поддерживать и повышать онлайн фракции.</td></tr>
+            <tr><td><strong>7</strong></td><td>Лидеру запрещено оскорблять, грубить, хамить игрокам и проявлять любое неадекватное поведение.</td></tr>
+            <tr><td><strong>8</strong></td><td>Лидеру запрещено игнорировать нарушения своих сотрудников.</td></tr>
+            <tr><td><strong>9</strong></td><td>Лидер имеет право, но не обязан выполнять работу состава, такую как патрули, выезды на спецоперации и так далее.</td></tr>
+            <tr><td><strong>10</strong></td><td>При отсутствии лидера ответственность за департамент переходит на Министра.</td></tr>
+            <tr><td><strong>11</strong></td><td>Наборы во фракцию проводятся по заявкам на форуме и на наборах в игре.</td></tr>
+            <tr><td><strong>12</strong></td><td>Лидер имеет право принимать nonRP-ники исключительно на 1 ранг. Данным сотрудникам даётся 24 часа на смену ника. Если сотрудник не сменил ник по истечении срока — лидер обязан его уволить.</td></tr>
+            <tr><td><strong>13</strong></td><td>Запрещено добавлять в чёрный список игроков, которые покинули фракцию через меню (Y → Фракция → Покинуть).</td></tr>
+            <tr><td><strong>14</strong></td><td>Запрещено наказывать сотрудников по логам администрации. Все нарушения должны быть зафиксированы по факту.</td></tr>
+            <tr><td><strong>15</strong></td><td>Разрешено увольнять сотрудников по собственному желанию после того, как прозвучит доклад в рацию: <code>![ТЭГ] Прошу уволить меня по собственному желанию.</code></td></tr>
+            <tr><td><strong>16</strong></td><td>Лидер, только вставший на пост и не имеющий старшего состава, имеет право взять один 8 и один 9 ранг. Если в старшем составе есть один сотрудник — лидеру разрешено взять недостающий ранг.</td></tr>
           </tbody>
         </table>
-        <p><em>Данные правила не описывают все ограничения. При спорных ситуациях обращайтесь к следящей администрации.</em></p>
+        <p><em>Данные правила не описывают все ограничения/запреты/требования. При спорных ситуациях обращайтесь к следящей администрации.</em></p>
+        <p>Дополнительно необходимо ознакомиться: <a href="https://forum.sa-mp.ru/index.php?/topic/1026690-%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0-%D0%B4%D0%BB%D1%8F-%D0%BB%D0%B8%D0%B4%D0%B5%D1%80%D0%BE%D0%B2-%D0%B8-%D0%BC%D0%B8%D0%BD%D0%B8%D1%81%D1%82%D1%80%D0%BE%D0%B2/" target="_blank" style="color:var(--accent);">Общие правила для лидеров</a> · <a href="https://forum.sa-mp.ru/index.php?/topic/994864-%D1%80%D0%B0%D1%81%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5-%D0%B8-%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0-%D0%B3%D0%BE%D1%81-%D0%BD%D0%BE%D0%B2%D0%BE%D1%81%D1%82%D0%B5%D0%B9%D0%B4%D0%BD%D1%8F-%D0%BE%D1%82%D0%BA%D1%80%D1%8B%D1%82%D1%8B%D1%85-%D0%B4%D0%B2%D0%B5%D1%80%D0%B5%D0%B9/" target="_blank" style="color:var(--accent);">Правила проведения собеседований и Дня открытых дверей</a></p>
 
         <h2>Проверка жалоб</h2>
-        <p>Раздел «Жалобы на сотрудников» проверяется Генералами и Министром; при согласии лидера — Полковником.</p>
-        <h3>Требования к жалобе</h3>
+        <p>Раздел «Жалобы на сотрудников» проверяется только Генералами и Министром; при согласии лидера — Полковником [9]. Жалобы должны проверяться своевременно. При возникновении трудностей обращайтесь к следящей администрации.</p>
+        <h3>Требования к жалобе (старый форум)</h3>
         <table>
           <thead><tr><th>№</th><th>Критерий</th></tr></thead>
           <tbody>
@@ -14137,7 +14298,7 @@
             <tr><td><strong>2</strong></td><td>Неверный заголовок — отказ. Формат заголовка: «Жалоба №1».</td></tr>
             <tr><td><strong>3</strong></td><td>Скриншоты принимаются только если ситуация полностью понятна проверяющему.</td></tr>
             <tr><td><strong>4</strong></td><td>Проверять ник на видео/скриншоте и ник в жалобе — они должны совпадать.</td></tr>
-            <tr><td><strong>5</strong></td><td>Заголовок при закрытии должен соответствовать следующему порядковому номеру.</td></tr>
+            <tr><td><strong>5</strong></td><td>Заголовок при закрытии должен соответствовать следующему порядковому номеру. Если не соответствует — редактируется вручную.</td></tr>
             <tr><td><strong>6</strong></td><td>Тэг с ником и тэг с номером аккаунта — прописываются раздельно.</td></tr>
             <tr><td><strong>7</strong></td><td>Если нарушителей несколько — каждый тэг пишется отдельно.</td></tr>
             <tr><td><strong>8</strong></td><td>Видео о розыске/штрафе от 3-го лица без достаточных доказательств — отказ с причиной «Недостаточно доказательств».</td></tr>
@@ -14147,96 +14308,79 @@
             <tr><td><strong>12</strong></td><td>Жалобы без нормального описания ситуации не принимаются.</td></tr>
           </tbody>
         </table>
-        <p>При нарушении хотя бы одного критерия — жалоба отказывается с указанием причины. После одобрения выдаётся наказание в игре через доклад в рацию; беседа/наряд/выговор/увольнение заносится в таблицу с доказательствами и ссылкой на жалобу.</p>
 
-        <h2>Правила создания системы повышения</h2>
-        <h3>Минимальные сроки между повышениями</h3>
+        <h3>Требования к жалобе (новый портал штата)</h3>
         <table>
-          <thead><tr><th>Переход</th><th>Минимальный срок</th></tr></thead>
+          <thead><tr><th>№</th><th>Критерий</th></tr></thead>
           <tbody>
-            <tr><td>Рядовой [1] → Сержант [2]</td><td>Нет ограничений</td></tr>
-            <tr><td>Сержант [2] → Старший сержант [3]</td><td>Нет ограничений</td></tr>
-            <tr><td>Старший сержант [3] → Лейтенант [4]</td><td>Нет ограничений</td></tr>
-            <tr><td>Лейтенант [4] → Старший лейтенант [5]</td><td>Нет ограничений</td></tr>
-            <tr><td>Старший лейтенант [5] → Капитан [6]</td><td>1 день</td></tr>
-            <tr><td>Капитан [6] → Майор [7]</td><td>1 день</td></tr>
-            <tr><td>Майор [7] → Подполковник [8]</td><td>1 день</td></tr>
-            <tr><td>Подполковник [8] → Полковник [9]</td><td>1 день</td></tr>
+            <tr><td><strong>1</strong></td><td>Жалоба составлена строго по форме.</td></tr>
+            <tr><td><strong>2</strong></td><td>Скриншоты принимаются только если ситуация полностью понятна проверяющему.</td></tr>
+            <tr><td><strong>3</strong></td><td>Проверять ник на видео/скриншоте и ник в жалобе — они должны совпадать.</td></tr>
+            <tr><td><strong>4</strong></td><td>Видео о розыске/штрафе от 3-го лица без достаточных доказательств — отказ с причиной «Недостаточно доказательств».</td></tr>
+            <tr><td><strong>5</strong></td><td>Если с момента нарушения прошло более 48 часов — жалоба не рассматривается.</td></tr>
+            <tr><td><strong>6</strong></td><td>Отредактированные скриншоты/видео не принимаются.</td></tr>
+            <tr><td><strong>7</strong></td><td>Жалобы с серьёзными оскорблениями не рассматриваются.</td></tr>
+            <tr><td><strong>8</strong></td><td>Жалобы без нормального описания ситуации не принимаются.</td></tr>
           </tbody>
         </table>
-        <p>Дни являются неполными: как только наступает 00:00 дня повышения — уже можно повышать. С каждым званием объём требуемой работы должен возрастать.</p>
-        <h3>Обязательные экзамены (нельзя удалять)</h3>
-        <ul>
-          <li><strong>[1] → [2]</strong> — ЗР: вопросы по У.К., А.К., УМВД, взаимодействию с фракциями.</li>
-          <li><strong>[2] → [3]</strong> — УП: проверка работоспособности в патрулировании, умение реагировать на нарушения.</li>
-        </ul>
-        <h3>Дополнительные условия</h3>
-        <ul>
-          <li>Обязательно наличие отдельной системы для спецотряда.</li>
-          <li>Допустимо добавлять: количество посаженных в КПЗ, ликвидированных, выписанных штрафов.</li>
-          <li>Вместо «Учебной стрельбы» — скриншот навыков (пистолет, автомат, дробовик на 100%).</li>
-          <li>Запрещено кардинально менять систему на временный промежуток. Перед изменением — консультация с Министром.</li>
-        </ul>
+        <p>При нарушении хотя бы одного критерия — жалоба отказывается с указанием причины. После одобрения и закрытия жалобы выдаётся наказание в игре через доклад в рацию; беседа/наряд/выговор/увольнение заносится в таблицу с доказательствами и ссылкой на жалобу. Если сотрудник погасил наказание до того, как лидер или старший состав сделал доклад — делать доклад уже не нужно, доказательства погашения сохраняются. Если Полковник совершает много ошибок при проверке жалоб — выдаётся выговор.</p>
 
-        <h2>Личное дело</h2>
-        <p>Личное дело — тема для каждого сотрудника с полной информацией о нём и работой на повышение. Контроль — за Генералами и старшим составом; проверка — Министром и администрацией.</p>
-        <h3>Правила контроля</h3>
-        <ul>
-          <li>Заголовок строго по шаблону: <code>[Отдел] Имя Фамилия [Номер аккаунта]</code>.</li>
-          <li>При изменении звания, отдела или иных данных — обновить в течение 24 часов.</li>
-          <li>Скриншоты повышений 1–4 ранга необязательны.</li>
-          <li>Проверяется только старшим составом и лидером (8–10 ранг).</li>
-          <li>При уходе сотрудника — лидер закрывает, закрепляет и скрывает личное дело.</li>
-        </ul>
-        <h3>Проверяющему разрешено</h3>
-        <ul>
-          <li>Писать замечания с указанием ошибок.</li>
-          <li>Удалять спам.</li>
-          <li>Скрывать/закрывать дело при пересоздании или несоответствии форме.</li>
-          <li>При одобрении отчёта указывать выполненное RP-задание. <em>Пример: «Одобрено. Будете повышены. Выполнено RP задание "Заправка служебного транспорта"».</em></li>
-        </ul>
-        <h3>Проверяющему запрещено</h3>
-        <ul>
-          <li>Генералам редактировать личные дела подчинённых.</li>
-          <li>Скрывать дела действующих сотрудников.</li>
-          <li>Закрывать дело действующего сотрудника (кроме просьбы автора).</li>
-          <li>Восстанавливать дела после ухода сотрудника.</li>
-        </ul>
-        <h3>Форма личного дела</h3>
+        <h2>Система повышения и названия рангов</h2>
+        <p>Система повышения является фиксированной и подлежит изменению только с разрешения Министра и следящей администрации.</p>
+
+        <h3>Младший состав</h3>
         <table>
-          <thead><tr><th>Поле</th><th>Значение</th></tr></thead>
+          <thead><tr><th>Переход</th><th>Требования</th></tr></thead>
           <tbody>
-            <tr><td>Имя и Фамилия</td><td></td></tr>
-            <tr><td>Позывной (для спецотряда)</td><td></td></tr>
-            <tr><td>Дата рождения</td><td></td></tr>
-            <tr><td>Номер жетона (аккаунта)</td><td></td></tr>
-            <tr><td>Отдел</td><td></td></tr>
-            <tr><td>Текущее звание</td><td></td></tr>
-            <tr><td>Контактный номер телефона</td><td></td></tr>
+            <tr><td><strong>Рядовой [1] → Сержант [2]</strong></td><td>Сдать Зачёт Рядового (ЗР)</td></tr>
+            <tr><td><strong>Сержант [2] → Ст. сержант [3]</strong></td><td>Сдать экзамен Учебный Патруль (УП) · Сдать Физические Нормативы · Создать личное дело в разделе San Fierro Police Department</td></tr>
           </tbody>
         </table>
-        <h3>История повышений (шаблон)</h3>
+
+        <h3>Средний состав</h3>
         <table>
-          <thead><tr><th>Ранг</th><th>Дата</th><th>Скриншот</th></tr></thead>
+          <thead><tr><th>Переход</th><th>Требования</th></tr></thead>
           <tbody>
-            <tr><td>[1] Рядовой</td><td>—</td><td>Скриншот принятия</td></tr>
-            <tr><td>[2] Сержант</td><td>—</td><td>Скриншот повышения</td></tr>
-            <tr><td>[3] Старший сержант</td><td>—</td><td>Скриншот повышения</td></tr>
-            <tr><td>[4] Лейтенант</td><td>—</td><td>Скриншот повышения</td></tr>
-            <tr><td>[5] Старший лейтенант</td><td>—</td><td>Скриншот повышения</td></tr>
-            <tr><td>[6] Капитан</td><td>—</td><td>Скриншот повышения</td></tr>
-            <tr><td>[7] Майор</td><td>—</td><td>Скриншот повышения</td></tr>
-            <tr><td>[8] Подполковник</td><td>—</td><td>Скриншот повышения</td></tr>
-            <tr><td>[9] Полковник</td><td>—</td><td>Скриншот повышения</td></tr>
-            <tr><td>[10] Генерал</td><td>—</td><td>Скриншот повышения</td></tr>
+            <tr><td><strong>Ст. сержант [3] → Лейтенант [4]</strong></td><td>Патруль города 20 мин · Участие в любой тренировке</td></tr>
+            <tr><td><strong>Лейтенант [4] → Ст. лейтенант [5]</strong></td><td>Патруль города 30 мин · Участие в блок-посте/спецоперации · Участие в любой тренировке</td></tr>
+            <tr><td><strong>Ст. лейтенант [5] → Капитан [6]</strong></td><td>Патруль 30 мин · Экзамен среднего состава (ЭСС) · Участие в спецоперации/блок-посте · 2 тренировки · 1 сутки с момента последнего повышения</td></tr>
+            <tr><td><strong>Капитан [6] → Майор [7]</strong></td><td>Патруль 40 мин · Проведение блок-поста · 2 тренировки · Проведение спецоперации · 1 сутки с момента последнего повышения</td></tr>
           </tbody>
         </table>
-        <h3>Примерная форма подачи отчётов</h3>
-        <ul>
-          <li>1. Ваше имя и фамилия:</li>
-          <li>2. Ваше звание:</li>
-          <li>3. Доказательства проделанной работы:</li>
-        </ul>
+
+        <h3>Старший состав</h3>
+        <table>
+          <thead><tr><th>Переход</th><th>Требования</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Майор [7] → Подполковник [8]</strong></td><td>1 сутки с момента последнего повышения · Еженедельный отчёт старшего состава на портале штата</td></tr>
+            <tr><td><strong>Подполковник [8] → Полковник [9]</strong></td><td>1 сутки с момента последнего повышения · Еженедельный отчёт старшего состава на портале штата</td></tr>
+            <tr><td><strong>Полковник [9] → Генерал [10]</strong></td><td>Назначается руководством МВД</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Наименование званий по департаментам</h3>
+        <table>
+          <thead><tr><th>Ранг</th><th>LVMPD</th><th>LSCSD</th><th>SFPD</th></tr></thead>
+          <tbody>
+            <tr><td>[1]</td><td>Cadet I</td><td>Cadet I</td><td>Cadet I</td></tr>
+            <tr><td>[2]</td><td>Cadet II</td><td>Cadet II</td><td>Cadet II</td></tr>
+            <tr><td>[3]</td><td>Police Officer I</td><td>Deputy Sheriff I</td><td>Police Officer I</td></tr>
+            <tr><td>[4]</td><td>Police Officer II</td><td>Deputy Sheriff II</td><td>Police Officer II</td></tr>
+            <tr><td>[5]</td><td>Lieutenant</td><td>Lieutenant</td><td>Lieutenant</td></tr>
+            <tr><td>[6]</td><td>Captain</td><td>Captain</td><td>Captain</td></tr>
+            <tr><td>[7]</td><td>Commander</td><td>Commander</td><td>Commander</td></tr>
+            <tr><td>[8]</td><td>Deputy Chief</td><td>Assistant Sheriff</td><td>Deputy Chief</td></tr>
+            <tr><td>[9]</td><td>Assistant Chief</td><td>Undersheriff</td><td>Assistant Chief</td></tr>
+            <tr><td>[10]</td><td>Chief</td><td>Sheriff</td><td>Chief</td></tr>
+          </tbody>
+        </table>
+
+        <h2>Создание и редактирование личных дел</h2>
+        <p>Личное дело — тема для каждого сотрудника, в которой записывается вся информация о нём. Контроль за порядком осуществляется Генералами и старшим составом; проверяется Министром и администрацией.</p>
+        <p>Личное дело создаётся как только сотрудник повысится до Сержанта [2] (Cadet II). В дальнейшем редактируется сразу после каждого повышения или понижения.</p>
+        <div class="article-highlight" style="border-color: #cf3434;">
+          Если старший состав (включая Генерала) затягивает с редактированием личного дела или вводит неверную информацию — к нему могут быть применены дисциплинарные взыскания согласно УМВД. Личное дело подлежит удалению Министром или следящей администрацией если сотрудник покинул департамент или был уволен.
+        </div>
       `
     },
   };
@@ -14310,7 +14454,7 @@
     const dismissed = getDismissedNotifs();
     const active = notifications.filter(n => !dismissed.includes(n.id));
     if (!active.length) {
-      el.innerHTML = '<div class="notif-empty"><div class="notif-empty-icon">🔕</div>Нет новых уведомлений</div>';
+      el.innerHTML = '<div class="notif-empty"><div class="notif-empty-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.73 21a2 2 0 0 1-3.46 0"/><path d="M18.63 13A17.89 17.89 0 0 1 18 8"/><path d="M6.26 6.26A5.86 5.86 0 0 0 6 8c0 7-3 9-3 9h14"/><path d="M18 8a6 6 0 0 0-9.33-5"/><line x1="1" y1="1" x2="23" y2="23"/></svg></div>Нет новых уведомлений</div>';
       if (badge) { badge.textContent = ''; badge.classList.remove('visible'); }
       if (bellBtn) bellBtn.classList.remove('has-notif');
       return;
@@ -14351,7 +14495,7 @@
     if (badge) { badge.textContent = count || ''; badge.classList.toggle('visible', count > 0); }
     if (bellBtn) bellBtn.classList.toggle('has-notif', count > 0);
     const list = document.getElementById('notif-list');
-    if (list && !count) list.innerHTML = '<div class="notif-empty"><div class="notif-empty-icon">🔕</div>Нет новых уведомлений</div>';
+    if (list && !count) list.innerHTML = '<div class="notif-empty"><div class="notif-empty-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.73 21a2 2 0 0 1-3.46 0"/><path d="M18.63 13A17.89 17.89 0 0 1 18 8"/><path d="M6.26 6.26A5.86 5.86 0 0 0 6 8c0 7-3 9-3 9h14"/><path d="M18 8a6 6 0 0 0-9.33-5"/><line x1="1" y1="1" x2="23" y2="23"/></svg></div>Нет новых уведомлений</div>';
   }
 
   function handleNotifClick(e, el) {
@@ -14479,7 +14623,7 @@
     // Отчёты — per dept
     DEPTS.forEach(dept => {
       const cnt = (_notifCountsDept.reports[dept] || 0) + (_notifCountsDept.senior_reports[dept] || 0);
-      if (cnt > 0) notifications.push({ id: 'reports_' + dept + '_' + cnt, type: 'report', icon: '📋',
+      if (cnt > 0) notifications.push({ id: 'reports_' + dept + '_' + cnt, type: 'report', icon: '<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>',
         title: 'Отчёты · ' + dept,
         desc: cnt + ' отчёт' + (cnt===1?'':cnt<5?'а':'ов') + ' ожидает проверки',
         ts: '', action: 'reports', dept });
@@ -14487,7 +14631,7 @@
     // Fallback
     if (!notifications.filter(n=>n.action==='reports').length && (_notifCounts.reports > 0 || _notifCounts.senior_reports > 0)) {
       const cnt = _notifCounts.reports + _notifCounts.senior_reports;
-      notifications.push({ id: 'reports_' + cnt, type: 'report', icon: '📋',
+      notifications.push({ id: 'reports_' + cnt, type: 'report', icon: '<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>',
         title: 'Непроверенные отчёты',
         desc: cnt + ' отчёт' + (cnt===1?'':cnt<5?'а':'ов') + ' ожидает проверки',
         ts: '', action: 'reports', dept: null });
@@ -14496,14 +14640,14 @@
     // Трудоустройство — per dept (desired_dept)
     DEPTS.forEach(dept => {
       const cnt = (_notifCountsDept.employment[dept] || 0);
-      if (cnt > 0) notifications.push({ id: 'emp_' + dept + '_' + cnt, type: 'report', icon: '👤',
+      if (cnt > 0) notifications.push({ id: 'emp_' + dept + '_' + cnt, type: 'report', icon: '<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
         title: 'Трудоустройство · ' + dept,
         desc: cnt + ' заявк' + (cnt===1?'а':cnt<5?'и':'') + ' ожидает рассмотрения',
         ts: '', action: 'employment', dept });
     });
     if (!notifications.filter(n=>n.action==='employment').length && _notifCounts.employment > 0) {
       const cnt = _notifCounts.employment;
-      notifications.push({ id: 'emp_' + cnt, type: 'report', icon: '👤',
+      notifications.push({ id: 'emp_' + cnt, type: 'report', icon: '<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
         title: 'Заявки на трудоустройство',
         desc: cnt + ' заявк' + (cnt===1?'а':cnt<5?'и':'') + ' ожидает рассмотрения',
         ts: '', action: 'employment', dept: null });
@@ -14590,7 +14734,7 @@
       const addBtn = document.getElementById('personnel-add-btn');
       if (addBtn) {
         addBtn.classList.add('locked');
-        addBtn.innerHTML = '🔐 Добавить дело';
+        addBtn.innerHTML = '<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg> Добавить дело';
       }
       updateBlacklistAddBtn();
     }
@@ -14768,7 +14912,7 @@
                 <button class="admin-save-btn" onclick="adminAddSlot()">Сохранить</button>
               </div>
               <div style="margin-top:8px;font-size:12px;color:var(--grey);">
-                <a href="#" onclick="event.preventDefault();document.getElementById('admin-new-code').value=genAdminCode();">🔀 Сгенерировать код</a>
+                <a href="#" onclick="event.preventDefault();document.getElementById('admin-new-code').value=genAdminCode();"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg> Сгенерировать код</a>
               </div>
             </div>
           </div>
@@ -14857,7 +15001,7 @@
         <td>
           <div class="admin-code-cell">
             <span class="admin-code-mask" id="acode-${esc(r._id)}" data-visible="0">••••••</span>
-            <button class="admin-btn-sm" onclick="adminToggleCode('${esc(r._id)}','${esc(r.password||'')}')">👁</button>
+            <button class="admin-btn-sm" onclick="adminToggleCode('${esc(r._id)}','${esc(r.password||'')}')"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
             <button class="admin-btn-sm" onclick="navigator.clipboard.writeText('${esc(r.password||'')}');showToast('Код скопирован')">⧉</button>
           </div>
         </td>
@@ -14865,8 +15009,8 @@
         <td style="display:flex;gap:6px;flex-wrap:wrap;">
           <button class="admin-btn-sm" onclick="adminEditSlot('${esc(r._id)}','${esc(r.label)}','${esc(String(r.rank))}','${esc(r.dept)}','${esc(r.password||'')}')">✏</button>
           <button class="admin-btn-sm" onclick="adminToggleActive('${esc(r._id)}',${active})">${active?'Деакт.':'Активир.'}</button>
-          ${parseInt(r.rank)<11?`<button class="admin-btn-sm" title="Сбросить счётчик редактирований" onclick="adminResetEditCounter('${esc(r.slot||r._id)}','${esc(r.label)}')" style="background:#e8f4fd;color:#1a6e9e;">⏱ ${(()=>{try{const v=sessionStorage.getItem('editLimit_'+(r.slot||r._id)+'_'+new Date().toISOString().slice(0,10));return v?JSON.parse(v).length:0;}catch(e){return 0;}})()}/5</button>`:''}
-          <button class="admin-btn-sm admin-btn-danger" onclick="adminDeleteSlot('${esc(r._id)}','${esc(r.label)}')">🗑</button>
+          ${parseInt(r.rank)<11?`<button class="admin-btn-sm" title="Сбросить счётчик редактирований" onclick="adminResetEditCounter('${esc(r.slot||r._id)}','${esc(r.label)}')" style="background:#e8f4fd;color:#1a6e9e;"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ${(()=>{try{const v=sessionStorage.getItem('editLimit_'+(r.slot||r._id)+'_'+new Date().toISOString().slice(0,10));return v?JSON.parse(v).length:0;}catch(e){return 0;}})()}/5</button>`:''}
+          <button class="admin-btn-sm admin-btn-danger" onclick="adminDeleteSlot('${esc(r._id)}','${esc(r.label)}')"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
         </td>
       </tr>`;
     }).join('');
@@ -14882,7 +15026,7 @@
   async function adminEditSlot(id, label, rank, dept, pw) {
     const ov = document.getElementById('sys-modal-overlay');
     document.getElementById('sys-modal-topbar').className = '';
-    document.getElementById('sys-modal-icon').textContent = '🔑';
+    document.getElementById('sys-modal-icon').textContent = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="M21 2l-9.6 9.6"/><path d="M15.5 7.5l3 3L22 7l-3-3"/></svg>';
     document.getElementById('sys-modal-title').textContent = 'Редактирование слота доступа';
     const dOpts = ['SFPD','LVMPD','LSCSD','МВД'].map(d => `<option${d===dept?' selected':''}>${d}</option>`).join('');
     document.getElementById('sys-modal-msg').innerHTML = `<div style="display:flex;flex-direction:column;gap:10px;margin-top:6px;">
@@ -14907,7 +15051,7 @@
       const newDept = document.getElementById('ses-dept').value;
       const newPw = (document.getElementById('ses-pw').value||'').trim();
       if (!newLabel) { sysAlert('Введите имя / метку.', {type:'warn'}); return; }
-      if (newPw !== pw) { const all = await fbGet('passwords'); if (all.find(r => r.password === newPw && r._id !== id)) { sysAlert('Этот код уже занят.', {type:'warn', title:'Код занят', icon:'🔑'}); return; } }
+      if (newPw !== pw) { const all = await fbGet('passwords'); if (all.find(r => r.password === newPw && r._id !== id)) { sysAlert('Этот код уже занят.', {type:'warn', title:'Код занят', icon:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="M21 2l-9.6 9.6"/><path d="M15.5 7.5l3 3L22 7l-3-3"/></svg>'}); return; } }
       closeSysModal();
       await fbUpdate('passwords', id, { label: newLabel, rank: parseInt(newRank), dept: newDept, password: newPw });
       writeLog('РЕДАКТИРОВАНИЕ', 'Пароли', id, newLabel); showToast('Слот обновлён', 'ok'); loadAdminPasswords();
@@ -14936,10 +15080,10 @@
     const rank  = parseInt((document.getElementById('admin-new-rank') || {}).value || '8');
     const dept  = (document.getElementById('admin-new-dept') || {}).value || 'SFPD';
     let   code  = (document.getElementById('admin-new-code') || {}).value.trim();
-    if (!label) { sysAlert('Введите имя / метку.', {type:'warn', title:'Пусто', icon:'✏️'}); return; }
+    if (!label) { sysAlert('Введите имя / метку.', {type:'warn', title:'Пусто', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>'}); return; }
     if (!code) code = genAdminCode();
     const all = await fbGet('passwords');
-    if (all.find(r => r.password === code)) { sysAlert('Этот код уже занят.', {type:'warn', title:'Код занят', icon:'🔑'}); return; }
+    if (all.find(r => r.password === code)) { sysAlert('Этот код уже занят.', {type:'warn', title:'Код занят', icon:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="M21 2l-9.6 9.6"/><path d="M15.5 7.5l3 3L22 7l-3-3"/></svg>'}); return; }
     const slotId = dept.toLowerCase() + '_' + rank + '_' + Date.now().toString(36);
     await fbSet('passwords', slotId, { slot: slotId, label, rank, dept, password: code, active: true });
     writeLog('ДОБАВЛЕНИЕ', 'Пароли', slotId, label);
@@ -14990,20 +15134,20 @@
   /* ══ Системные уведомления ══ */
   function showToast(msg, type) {
     const c = document.getElementById('sys-snack-container'); if (!c) return;
-    const icons = {error:'❌',warn:'⚠️',ok:'✅',info:'ℹ️'}; const t = type||'info';
+    const icons = {error:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',warn:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',ok:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',info:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'}; const t = type||'info';
     const el = document.createElement('div');
     el.className = 'sys-snack' + (t!=='info' ? ' type-'+t : '');
-    el.innerHTML = '<span style="font-size:15px;">'+(icons[t]||'ℹ️')+'</span><span>'+msg+'</span>';
+    el.innerHTML = '<span style="font-size:15px;">'+(icons[t]||'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>')+'</span><span>'+msg+'</span>';
     c.appendChild(el); setTimeout(()=>{ el.classList.add('hiding'); setTimeout(()=>el.remove(),320); }, 3200);
   }
   function sysAlert(msg, opts) {
     return new Promise(resolve => {
       opts = opts||{}; const type = opts.type||'info';
-      const icons = {info:'ℹ️',error:'❌',warn:'⚠️',success:'✅',danger:'🗑️'};
+      const icons = {info:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',error:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',warn:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',success:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',danger:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>️'};
       const titles = {info:'Внимание',error:'Ошибка',warn:'Предупреждение',success:'Готово',danger:'Подтверждение'};
       const ov = document.getElementById('sys-modal-overlay');
       document.getElementById('sys-modal-topbar').className = type==='error'||type==='danger'?'type-danger':type==='warn'?'type-warning':type==='success'?'type-success':'';
-      document.getElementById('sys-modal-icon').textContent = opts.icon||icons[type]||'ℹ️';
+      document.getElementById('sys-modal-icon').textContent = opts.icon||icons[type]||'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
       document.getElementById('sys-modal-title').textContent = opts.title||titles[type]||'Уведомление';
       document.getElementById('sys-modal-msg').innerHTML = msg;
       document.getElementById('sys-modal-input-wrap').style.display = 'none';
@@ -15018,11 +15162,11 @@
   function sysConfirm(msg, opts) {
     return new Promise(resolve => {
       opts = opts||{}; const type = opts.type||'danger';
-      const icons = {danger:'🗑️',warn:'⚠️',info:'❓'};
+      const icons = {danger:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>️',warn:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',info:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>'};
       const titles = {danger:'Подтверждение',warn:'Предупреждение',info:'Вопрос'};
       const ov = document.getElementById('sys-modal-overlay');
       document.getElementById('sys-modal-topbar').className = type==='danger'?'type-danger':type==='warn'?'type-warning':'';
-      document.getElementById('sys-modal-icon').textContent = opts.icon||icons[type]||'❓';
+      document.getElementById('sys-modal-icon').textContent = opts.icon||icons[type]||'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
       document.getElementById('sys-modal-title').textContent = opts.title||titles[type]||'Подтверждение';
       document.getElementById('sys-modal-msg').innerHTML = msg;
       document.getElementById('sys-modal-input-wrap').style.display = 'none';
@@ -15145,7 +15289,7 @@
       </div>
       <div class="inbox-detail" id="archive-modal-detail">
         <div class="inbox-detail-empty">
-          <div class="inbox-detail-empty-icon">📋</div>
+          <div class="inbox-detail-empty-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></div>
           Выберите отчёт из списка выше, чтобы просмотреть.
         </div>
       </div>
@@ -15191,7 +15335,7 @@ async function seedPasswords() {
     // Проверяем что коллекция пустая
     const existing = await db.collection('passwords').get();
     if (!existing.empty) {
-      console.warn('⚠️ Коллекция passwords уже заполнена (' + existing.size + ' документов). Пропускаю.');
+      console.warn('<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Коллекция passwords уже заполнена (' + existing.size + ' документов). Пропускаю.');
       return;
     }
 
@@ -15201,14 +15345,14 @@ async function seedPasswords() {
       batch.set(ref, { ...s, active: true });
     });
     await batch.commit();
-    console.log('✅ Пароли успешно загружены в Firebase! (' + SLOTS.length + ' слотов)');
+    console.log('<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Пароли успешно загружены в Firebase! (' + SLOTS.length + ' слотов)');
     console.log('');
     console.log('Дефолтные пароли:');
     SLOTS.forEach(s => console.log('  ' + s.slot.padEnd(12) + ' → ' + s.password));
     console.log('');
-    console.log('⚠️ Немедленно смените все пароли через карточки руководства (войдите как Ранг 11)!');
+    console.log('<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Немедленно смените все пароли через карточки руководства (войдите как Ранг 11)!');
   } catch(e) {
-    console.error('❌ Ошибка:', e.message);
+    console.error('<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Ошибка:', e.message);
     console.error('Убедитесь что firebaseConfig заполнен и Firestore создан в Test mode');
   }
 }
