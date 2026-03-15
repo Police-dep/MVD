@@ -250,7 +250,8 @@
     #sys-modal-topbar.type-warning{background:linear-gradient(90deg,#b8860b,#e6a817);}
     #sys-modal-topbar.type-success{background:linear-gradient(90deg,#1a6e3c,#2ea865);}
     #sys-modal-body{padding:26px 28px 10px;}
-    #sys-modal-icon{font-size:30px;margin-bottom:10px;}
+    #sys-modal-icon{font-size:30px;margin-bottom:10px;display:flex;align-items:center;}
+    #sys-modal-icon svg{width:30px;height:30px;}
     #sys-modal-title{font-size:16px;font-weight:800;color:var(--navy);margin-bottom:8px;}
     #sys-modal-msg{font-size:14px;color:var(--text-soft);line-height:1.6;}
     #sys-modal-input-wrap{margin-top:14px;}
@@ -15075,7 +15076,7 @@
   async function adminEditSlot(id, label, rank, dept, pw) {
     const ov = document.getElementById('sys-modal-overlay');
     document.getElementById('sys-modal-topbar').className = '';
-    document.getElementById('sys-modal-icon').textContent = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="M21 2l-9.6 9.6"/><path d="M15.5 7.5l3 3L22 7l-3-3"/></svg>';
+    document.getElementById('sys-modal-icon').innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="M21 2l-9.6 9.6"/><path d="M15.5 7.5l3 3L22 7l-3-3"/></svg>';
     document.getElementById('sys-modal-title').textContent = 'Редактирование слота доступа';
     const dOpts = ['SFPD','LVMPD','LSCSD','МВД'].map(d => `<option${d===dept?' selected':''}>${d}</option>`).join('');
     document.getElementById('sys-modal-msg').innerHTML = `<div style="display:flex;flex-direction:column;gap:10px;margin-top:6px;">
@@ -15196,7 +15197,7 @@
       const titles = {info:'Внимание',error:'Ошибка',warn:'Предупреждение',success:'Готово',danger:'Подтверждение'};
       const ov = document.getElementById('sys-modal-overlay');
       document.getElementById('sys-modal-topbar').className = type==='error'||type==='danger'?'type-danger':type==='warn'?'type-warning':type==='success'?'type-success':'';
-      document.getElementById('sys-modal-icon').textContent = opts.icon||icons[type]||'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+      document.getElementById('sys-modal-icon').innerHTML = opts.icon||icons[type]||'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
       document.getElementById('sys-modal-title').textContent = opts.title||titles[type]||'Уведомление';
       document.getElementById('sys-modal-msg').innerHTML = msg;
       document.getElementById('sys-modal-input-wrap').style.display = 'none';
@@ -15215,7 +15216,7 @@
       const titles = {danger:'Подтверждение',warn:'Предупреждение',info:'Вопрос'};
       const ov = document.getElementById('sys-modal-overlay');
       document.getElementById('sys-modal-topbar').className = type==='danger'?'type-danger':type==='warn'?'type-warning':'';
-      document.getElementById('sys-modal-icon').textContent = opts.icon||icons[type]||'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+      document.getElementById('sys-modal-icon').innerHTML = opts.icon||icons[type]||'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
       document.getElementById('sys-modal-title').textContent = opts.title||titles[type]||'Подтверждение';
       document.getElementById('sys-modal-msg').innerHTML = msg;
       document.getElementById('sys-modal-input-wrap').style.display = 'none';
