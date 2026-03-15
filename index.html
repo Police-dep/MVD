@@ -1158,9 +1158,7 @@
       .rules-card { display: none; } /* Скрываем правила на мобильном — экономим место */
 
       /* Subtab nav */
-      .reports-subtab-nav { overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 2px; }
-      .reports-subtab-nav::-webkit-scrollbar { display: none; }
-      .reports-subtab { font-size: 11px; padding: 0 12px; white-space: nowrap; }
+      /* старый скролл-таб убран — используется dropdown */
 
       /* ── INBOX MODALS — мобильный режим sheet ── */
       .inbox-modal-overlay { align-items: flex-end; padding: 0; }
@@ -1313,7 +1311,7 @@
 
       /* ── Scrollable tabs with indicator ── */
       .dept-tab-nav { scrollbar-width: none; }
-      .reports-subtab-nav { scrollbar-width: none; }
+      /* dropdown заменяет скролл */
 
       /* ── Exams grid ── */
       .exams-grid { grid-template-columns: 1fr; }
@@ -2527,6 +2525,44 @@
     .reports-subpanel { display: none; }
     .reports-subpanel.active { display: block; }
 
+    /* ── Мобильный дропдаун вкладок (скрыт на десктопе) ── */
+    .reports-subtab-nav-mobile {
+      display: none;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .reports-mobile-select {
+      width: 100%;
+      padding: 12px 40px 12px 16px;
+      border: 1.5px solid var(--grey-light);
+      border-radius: 10px;
+      background: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--navy);
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .reports-mobile-select:focus { border-color: var(--navy); }
+    .reports-mobile-select-wrap {
+      position: relative;
+    }
+    .reports-mobile-select-wrap::after {
+      content: '';
+      position: absolute;
+      right: 14px; top: 50%;
+      transform: translateY(-50%);
+      width: 0; height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid var(--navy);
+      pointer-events: none;
+    }
+
     @media(max-width:960px){
       .dept-tab-nav { padding-left:24px; padding-right:24px; } .dept-panel { padding-left:24px; padding-right:24px; }
       .exams-grid { grid-template-columns:1fr; }
@@ -3084,16 +3120,9 @@
         padding-right: 16px !important;
       }
 
-      /* ── Reports sub-tabs: scrollable ── */
-      .reports-subtab-nav {
-        width: 100%;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-        flex-wrap: nowrap;
-        box-sizing: border-box;
-      }
-      .reports-subtab-nav::-webkit-scrollbar { display: none; }
+      /* ── Reports sub-tabs: dropdown на мобиле ── */
+      .reports-subtab-nav { display: none !important; }
+      .reports-subtab-nav-mobile { display: block !important; }
       .reports-layout { grid-template-columns: 1fr; }
 
       /* ── Lead cards: single column on mobile ── */
@@ -4460,12 +4489,24 @@
   <!-- ══ TAB: ОТЧЁТНОСТЬ ══ -->
   <div class="dept-panel" id="panel-reports">
 
-    <!-- Sub-tab nav -->
+    <!-- Sub-tab nav (десктоп) -->
     <div class="reports-subtab-nav">
       <button class="reports-subtab active" data-stab="submit"  onclick="switchSubtab(this,'submit')">Подать отчёт</button>
       <button class="reports-subtab"        data-stab="all"     onclick="switchSubtab(this,'all')">Все отчёты</button>
       <button class="reports-subtab"        data-stab="edit"    onclick="switchSubtab(this,'edit')">Редактировать отчёт</button>
       <button class="reports-subtab"        data-stab="points"  onclick="switchSubtab(this,'points')">Таблица баллов</button>
+    </div>
+
+    <!-- Sub-tab nav (мобиле — дропдаун) -->
+    <div class="reports-subtab-nav-mobile">
+      <div class="reports-mobile-select-wrap">
+        <select class="reports-mobile-select" id="reports-mobile-select" onchange="switchSubtabMobile(this.value)">
+          <option value="submit">Подать отчёт</option>
+          <option value="all">Все отчёты</option>
+          <option value="edit">Редактировать отчёт</option>
+          <option value="points">Таблица баллов</option>
+        </select>
+      </div>
     </div>
 
     <!-- ──────────── SUB: ПОДАТЬ ОТЧЁТ ──────────── -->
@@ -7535,6 +7576,14 @@
     const panel = document.getElementById('subpanel-' + stab);
     if (panel) panel.classList.add('active');
     if (stab === 'all') renderAllReports();
+    // Синхронизируем мобильный select
+    const sel = document.getElementById('reports-mobile-select');
+    if (sel) sel.value = stab;
+  }
+
+  function switchSubtabMobile(stab) {
+    const btn = document.querySelector('.reports-subtab[data-stab="' + stab + '"]');
+    switchSubtab(btn, stab);
   }
 
   function switchTabByName(tabName) {
