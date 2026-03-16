@@ -3528,14 +3528,19 @@
         display: block;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
+        width: max-content;
+        max-width: 100%;
       }
       .article-body th,
       .article-body td {
-        white-space: normal;
+        white-space: nowrap;
         min-width: unset;
       }
-      .article-body td:first-child, .article-body th:first-child {
-        white-space: nowrap;
+      /* Последняя колонка в двухколонных таблицах (требования/правила) — может переноситься */
+      .article-body td:nth-child(2):last-child {
+        white-space: normal;
+        min-width: 160px;
+        max-width: 55vw;
       }
 
       /* ── Доклады — убираем лишние отступы от indentation в HTML ── */
