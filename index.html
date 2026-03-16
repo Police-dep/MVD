@@ -2620,95 +2620,88 @@
     }
 
     /* cards */
-    /* ════════ ПРОМО-ШАГИ — двухколоночный layout ════════ */
+    /* ════════ ПРОМО-ШАГИ ════════ */
     .promo-step-new {
-      display: grid;
-      grid-template-columns: 148px 1fr;
       margin-bottom: 8px;
       border: 1.5px solid var(--grey-light);
-      border-radius: 12px;
+      border-radius: 10px;
       overflow: hidden;
       background: var(--white);
     }
-    .promo-step-new.hc  { border-color: rgba(200,168,75,0.4); }
-    .promo-step-new.cooldown-step { border-color: rgba(26,35,64,0.2); }
+    .promo-step-new.hc { border-color: rgba(200,168,75,0.45); }
 
-    /* Левая тёмная колонка — span всех строк */
+    /* Шапка — тёмная полоска во всю ширину */
     .promo-step-head {
-      grid-column: 1;
-      grid-row: 1 / -1;
-      display: flex; flex-direction: column; justify-content: center;
-      padding: 12px 14px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px;
+      padding: 9px 14px;
       background: var(--navy);
-      gap: 4px;
     }
-    .promo-step-new.hc .promo-step-head { background: #232F4E; }
+    .promo-step-new.hc .promo-step-head { background: #1E2A48; }
 
-    .promo-step-transition { display: flex; flex-direction: column; gap: 4px; }
+    /* Переход: «From → To» в одну строку */
+    .promo-step-transition {
+      display: flex; align-items: center; gap: 7px;
+      min-width: 0; flex: 1;
+    }
     .promo-rank-from {
-      font-size: 10px; font-weight: 500;
-      color: rgba(255,255,255,0.42);
-      line-height: 1.3;
+      font-size: 11px; font-weight: 500;
+      color: rgba(255,255,255,0.45);
+      white-space: nowrap;
     }
     .promo-divider {
-      width: 18px; height: 1.5px;
-      background: var(--accent);
-      border-radius: 2px;
-      margin: 2px 0;
+      font-size: 13px; color: var(--accent);
+      flex-shrink: 0; line-height: 1;
     }
+    .promo-divider::after { content: '→'; }
     .promo-rank-to {
-      font-size: 12px; font-weight: 700; color: #fff;
-      line-height: 1.3;
-    }
-    .promo-step-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 7px; }
-    .promo-tag-hc {
-      font-size: 8px; font-weight: 700; letter-spacing: 0.08em;
-      color: var(--accent); border: 1px solid rgba(200,168,75,0.5);
-      padding: 1px 5px; border-radius: 3px; text-transform: uppercase;
-    }
-    .promo-tag-cd {
-      font-size: 8px; font-weight: 700; letter-spacing: 0.08em;
-      color: rgba(255,255,255,0.42); border: 1px solid rgba(255,255,255,0.18);
-      padding: 1px 5px; border-radius: 3px; text-transform: uppercase;
+      font-size: 13px; font-weight: 700; color: #fff;
+      white-space: nowrap;
     }
 
-    /* Правая светлая колонка — требования */
-    .promo-step-body {
-      grid-column: 2;
-      background: var(--cream);
-      border-left: 1.5px solid var(--grey-light);
+    .promo-step-tags { display: flex; gap: 5px; align-items: center; flex-shrink: 0; }
+    .promo-tag-hc {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.07em;
+      color: var(--accent); border: 1px solid rgba(200,168,75,0.5);
+      padding: 2px 7px; border-radius: 4px; text-transform: uppercase; white-space: nowrap;
     }
+    .promo-tag-cd {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.07em;
+      color: rgba(255,255,255,0.45); border: 1px solid rgba(255,255,255,0.2);
+      padding: 2px 7px; border-radius: 4px; text-transform: uppercase; white-space: nowrap;
+    }
+
+    /* Тело — список требований */
+    .promo-step-body { background: var(--white); }
     .promo-req-row {
       display: flex; align-items: baseline; gap: 9px;
-      padding: 8px 14px;
+      padding: 7px 14px;
       border-bottom: 1px solid var(--grey-light);
-      font-size: 12.5px; color: var(--text-soft); line-height: 1.5;
+      font-size: 13px; color: var(--text-soft); line-height: 1.5;
     }
     .promo-req-row:last-child { border-bottom: none; }
     .promo-req-dot {
       width: 4px; height: 4px; border-radius: 50%;
-      background: var(--accent); flex-shrink: 0; margin-top: 6px;
+      background: var(--accent); flex-shrink: 0; margin-top: 7px;
     }
     .promo-req-row strong { color: var(--navy); }
 
-    /* Нотисы — вторая колонка */
+    /* Нотисы */
     .promo-notice {
-      grid-column: 2;
-      display: flex; align-items: baseline; gap: 8px;
-      padding: 6px 14px;
-      border-left: 1.5px solid var(--grey-light);
+      display: flex; align-items: baseline; gap: 9px;
+      padding: 7px 14px;
       border-top: 1px solid var(--grey-light);
-      font-size: 11.5px; line-height: 1.5;
+      font-size: 12px; line-height: 1.5; color: var(--text-soft);
     }
-    .promo-notice.cd-notice { background: #ECEEF4; color: var(--text-soft); }
+    .promo-notice.cd-notice { background: #F0F2F8; }
     .promo-notice.cd-notice strong { color: var(--navy); }
-    .promo-notice.hc-notice { background: #FBF5E6; color: #7A5C18; }
+    .promo-notice.hc-notice { background: #FBF6E8; color: #7A5C18; }
     .promo-notice.hc-notice strong { color: #5A3F0A; }
     .promo-notice.mvd-notice { background: var(--navy); color: rgba(255,255,255,0.7); }
     .promo-notice.mvd-notice strong { color: var(--accent); }
     .promo-notice-dot {
       width: 3px; height: 3px; border-radius: 50%;
-      background: currentColor; flex-shrink: 0; margin-top: 7px; opacity: 0.45;
+      background: currentColor; flex-shrink: 0; margin-top: 8px; opacity: 0.4;
     }
 
     /* legacy */
@@ -3261,8 +3254,8 @@
       }
 
       /* ── Promo step: compact on mobile ── */
-      .promo-step-new { grid-template-columns: 110px 1fr; }
-      .promo-rank-from, .promo-rank-to { word-break: break-word; }
+      .promo-step-head { flex-wrap: wrap; }
+      .promo-rank-from, .promo-rank-to, .promo-divider { font-size: 11px; }
 
       /* ── Archive modal footer row ── */
       .complaints-footer-row,
@@ -3540,13 +3533,9 @@
       .article-body td {
         white-space: normal;
         min-width: unset;
-        max-width: 180px;
       }
-      /* Первая колонка (№/ранг) — минимальная */
       .article-body td:first-child, .article-body th:first-child {
         white-space: nowrap;
-        max-width: none;
-        min-width: unset;
       }
 
       /* ── Доклады — убираем лишние отступы от indentation в HTML ── */
