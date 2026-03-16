@@ -2998,13 +2998,20 @@
     .article-body td:first-child, .article-body th:first-child {
       width: 1%; white-space: nowrap;
     }
-    /* Таблица наименований рангов по департаментам — компактная, без скролла */
-    .article-body .ranks-dept-table { table-layout: auto; }
+    /* Таблица наименований рангов — нормальный шрифт, перенос внутри ячейки */
+    .article-body .ranks-dept-table { table-layout: fixed; width: 100%; }
     .article-body .ranks-dept-table th,
     .article-body .ranks-dept-table td {
+      white-space: normal;
+      word-break: break-word;
+      padding: 9px 12px;
+      font-size: 13px;
+      vertical-align: top;
+    }
+    .article-body .ranks-dept-table td:first-child,
+    .article-body .ranks-dept-table th:first-child {
+      width: 14%;
       white-space: nowrap;
-      padding: 8px 10px;
-      font-size: 12px;
     }
 
     @media (max-width: 480px) {
@@ -3539,7 +3546,7 @@
         width: max-content;
         max-width: 100%;
       }
-      /* Таблица рангов — не скроллится, сжимается */
+      /* Таблица рангов — не скроллится, нормальный размер */
       .article-body .ranks-dept-table {
         display: table;
         width: 100%;
@@ -3547,9 +3554,9 @@
       }
       .article-body .ranks-dept-table th,
       .article-body .ranks-dept-table td {
-        padding: 6px 8px;
-        font-size: 11px;
-        white-space: nowrap;
+        padding: 7px 8px;
+        font-size: 12px;
+        white-space: normal;
       }
       .article-body th,
       .article-body td {
@@ -14749,13 +14756,13 @@
           <tbody>
             <tr><td>[1]</td><td>Cadet I</td><td>Cadet I</td><td>Cadet I</td></tr>
             <tr><td>[2]</td><td>Cadet II</td><td>Cadet II</td><td>Cadet II</td></tr>
-            <tr><td>[3]</td><td>Police Officer I</td><td>Deputy Sheriff I</td><td>Police Officer I</td></tr>
-            <tr><td>[4]</td><td>Police Officer II</td><td>Deputy Sheriff II</td><td>Police Officer II</td></tr>
+            <tr><td>[3]</td><td>Police<br>Officer I</td><td>Deputy<br>Sheriff I</td><td>Police<br>Officer I</td></tr>
+            <tr><td>[4]</td><td>Police<br>Officer II</td><td>Deputy<br>Sheriff II</td><td>Police<br>Officer II</td></tr>
             <tr><td>[5]</td><td>Lieutenant</td><td>Lieutenant</td><td>Lieutenant</td></tr>
             <tr><td>[6]</td><td>Captain</td><td>Captain</td><td>Captain</td></tr>
             <tr><td>[7]</td><td>Commander</td><td>Commander</td><td>Commander</td></tr>
-            <tr><td>[8]</td><td>Deputy Chief</td><td>Assistant Sheriff</td><td>Deputy Chief</td></tr>
-            <tr><td>[9]</td><td>Assistant Chief</td><td>Undersheriff</td><td>Assistant Chief</td></tr>
+            <tr><td>[8]</td><td>Deputy<br>Chief</td><td>Assistant<br>Sheriff</td><td>Deputy<br>Chief</td></tr>
+            <tr><td>[9]</td><td>Assistant<br>Chief</td><td>Undersheriff</td><td>Assistant<br>Chief</td></tr>
             <tr><td>[10]</td><td>Chief</td><td>Sheriff</td><td>Chief</td></tr>
           </tbody>
         </table>
