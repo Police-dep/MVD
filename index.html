@@ -2998,6 +2998,14 @@
     .article-body td:first-child, .article-body th:first-child {
       width: 1%; white-space: nowrap;
     }
+    /* Таблица наименований рангов по департаментам — компактная, без скролла */
+    .article-body .ranks-dept-table { table-layout: auto; }
+    .article-body .ranks-dept-table th,
+    .article-body .ranks-dept-table td {
+      white-space: nowrap;
+      padding: 8px 10px;
+      font-size: 12px;
+    }
 
     @media (max-width: 480px) {
       .bl-form-grid { grid-template-columns: 1fr !important; }
@@ -3531,16 +3539,27 @@
         width: max-content;
         max-width: 100%;
       }
+      /* Таблица рангов — не скроллится, сжимается */
+      .article-body .ranks-dept-table {
+        display: table;
+        width: 100%;
+        overflow-x: unset;
+      }
+      .article-body .ranks-dept-table th,
+      .article-body .ranks-dept-table td {
+        padding: 6px 8px;
+        font-size: 11px;
+        white-space: nowrap;
+      }
       .article-body th,
       .article-body td {
         white-space: nowrap;
         min-width: unset;
       }
-      /* Последняя колонка в двухколонных таблицах (требования/правила) — может переноситься */
+      /* Колонка требований в двухколонных таблицах — переносится */
       .article-body td:nth-child(2):last-child {
         white-space: normal;
-        min-width: 160px;
-        max-width: 55vw;
+        min-width: 120px;
       }
 
       /* ── Доклады — убираем лишние отступы от indentation в HTML ── */
@@ -14389,10 +14408,10 @@
 
         <h2>Повышение в старшем составе</h2>
         <table style="width:100%;">
-          <colgroup><col style="white-space:nowrap;width:1%;"><col></colgroup><thead><tr><th>Переход</th><th>Требования</th></tr></thead>
+          <thead><tr><th style="width:auto;white-space:nowrap;">Переход</th><th style="width:60%;">Требования</th></tr></thead>
           <tbody>
-            <tr><td><strong>Майор [7] → Подполковник [8]</strong></td><td>1 сутки с момента последнего повышения · Еженедельный отчёт старшего состава на портале штата</td></tr>
-            <tr><td><strong>Подполковник [8] → Полковник [9]</strong></td><td>1 сутки с момента последнего повышения · Еженедельный отчёт старшего состава на портале штата</td></tr>
+            <tr><td style="white-space:nowrap;"><strong>Майор [7] → Подполковник [8]</strong></td><td>1 сутки с момента последнего повышения · Еженедельный отчёт старшего состава на портале штата</td></tr>
+            <tr><td style="white-space:nowrap;"><strong>Подполковник [8] → Полковник [9]</strong></td><td>1 сутки с момента последнего повышения · Еженедельный отчёт старшего состава на портале штата</td></tr>
           </tbody>
         </table>
         <div style="display:flex;align-items:flex-start;gap:12px;background:var(--accent-light);border:1.5px solid #D4B870;border-radius:10px;padding:13px 16px;margin-top:12px;">
@@ -14577,7 +14596,7 @@
 
         <h2>Правила для лидеров МВД</h2>
         <table style="width:100%;">
-          <colgroup><col style="white-space:nowrap;width:1%;"><col></colgroup><thead><tr><th>№</th><th>Правило</th></tr></thead>
+          <thead><tr><th style="width:1%;white-space:nowrap;">№</th><th>Правило</th></tr></thead>
           <tbody>
             <tr><td><strong>1</strong></td><td>Лидер, только вставший на пост, обязан обнулить чёрный список фракции. (Внесённых за очень грубые нарушения разрешается не обнулять.)</td></tr>
             <tr><td><strong>2</strong></td><td>Лидер обязан вовремя выкладывать свой отчёт в тему «Отчётность Генералов».</td></tr>
@@ -14604,7 +14623,7 @@
         <p>Раздел «Жалобы на сотрудников» проверяется только Генералами и Министром; при согласии лидера — Полковником [9]. Жалобы должны проверяться своевременно. При возникновении трудностей обращайтесь к следящей администрации.</p>
         <h3>Требования к жалобе (старый форум)</h3>
         <table style="width:100%;">
-          <colgroup><col style="white-space:nowrap;width:1%;"><col></colgroup><thead><tr><th>№</th><th>Критерий</th></tr></thead>
+          <thead><tr><th style="width:1%;white-space:nowrap;">№</th><th>Критерий</th></tr></thead>
           <tbody>
             <tr><td><strong>1</strong></td><td>Жалоба составлена строго по форме.</td></tr>
             <tr><td><strong>2</strong></td><td>Неверный заголовок — отказ. Формат заголовка: «Жалоба №1».</td></tr>
@@ -14623,7 +14642,7 @@
 
         <h3>Требования к жалобе (новый портал штата)</h3>
         <table style="width:100%;">
-          <colgroup><col style="white-space:nowrap;width:1%;"><col></colgroup><thead><tr><th>№</th><th>Критерий</th></tr></thead>
+          <thead><tr><th style="width:1%;white-space:nowrap;">№</th><th>Критерий</th></tr></thead>
           <tbody>
             <tr><td><strong>1</strong></td><td>Жалоба составлена строго по форме.</td></tr>
             <tr><td><strong>2</strong></td><td>Скриншоты принимаются только если ситуация полностью понятна проверяющему.</td></tr>
@@ -14642,36 +14661,36 @@
 
         <h3>Младший состав</h3>
         <table style="width:100%;">
-          <colgroup><col style="white-space:nowrap;width:1%;"><col></colgroup><thead><tr><th>Переход</th><th>Требования</th></tr></thead>
+          <thead><tr><th style="width:auto;white-space:nowrap;">Переход</th><th style="width:60%;">Требования</th></tr></thead>
           <tbody>
-            <tr><td><strong>Рядовой [1] → Сержант [2]</strong></td><td>Сдать Зачёт Рядового (ЗР)</td></tr>
-            <tr><td><strong>Сержант [2] → Ст. сержант [3]</strong></td><td>Сдать экзамен Учебный Патруль (УП) · Сдать Физические Нормативы · Иметь актуальное личное дело</td></tr>
+            <tr><td style="white-space:nowrap;"><strong>Рядовой [1] → Сержант [2]</strong></td><td>Сдать Зачёт Рядового (ЗР)</td></tr>
+            <tr><td style="white-space:nowrap;"><strong>Сержант [2] → Ст. сержант [3]</strong></td><td>Сдать экзамен Учебный Патруль (УП) · Сдать Физические Нормативы · Иметь актуальное личное дело</td></tr>
           </tbody>
         </table>
 
         <h3>Средний состав</h3>
         <table style="width:100%;">
-          <colgroup><col style="white-space:nowrap;width:1%;"><col></colgroup><thead><tr><th>Переход</th><th>Требования</th></tr></thead>
+          <thead><tr><th style="width:auto;white-space:nowrap;">Переход</th><th style="width:60%;">Требования</th></tr></thead>
           <tbody>
-            <tr><td><strong>Ст. сержант [3] → Лейтенант [4]</strong></td><td>Патруль города 20 мин · Участие в любой тренировке</td></tr>
-            <tr><td><strong>Лейтенант [4] → Ст. лейтенант [5]</strong></td><td>Патруль города 30 мин · Участие в блок-посте/спецоперации · Участие в любой тренировке</td></tr>
-            <tr><td><strong>Ст. лейтенант [5] → Капитан [6]</strong></td><td>Патруль 30 мин · Экзамен среднего состава (ЭСС) · Участие в спецоперации/блок-посте · 2 тренировки · 1 сутки с момента последнего повышения</td></tr>
-            <tr><td><strong>Капитан [6] → Майор [7]</strong></td><td>Патруль 40 мин · Проведение блок-поста · 2 тренировки · Проведение спецоперации · 1 сутки с момента последнего повышения</td></tr>
+            <tr><td style="white-space:nowrap;"><strong>Ст. сержант [3] → Лейтенант [4]</strong></td><td>Патруль города 20 мин · Участие в любой тренировке</td></tr>
+            <tr><td style="white-space:nowrap;"><strong>Лейтенант [4] → Ст. лейтенант [5]</strong></td><td>Патруль города 30 мин · Участие в блок-посте/спецоперации · Участие в любой тренировке</td></tr>
+            <tr><td style="white-space:nowrap;"><strong>Ст. лейтенант [5] → Капитан [6]</strong></td><td>Патруль 30 мин · Экзамен среднего состава (ЭСС) · Участие в спецоперации/блок-посте · 2 тренировки · 1 сутки с момента последнего повышения</td></tr>
+            <tr><td style="white-space:nowrap;"><strong>Капитан [6] → Майор [7]</strong></td><td>Патруль 40 мин · Проведение блок-поста · 2 тренировки · Проведение спецоперации · 1 сутки с момента последнего повышения</td></tr>
           </tbody>
         </table>
 
         <h3>Старший состав</h3>
         <table style="width:100%;">
-          <colgroup><col style="white-space:nowrap;width:1%;"><col></colgroup><thead><tr><th>Переход</th><th>Требования</th></tr></thead>
+          <thead><tr><th style="width:auto;white-space:nowrap;">Переход</th><th style="width:60%;">Требования</th></tr></thead>
           <tbody>
-            <tr><td><strong>Майор [7] → Подполковник [8]</strong></td><td>1 сутки с момента последнего повышения · Еженедельный отчёт старшего состава на портале штата</td></tr>
-            <tr><td><strong>Подполковник [8] → Полковник [9]</strong></td><td>1 сутки с момента последнего повышения · Еженедельный отчёт старшего состава на портале штата</td></tr>
-            <tr><td><strong>Полковник [9] → Генерал [10]</strong></td><td>Назначается руководством МВД</td></tr>
+            <tr><td style="white-space:nowrap;"><strong>Майор [7] → Подполковник [8]</strong></td><td>1 сутки с момента последнего повышения · Еженедельный отчёт старшего состава на портале штата</td></tr>
+            <tr><td style="white-space:nowrap;"><strong>Подполковник [8] → Полковник [9]</strong></td><td>1 сутки с момента последнего повышения · Еженедельный отчёт старшего состава на портале штата</td></tr>
+            <tr><td style="white-space:nowrap;"><strong>Полковник [9] → Генерал [10]</strong></td><td>Назначается руководством МВД</td></tr>
           </tbody>
         </table>
 
         <h3>Наименование званий по департаментам</h3>
-        <table style="white-space:nowrap;">
+        <table class="ranks-dept-table">
           <thead><tr><th>Ранг</th><th>LVMPD</th><th>LSCSD</th><th>SFPD</th></tr></thead>
           <tbody>
             <tr><td>[1]</td><td>Cadet I</td><td>Cadet I</td><td>Cadet I</td></tr>
