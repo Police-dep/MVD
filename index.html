@@ -4698,7 +4698,7 @@
             <option value="approved">Одобрено</option>
             <option value="rejected">Отказано</option>
           </select>
-          <button class="back-btn" onclick="loadDeptReports(currentDept)" style="font-size:12px;padding:6px 12px;gap:5px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Обновить</button>
+          <button class="back-btn" onclick="refreshAllReportsSafe()" style="font-size:12px;padding:6px 12px;gap:5px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Обновить</button>
         </div>
       </div>
       <div class="inbox-modal-body" style="border:1.5px solid var(--grey-light);border-radius:14px;overflow:hidden;min-height:460px;">
@@ -6536,8 +6536,18 @@
   }
 
   async function refreshInbox(type) {
+    const isMobile = window.innerWidth <= 768;
     if (type === 'emp') {
+      // На мобиле запоминаем: был ли открыт конкретный элемент
+      const hadSelection = isMobile && selectedEmpId;
       showLoading('emp-inbox-list', 'emp-inbox-detail');
+      // Восстанавливаем видимость списка на мобиле (сброс после скрытия)
+      if (isMobile) {
+        const list = document.getElementById('emp-inbox-list');
+        const detail = document.getElementById('emp-inbox-detail');
+        if (list) list.style.display = '';
+        if (detail) detail.style.display = '';
+      }
       selectedEmpId = null;
       try {
         const data = await sheetsGet('getEmployment');
@@ -6549,7 +6559,14 @@
       document.getElementById('emp-inbox-detail').innerHTML =
         '<div class="inbox-detail-empty"><div class="inbox-detail-empty-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></div>Выберите заявление из списка.</div>';
     } else {
+      const hadSelection = isMobile && selectedComplaintId;
       showLoading('complaints-inbox-list', 'complaints-inbox-detail');
+      if (isMobile) {
+        const list = document.getElementById('complaints-inbox-list');
+        const detail = document.getElementById('complaints-inbox-detail');
+        if (list) list.style.display = '';
+        if (detail) detail.style.display = '';
+      }
       selectedComplaintId = null;
       try {
         const data = await sheetsGet('getComplaints');
@@ -7656,6 +7673,8 @@
   function renderAllReports() {
     const el = document.getElementById('all-reports-list');
     if (!el) return;
+    // Сохраняем мобильное состояние видимости списка
+    const _listDisplay = el.style.display;
     const fType   = (document.getElementById('all-filter-type')   || {}).value || 'all';
     const fStatus = (document.getElementById('all-filter-status') || {}).value || 'all';
 
@@ -7676,6 +7695,7 @@
 
     if (!list.length) {
       el.innerHTML = '<div class="inbox-detail-empty"><div class="inbox-detail-empty-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></div>Отчётов не найдено.</div>';
+      el.style.display = _listDisplay;
       return;
     }
 
@@ -7696,6 +7716,8 @@
           <span class="inbox-item-badge ${STATUS_BADGE_CLASS[r.status]||'ib-pending'}" style="margin-top:4px;">${STATUS_LABELS[r.status]||'На рассмотрении'}</span>
         </div>`;
     }).join('');
+    // Восстанавливаем мобильное состояние видимости
+    el.style.display = _listDisplay;
   }
 
   function showAllReportDetail(id) {
@@ -7950,7 +7972,37 @@
   }
 
   /* ── Загрузка отчётов из Sheets ── */
+  // Безопасное обновление отчётов — сохраняет мобильное состояние
+  function refreshAllReportsSafe() {
+    const isMobile = window.innerWidth <= 768;
+    const listEl   = document.getElementById('all-reports-list');
+    const detailEl = document.getElementById('all-reports-detail');
+    // Запоминаем: деталь открыта на мобиле?
+    const detailOpen = isMobile && listEl && listEl.style.display === 'none';
+    const prevSelId  = _selAllId;
+
+    loadDeptReports(currentDept).then ? loadDeptReports(currentDept).then(() => {
+      if (detailOpen && prevSelId) {
+        // Восстанавливаем деталь
+        if (listEl) listEl.style.display = 'none';
+        if (detailEl) { detailEl.style.display = ''; detailEl.style.flex = '1'; }
+        showAllReportDetail(prevSelId);
+      }
+    }) : (() => {
+      if (detailOpen && prevSelId) {
+        if (listEl) listEl.style.display = 'none';
+        if (detailEl) { detailEl.style.display = ''; detailEl.style.flex = '1'; }
+        showAllReportDetail(prevSelId);
+      }
+    })();
+  }
+
   async function loadDeptReports(dept) {
+    // На мобиле если деталь открыта — не сбрасываем выбор
+    const isMobile = window.innerWidth <= 768;
+    const listEl = document.getElementById('all-reports-list');
+    const detailEl = document.getElementById('all-reports-detail');
+    const detailVisible = isMobile && listEl && listEl.style.display === 'none';
     try {
       const [seniorData, reportsData] = await Promise.all([
         sheetsGet('getSeniorReports', { dept }),
@@ -14169,7 +14221,133 @@
       title: '[МВД] Руководство для старшего состава',
       meta: 'Автор: meow zanetti · 27 июня 2022',
       eyebrow: 'Справочные материалы',
-      body: `<div class="article-highlight"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Данный документ доступен только для офицеров в звании 10 ранга и выше.</div><p><em>Содержание защищено.</em></p>`
+      body: `
+        <div class="article-highlight">
+          Обязательно к ознакомлению для всех офицеров звания <strong>Подполковник [8]</strong> и выше. Старший состав несёт повышенную ответственность за состояние департамента и обязан соблюдать все нормы, описанные в данном руководстве.
+        </div>
+
+        <h2>Состав и звания</h2>
+        <p>Старший состав департамента включает три ранга:</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:16px 0;">
+          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:12px;padding:16px 18px;text-align:center;">
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;">Ранг 8</div>
+            <div style="font-size:16px;font-weight:700;color:var(--navy);">Подполковник</div>
+          </div>
+          <div style="background:var(--accent-light);border:1.5px solid #D4B870;border-radius:12px;padding:16px 18px;text-align:center;">
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#8A6B20;margin-bottom:6px;">Ранг 9</div>
+            <div style="font-size:16px;font-weight:700;color:var(--navy);">Полковник</div>
+          </div>
+          <div style="background:var(--navy);border-radius:12px;padding:16px 18px;text-align:center;">
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:6px;">Ранг 10</div>
+            <div style="font-size:16px;font-weight:700;color:var(--accent);">Генерал</div>
+          </div>
+        </div>
+
+        <h2>Обязанности старшего состава</h2>
+        <div style="display:flex;flex-direction:column;gap:8px;margin:16px 0;">
+          <div style="display:flex;align-items:flex-start;gap:12px;background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:13px 16px;">
+            <span style="width:24px;height:24px;background:var(--navy);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span style="font-size:13px;color:var(--text-soft);line-height:1.6;">Вести актуальные личные дела сотрудников департамента, своевременно вносить изменения.</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px;background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:13px 16px;">
+            <span style="width:24px;height:24px;background:var(--navy);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span style="font-size:13px;color:var(--text-soft);line-height:1.6;">Проверять заявления и жалобы от сотрудников — наравне с Генералом и Министром.</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px;background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:13px 16px;">
+            <span style="width:24px;height:24px;background:var(--navy);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span style="font-size:13px;color:var(--text-soft);line-height:1.6;">Проводить тренировки, спецоперации, блок-посты и другие активности с личным составом.</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px;background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:13px 16px;">
+            <span style="width:24px;height:24px;background:var(--navy);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span style="font-size:13px;color:var(--text-soft);line-height:1.6;">Отвечать в рацию в течение <strong>2 минут</strong> при вызове старшего по званию (если не AFK и не вне департамента).</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px;background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:13px 16px;">
+            <span style="width:24px;height:24px;background:var(--navy);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span style="font-size:13px;color:var(--text-soft);line-height:1.6;">Соблюдать систему наказаний, описанную в Уставе УМВД, и применять её к подчинённым.</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px;background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:13px 16px;">
+            <span style="width:24px;height:24px;background:var(--navy);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span style="font-size:13px;color:var(--text-soft);line-height:1.6;">Подавать еженедельный отчёт на портале в разделе «Отчётность → Подать отчёт → Ст. состав».</span>
+          </div>
+        </div>
+
+        <h2>Еженедельный отчёт</h2>
+        <p>Каждый сотрудник старшего состава обязан подавать еженедельный отчёт о проделанной работе. Минимальное количество баллов:</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;">
+          <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:14px;">
+            <div style="width:42px;height:42px;background:var(--navy);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:var(--accent);font-family:'Playfair Display',serif;font-size:17px;font-weight:700;">8</span></div>
+            <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;font-weight:700;color:var(--grey);margin-bottom:2px;">Ранг 8</div><div style="font-size:20px;font-weight:700;color:var(--navy);">15 <span style="font-size:12px;font-weight:500;color:var(--text-soft);">баллов/нед.</span></div></div>
+          </div>
+          <div style="background:var(--white);border:1.5px solid var(--accent-light);border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:14px;">
+            <div style="width:42px;height:42px;background:var(--accent);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:var(--navy);font-family:'Playfair Display',serif;font-size:17px;font-weight:700;">9</span></div>
+            <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;font-weight:700;color:var(--grey);margin-bottom:2px;">Ранг 9</div><div style="font-size:20px;font-weight:700;color:var(--navy);">20 <span style="font-size:12px;font-weight:500;color:var(--text-soft);">баллов/нед.</span></div></div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;background:var(--red-light);border:1.5px solid #F5C0BC;border-radius:10px;padding:13px 16px;margin-bottom:8px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span style="font-size:13px;color:#7A2020;line-height:1.55;">Отсутствие отчёта или невыполнение минимума баллов — <strong>выговор</strong>. Норма устанавливается Генералом. Таблицу баллов смотри во вкладке «Отчётность → Таблица баллов».</span>
+        </div>
+
+        <h2>Запреты для старшего состава</h2>
+        <div style="background:var(--red-light);border:1.5px solid #F0BABA;border-radius:10px;padding:16px 20px;margin:16px 0;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--red);margin-bottom:12px;">Запрещено</div>
+          <div style="display:flex;flex-direction:column;gap:9px;">
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#7A2020;">
+              <span style="font-weight:700;flex-shrink:0;margin-top:1px;">✗</span>
+              <span>Быть участником спец. отряда (SWAT, MD и др.).</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#7A2020;">
+              <span style="font-weight:700;flex-shrink:0;margin-top:1px;">✗</span>
+              <span>Обсуждать IC правомерные приказы старших по званию, а также вопросы о повышении в открытом чате.</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#7A2020;">
+              <span style="font-weight:700;flex-shrink:0;margin-top:1px;">✗</span>
+              <span>Обманывать Генерала, Министра или представителей администрации.</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#7A2020;">
+              <span style="font-weight:700;flex-shrink:0;margin-top:1px;">✗</span>
+              <span>Выдавать пропуск без причины или без согласования со старшим составом. В докладе обязательно указать причину.</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#7A2020;">
+              <span style="font-weight:700;flex-shrink:0;margin-top:1px;">✗</span>
+              <span>Затягивать с редактированием личного дела или вносить неверную информацию — применяются дисциплинарные взыскания.</span>
+            </div>
+          </div>
+        </div>
+
+        <h2>Права старшего состава</h2>
+        <div style="display:flex;flex-direction:column;gap:8px;margin:16px 0;">
+          <div style="display:flex;align-items:flex-start;gap:10px;background:var(--green-light);border:1.5px solid #A8D8BC;border-radius:9px;padding:11px 14px;font-size:13px;color:var(--text-soft);">
+            <span style="color:var(--green);font-weight:700;flex-shrink:0;margin-top:1px;">✓</span>
+            <span>Переодеваться в форму PD для патрулирования и в форму спец. отряда для спецопераций.</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;background:var(--green-light);border:1.5px solid #A8D8BC;border-radius:9px;padding:11px 14px;font-size:13px;color:var(--text-soft);">
+            <span style="color:var(--green);font-weight:700;flex-shrink:0;margin-top:1px;">✓</span>
+            <span>Изменять вид наказания в зависимости от ситуации (совместно с Генералом и Министром).</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;background:var(--green-light);border:1.5px solid #A8D8BC;border-radius:9px;padding:11px 14px;font-size:13px;color:var(--text-soft);">
+            <span style="color:var(--green);font-weight:700;flex-shrink:0;margin-top:1px;">✓</span>
+            <span>Проводить собеседования и принимать новых сотрудников во фракцию.</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;background:var(--green-light);border:1.5px solid #A8D8BC;border-radius:9px;padding:11px 14px;font-size:13px;color:var(--text-soft);">
+            <span style="color:var(--green);font-weight:700;flex-shrink:0;margin-top:1px;">✓</span>
+            <span>Редактировать личные дела сотрудников своего департамента на портале (лимит 5 дел в сутки для рангов 8–9).</span>
+          </div>
+        </div>
+
+        <h2>Повышение в старшем составе</h2>
+        <table>
+          <thead><tr><th>Переход</th><th>Требования</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Майор [7] → Подполковник [8]</strong></td><td>1 сутки с момента последнего повышения · Еженедельный отчёт старшего состава на портале штата</td></tr>
+            <tr><td><strong>Подполковник [8] → Полковник [9]</strong></td><td>1 сутки с момента последнего повышения · Еженедельный отчёт старшего состава на портале штата</td></tr>
+          </tbody>
+        </table>
+        <div style="display:flex;align-items:flex-start;gap:12px;background:var(--accent-light);border:1.5px solid #D4B870;border-radius:10px;padding:13px 16px;margin-top:12px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8A6B20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:2px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span style="font-size:13px;color:#8A6B20;line-height:1.6;">Отчёт подаётся через портал: <strong>Вкладка «Отчётность» → «Подать отчёт» → тип «Ст. состав»</strong>. Без поданного отчёта повышение не рассматривается.</span>
+        </div>
+      `
     },
     allpd: {
       title: '[МВД] AllPD [биндер]',
