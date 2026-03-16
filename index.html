@@ -1166,7 +1166,7 @@
         flex: 1;
       }
       /* Таблицы в статьях — слова не разбиваются, но переносятся */
-      .article-body table { table-layout: fixed; width: 100%; }
+      .article-body table { table-layout: auto; width: 100%; }
       .article-body table td, .article-body table th { word-wrap: break-word; overflow-wrap: break-word; }
 
       /* ── INBOX MODALS — мобильный режим sheet ── */
@@ -2621,85 +2621,100 @@
 
     /* cards */
     .promo-step-new {
-      margin-bottom: 16px;
+      margin-bottom: 10px;
       border: 1.5px solid var(--grey-light);
+      border-radius: 12px;
       overflow: hidden;
+      background: var(--white);
     }
+    .promo-step-new.hc { border-color: rgba(200,168,75,0.35); }
+    .promo-step-new.cooldown-step { border-color: rgba(26,35,64,0.2); }
 
     .promo-step-head {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 11px 18px;
-      background: #2A3655;
-      gap: 12px;
+      padding: 12px 16px;
+      background: var(--navy);
+      gap: 10px;
     }
-    .promo-step-new.hc .promo-step-head { background: #2A3655; }
+    .promo-step-new.hc .promo-step-head { background: linear-gradient(90deg, #1E2E50, #2A3655); }
 
     .promo-step-transition {
-      display: flex; align-items: center; gap: 10px;
+      display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0;
     }
     .promo-rank-from {
-      font-size: 11px; font-weight: 600;
-      color: rgba(255,255,255,0.4);
-      letter-spacing: 0.07em; text-transform: uppercase;
+      font-size: 10px; font-weight: 600;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.05em;
+      background: rgba(255,255,255,0.07);
+      padding: 3px 8px; border-radius: 4px;
+      white-space: nowrap;
     }
     .promo-divider {
-      width: 18px; height: 1px; background: var(--accent); flex-shrink: 0;
+      display: flex; align-items: center; gap: 3px; flex-shrink: 0;
+      color: var(--accent);
+      font-size: 14px; font-weight: 300;
     }
+    .promo-divider::after { content: '→'; }
     .promo-rank-to {
-      font-size: 12px; font-weight: 800; color: #fff;
-      letter-spacing: 0.07em; text-transform: uppercase;
+      font-size: 12px; font-weight: 700; color: #fff;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
     }
-    .promo-step-tags { display: flex; gap: 6px; align-items: center; }
+    .promo-step-tags { display: flex; gap: 5px; align-items: center; flex-shrink: 0; }
     .promo-tag-hc {
-      font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
-      color: var(--accent); border: 1px solid rgba(200,168,75,0.45);
-      padding: 2px 9px; text-transform: uppercase;
+      font-size: 9px; font-weight: 700; letter-spacing: 0.1em;
+      color: var(--accent); border: 1px solid rgba(200,168,75,0.5);
+      padding: 2px 7px; border-radius: 3px; text-transform: uppercase;
+      white-space: nowrap;
     }
     .promo-tag-cd {
-      font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
-      color: rgba(255,255,255,0.45); border: 1px solid rgba(255,255,255,0.2);
-      padding: 2px 9px; text-transform: uppercase;
+      font-size: 9px; font-weight: 700; letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.18);
+      padding: 2px 7px; border-radius: 3px; text-transform: uppercase;
+      white-space: nowrap;
     }
 
     .promo-step-body {
-      background: var(--cream);
+      background: var(--white);
+      padding: 2px 0;
     }
     .promo-req-row {
-      display: flex; align-items: baseline; gap: 12px;
-      padding: 9px 18px;
+      display: flex; align-items: baseline; gap: 10px;
+      padding: 8px 16px;
       border-bottom: 1px solid var(--grey-light);
       font-size: 13px; color: var(--text-soft); line-height: 1.5;
     }
     .promo-req-row:last-child { border-bottom: none; }
     .promo-req-dot {
-      width: 4px; height: 4px; border-radius: 50%;
-      background: var(--accent); flex-shrink: 0; margin-top: 7px;
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--accent); flex-shrink: 0; margin-top: 6px;
     }
     .promo-req-row strong { color: var(--navy); }
 
     .promo-notice {
-      padding: 9px 18px;
+      padding: 7px 16px;
       border-top: 1px solid var(--grey-light);
-      font-size: 13px; color: var(--text-soft); line-height: 1.5;
+      font-size: 12px; color: var(--text-soft); line-height: 1.5;
     }
     .promo-notice.cd-notice {
-      background: var(--cream);
-      display: flex; align-items: baseline; gap: 12px;
+      background: #F0F2F7;
+      display: flex; align-items: baseline; gap: 10px;
     }
     .promo-notice.cd-notice strong { color: var(--navy); }
     .promo-notice.hc-notice {
-      background: var(--cream);
-      display: flex; align-items: baseline; gap: 12px;
+      background: #FBF5E6;
+      display: flex; align-items: baseline; gap: 10px;
     }
-    .promo-notice.hc-notice strong { color: var(--navy); }
+    .promo-notice.hc-notice strong { color: #7A5C18; }
     .promo-notice.mvd-notice {
-      background: var(--cream);
-      display: flex; align-items: baseline; gap: 12px;
+      background: var(--navy);
+      display: flex; align-items: baseline; gap: 10px;
     }
-    .promo-notice.mvd-notice strong { color: var(--navy); }
+    .promo-notice.mvd-notice { color: rgba(255,255,255,0.7); }
+    .promo-notice.mvd-notice strong { color: var(--accent); }
     .promo-notice-dot {
       width: 4px; height: 4px; border-radius: 50%;
-      background: var(--accent); flex-shrink: 0; margin-top: 7px;
+      background: currentColor; flex-shrink: 0; margin-top: 6px; opacity: 0.5;
     }
 
     /* legacy */
@@ -2992,6 +3007,10 @@
       color: var(--text-soft);
     }
     .article-body tr:hover td { background: var(--cream); }
+    /* Первая колонка с номером/рангом — минимальная ширина */
+    .article-body td:first-child, .article-body th:first-child {
+      width: 1%; white-space: nowrap;
+    }
 
     @media (max-width: 480px) {
       .bl-form-grid { grid-template-columns: 1fr !important; }
@@ -3248,8 +3267,9 @@
       }
 
       /* ── Promo step: wrap tags ── */
-      .promo-step-head { flex-wrap: wrap; gap: 8px; }
-      .promo-step-transition { flex-wrap: nowrap; }
+      .promo-step-head { flex-wrap: nowrap; gap: 6px; }
+      .promo-step-transition { flex-wrap: nowrap; min-width: 0; flex: 1; }
+      .promo-rank-from, .promo-rank-to { overflow: hidden; text-overflow: ellipsis; max-width: 110px; }
 
       /* ── Archive modal footer row ── */
       .complaints-footer-row,
@@ -3519,13 +3539,19 @@
 
       /* ── Таблицы — горизонтальная прокрутка ── */
       .article-body table {
+        display: block;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
       }
       .article-body th,
       .article-body td {
+        white-space: nowrap;
+        min-width: unset;
+      }
+      /* Вторая и последующие колонки могут переносить текст если таблица 2-колончатая */
+      .article-body td:last-child:not(:first-child) {
         white-space: normal;
-        min-width: 90px;
+        min-width: 160px;
       }
 
       /* ── Доклады — убираем лишние отступы от indentation в HTML ── */
@@ -3972,7 +3998,7 @@
       <div class="promo-dept-header promo-green">
         <div class="promo-dept-info">
           <div class="promo-dept-title">Los Santos County Sheriff's Department</div>
-          <div class="promo-dept-sub">Система карьерного роста · 9 рангов</div>
+          <div class="promo-dept-sub">Система карьерного роста · 10 рангов</div>
         </div>
         <div class="promo-dept-badge">LSCSD</div>
       </div>
@@ -4083,7 +4109,7 @@
           <div class="promo-step-transition">
             <span class="promo-rank-from">Commander</span>
             <span class="promo-divider"></span>
-            <span class="promo-rank-to">Undersheriff</span>
+            <span class="promo-rank-to">Assistant Sheriff</span>
           </div>
           <div class="promo-step-tags">
             <span class="promo-tag-cd">Кулдаун</span>
@@ -4095,7 +4121,24 @@
           <div class="promo-req-row"><span class="promo-req-dot"></span><span>Оставить еженедельный отчёт в теме старшего состава</span></div>
           <div class="promo-req-row"><span class="promo-req-dot"></span><span>Отсутствие активных взысканий</span></div>
         </div>
-        <div class="promo-notice hc-notice"><span class="promo-notice-dot"></span><span>Повышение по доверенности <strong>Шерифа [9]</strong></span></div>
+        <div class="promo-notice hc-notice"><span class="promo-notice-dot"></span><span>Повышение по доверенности <strong>Шерифа [10]</strong></span></div>
+      </div>
+
+      <div class="promo-step-new hc cooldown-step">
+        <div class="promo-step-head">
+          <div class="promo-step-transition">
+            <span class="promo-rank-from">Assistant Sheriff</span>
+            <span class="promo-divider"></span>
+            <span class="promo-rank-to">Undersheriff</span>
+          </div>
+          <div class="promo-step-tags"><span class="promo-tag-cd">Кулдаун</span><span class="promo-tag-hc">HC</span></div>
+        </div>
+        <div class="promo-step-body">
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Отчёт старшего состава</span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Отсутствие активных взысканий</span></div>
+        </div>
+        <div class="promo-notice cd-notice"><span class="promo-notice-dot"></span><span>Отстоять на текущей должности не менее <strong>1 суток</strong> с момента предыдущего повышения</span></div>
+        <div class="promo-notice hc-notice"><span class="promo-notice-dot"></span><span>Повышение по доверенности <strong>Шерифа [10]</strong></span></div>
       </div>
 
       <div class="promo-step-new hc">
@@ -4118,7 +4161,7 @@
       <div class="promo-dept-header promo-blue">
         <div class="promo-dept-info">
           <div class="promo-dept-title">San Fierro Police Department</div>
-          <div class="promo-dept-sub">Система карьерного роста · 9 рангов</div>
+          <div class="promo-dept-sub">Система карьерного роста · 10 рангов</div>
         </div>
         <div class="promo-dept-badge">SFPD</div>
       </div>
@@ -4229,7 +4272,7 @@
           <div class="promo-step-transition">
             <span class="promo-rank-from">Commander</span>
             <span class="promo-divider"></span>
-            <span class="promo-rank-to">Assistant Chief</span>
+            <span class="promo-rank-to">Deputy Chief</span>
           </div>
           <div class="promo-step-tags">
             <span class="promo-tag-cd">Кулдаун</span>
@@ -4241,7 +4284,27 @@
           <div class="promo-req-row"><span class="promo-req-dot"></span><span>Оставить еженедельный отчёт в теме старшего состава</span></div>
           <div class="promo-req-row"><span class="promo-req-dot"></span><span>Отсутствие активных взысканий</span></div>
         </div>
-        <div class="promo-notice hc-notice"><span class="promo-notice-dot"></span><span>Повышение по доверенности <strong>Шефа [9]</strong></span></div>
+        <div class="promo-notice hc-notice"><span class="promo-notice-dot"></span><span>Повышение по доверенности <strong>Шефа [10]</strong></span></div>
+      </div>
+
+      <div class="promo-step-new hc cooldown-step">
+        <div class="promo-step-head">
+          <div class="promo-step-transition">
+            <span class="promo-rank-from">Deputy Chief</span>
+            <span class="promo-divider"></span>
+            <span class="promo-rank-to">Assistant Chief</span>
+          </div>
+          <div class="promo-step-tags">
+            <span class="promo-tag-cd">Кулдаун</span>
+            <span class="promo-tag-hc">HC</span>
+          </div>
+        </div>
+        <div class="promo-step-body">
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Отчёт старшего состава</span></div>
+          <div class="promo-req-row"><span class="promo-req-dot"></span><span>Отсутствие активных взысканий</span></div>
+        </div>
+        <div class="promo-notice cd-notice"><span class="promo-notice-dot"></span><span>Отстоять на текущей должности не менее <strong>1 суток</strong> с момента предыдущего повышения</span></div>
+        <div class="promo-notice hc-notice"><span class="promo-notice-dot"></span><span>Повышение по доверенности <strong>Шефа [10]</strong></span></div>
       </div>
 
       <div class="promo-step-new hc">
@@ -7111,15 +7174,15 @@
   const DEPT_RANKS = {
     SFPD: [
       'Cadet I [1]', 'Cadet II [2]', 'Police Officer I [3]', 'Police Officer II [4]',
-      'Lieutenant [5]', 'Captain [6]', 'Commander [7]', 'Assistant Chief [8]', 'Chief [9]',
+      'Lieutenant [5]', 'Captain [6]', 'Commander [7]', 'Deputy Chief [8]', 'Assistant Chief [9]', 'Chief [10]',
     ],
     LVMPD: [
-      'Cadet I [1]', 'Cadet II [2]', 'Officer I [3]', 'Officer II [4]',
-      'Lieutenant [5]', 'Captain [6]', 'Deputy Chief [7]', 'Assistant Chief [8]', 'Chief [9]',
+      'Cadet I [1]', 'Cadet II [2]', 'Police Officer I [3]', 'Police Officer II [4]',
+      'Lieutenant [5]', 'Captain [6]', 'Commander [7]', 'Deputy Chief [8]', 'Assistant Chief [9]', 'Chief [10]',
     ],
     LSCSD: [
       'Cadet I [1]', 'Cadet II [2]', 'Deputy Sheriff I [3]', 'Deputy Sheriff II [4]',
-      'Lieutenant [5]', 'Captain [6]', 'Commander [7]', 'Undersheriff [8]', 'Sheriff [9]',
+      'Lieutenant [5]', 'Captain [6]', 'Commander [7]', 'Assistant Sheriff [8]', 'Undersheriff [9]', 'Sheriff [10]',
     ],
   };
 
