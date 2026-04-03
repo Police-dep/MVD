@@ -16762,42 +16762,63 @@ document.addEventListener('DOMContentLoaded', () => {
 /* ══════════════════════════════════════════════════════════════
    FIREBASE AUTHENTICATION СИСТЕМА
 ══════════════════════════════════════════════════════════════ */
-(function() {
+
+// Глобальные функции — доступны сразу, до инициализации Firebase
+window.openAuthOverlay = function() {
+  const ov = document.getElementById('auth-overlay');
+  if (ov) { ov.style.display = 'flex'; ov.classList.remove('hiding'); }
+};
+
+window.authSwitchTab = function(tab) {
+  const err = document.getElementById('auth-err');
+  const ok  = document.getElementById('auth-ok');
+  if (err) err.classList.remove('show');
+  if (ok)  ok.classList.remove('show');
+  const fl = document.getElementById('auth-form-login');
+  const fr = document.getElementById('auth-form-register');
+  const tl = document.getElementById('tab-login');
+  const tr = document.getElementById('tab-register');
+  if (fl) fl.style.display    = tab === 'login'    ? '' : 'none';
+  if (fr) fr.style.display    = tab === 'register' ? '' : 'none';
+  if (tl) tl.classList.toggle('active', tab === 'login');
+  if (tr) tr.classList.toggle('active', tab === 'register');
+};
+
+// Остальное — после загрузки страницы когда Firebase точно готов
+window.addEventListener('load', function() {
+  if (typeof firebase === 'undefined' || !firebase.apps || !firebase.apps.length) {
+    console.warn('Firebase not initialized');
+    return;
+  }
 
   const auth = firebase.auth();
   const db   = firebase.firestore();
 
-  // ── UI helpers ────────────────────────────────────────────
   function authShowErr(msg) {
     const el = document.getElementById('auth-err');
-    el.textContent = msg; el.classList.add('show');
-    document.getElementById('auth-ok').classList.remove('show');
+    if (el) { el.textContent = msg; el.classList.add('show'); }
+    const ok = document.getElementById('auth-ok');
+    if (ok) ok.classList.remove('show');
   }
   function authShowOk(msg) {
     const el = document.getElementById('auth-ok');
-    el.textContent = msg; el.classList.add('show');
-    document.getElementById('auth-err').classList.remove('show');
+    if (el) { el.textContent = msg; el.classList.add('show'); }
+    const err = document.getElementById('auth-err');
+    if (err) err.classList.remove('show');
   }
   function authClearMsgs() {
-    document.getElementById('auth-err').classList.remove('show');
-    document.getElementById('auth-ok').classList.remove('show');
+    const err = document.getElementById('auth-err');
+    const ok  = document.getElementById('auth-ok');
+    if (err) err.classList.remove('show');
+    if (ok)  ok.classList.remove('show');
   }
   function authSetLoading(btnId, loading) {
     const btn = document.getElementById(btnId);
     if (!btn) return;
     btn.disabled = loading;
-    if (btnId === 'auth-login-btn')   btn.textContent = loading ? 'Вход...'              : 'Войти';
-    if (btnId === 'auth-reg-btn')     btn.textContent = loading ? 'Создание аккаунта...' : 'Создать аккаунт';
+    if (btnId === 'auth-login-btn') btn.textContent = loading ? 'Вход...'              : 'Войти';
+    if (btnId === 'auth-reg-btn')   btn.textContent = loading ? 'Создание аккаунта...' : 'Создать аккаунт';
   }
-
-  // ── Переключение вкладок ───────────────────────────────────
-  window.authSwitchTab = function(tab) {
-    authClearMsgs();
-    document.getElementById('auth-form-login').style.display    = tab === 'login'    ? '' : 'none';
-    document.getElementById('auth-form-register').style.display = tab === 'register' ? '' : 'none';
-    document.getElementById('tab-login').classList.toggle('active',    tab === 'login');
-    document.getElementById('tab-register').classList.toggle('active', tab === 'register');
-  };
 
   // ── Скрыть оверлей авторизации ─────────────────────────────
   function hideAuthOverlay() {
@@ -16984,7 +17005,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-})();
+}); // end window.addEventListener('load', ...)
 </script>
 
 
