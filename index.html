@@ -9,6 +9,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <style>
     :root {
       --cream: #F7F5F0;
@@ -3584,9 +3585,327 @@
         display: inline-block;
       }
     }
+  
+    /* ════════════════════════════════════════
+       СТРАНИЦА АВТОРИЗАЦИИ
+    ════════════════════════════════════════ */
+    #auth-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--cream);
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      transition: opacity 0.35s;
+    }
+    #auth-overlay.hiding {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .auth-card {
+      background: var(--white);
+      border: 1.5px solid var(--grey-light);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 400px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(26,35,64,0.12);
+    }
+    .auth-card-header {
+      background: var(--navy);
+      padding: 28px 28px 24px;
+      text-align: center;
+    }
+    .auth-card-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+    .auth-card-sub {
+      font-size: 12px;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .auth-card-body {
+      padding: 28px;
+    }
+    .auth-tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 24px;
+      border: 1.5px solid var(--grey-light);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .auth-tab {
+      flex: 1;
+      padding: 9px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--grey);
+      cursor: pointer;
+      background: var(--cream);
+      border: none;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+    .auth-tab.active {
+      background: var(--navy);
+      color: white;
+    }
+    .auth-field {
+      margin-bottom: 14px;
+    }
+    .auth-field label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-bottom: 6px;
+    }
+    .auth-input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--grey-light);
+      border-radius: 10px;
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--navy);
+      background: var(--cream);
+      outline: none;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .auth-input:focus {
+      border-color: var(--navy);
+      background: var(--white);
+    }
+    .auth-input.error { border-color: var(--red); background: var(--red-light); }
+    .auth-btn {
+      width: 100%;
+      padding: 13px;
+      background: var(--navy);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      margin-top: 6px;
+      transition: opacity 0.15s;
+      letter-spacing: 0.02em;
+    }
+    .auth-btn:hover { opacity: 0.88; }
+    .auth-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .auth-err {
+      background: var(--red-light);
+      border: 1.5px solid #F0BABA;
+      border-radius: 8px;
+      padding: 9px 12px;
+      font-size: 12px;
+      color: var(--red);
+      margin-bottom: 14px;
+      display: none;
+      line-height: 1.5;
+    }
+    .auth-err.show { display: block; }
+    .auth-ok {
+      background: var(--green-light);
+      border: 1.5px solid #A8D8B8;
+      border-radius: 8px;
+      padding: 9px 12px;
+      font-size: 12px;
+      color: var(--green);
+      margin-bottom: 14px;
+      display: none;
+      line-height: 1.5;
+    }
+    .auth-ok.show { display: block; }
+    .auth-forgot {
+      text-align: right;
+      margin-bottom: 14px;
+    }
+    .auth-forgot a {
+      font-size: 12px;
+      color: var(--grey);
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .auth-forgot a:hover { color: var(--navy); }
+    .auth-divider {
+      text-align: center;
+      font-size: 11px;
+      color: var(--grey);
+      margin: 16px 0 4px;
+    }
+    .auth-note {
+      text-align: center;
+      font-size: 11.5px;
+      color: var(--grey);
+      margin-top: 16px;
+      line-height: 1.6;
+    }
+    /* Страница ожидания (гость без ранга) */
+    #auth-pending-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--cream);
+      z-index: 99998;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    #auth-pending-overlay.show { display: flex; }
+    .auth-pending-card {
+      background: var(--white);
+      border: 1.5px solid var(--grey-light);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 420px;
+      padding: 40px 32px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(26,35,64,0.1);
+    }
+    .auth-pending-icon {
+      width: 56px;
+      height: 56px;
+      background: var(--navy);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      color: var(--accent);
+    }
+    .auth-pending-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+    .auth-pending-text {
+      font-size: 13px;
+      color: var(--text-soft);
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+    .auth-pending-email {
+      display: inline-block;
+      background: var(--cream);
+      border: 1.5px solid var(--grey-light);
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 24px;
+    }
+    .auth-pending-logout {
+      font-size: 12px;
+      color: var(--grey);
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: inherit;
+      text-decoration: underline;
+    }
+    .auth-pending-logout:hover { color: var(--red); }
+    @media (max-width: 480px) {
+      .auth-card-body { padding: 20px; }
+      .auth-card-header { padding: 22px 20px 18px; }
+    }
   </style>
 </head>
 <body>
+
+  <!-- ══ СТРАНИЦА АВТОРИЗАЦИИ ══ -->
+  <div id="auth-overlay" style="display:none;">
+    <div class="auth-card">
+      <div class="auth-card-header">
+        <div class="auth-card-logo">МВД</div>
+        <div class="auth-card-sub">Портал управления · Вход в систему</div>
+      </div>
+      <div class="auth-card-body">
+        <div class="auth-tabs">
+          <button class="auth-tab active" id="tab-login" onclick="authSwitchTab('login')">Вход</button>
+          <button class="auth-tab" id="tab-register" onclick="authSwitchTab('register')">Регистрация</button>
+        </div>
+
+        <div id="auth-err" class="auth-err"></div>
+        <div id="auth-ok" class="auth-ok"></div>
+
+        <!-- Форма входа -->
+        <div id="auth-form-login">
+          <div class="auth-field">
+            <label>Email</label>
+            <input class="auth-input" id="auth-login-email" type="email" placeholder="you@example.com" autocomplete="email"/>
+          </div>
+          <div class="auth-field">
+            <label>Пароль</label>
+            <input class="auth-input" id="auth-login-pass" type="password" placeholder="••••••••" autocomplete="current-password"
+              onkeydown="if(event.key==='Enter')doAuthLogin()"/>
+          </div>
+          <div class="auth-forgot"><a onclick="doAuthForgot()">Забыл пароль?</a></div>
+          <button class="auth-btn" id="auth-login-btn" onclick="doAuthLogin()">Войти</button>
+          <div class="auth-note">Нет аккаунта? <a onclick="authSwitchTab('register')" style="color:var(--navy);font-weight:600;cursor:pointer;">Зарегистрироваться</a></div>
+        </div>
+
+        <!-- Форма регистрации -->
+        <div id="auth-form-register" style="display:none;">
+          <div class="auth-field">
+            <label>Имя и фамилия (игровой ник)</label>
+            <input class="auth-input" id="auth-reg-name" type="text" placeholder="Ivan Ivanov" autocomplete="name"/>
+          </div>
+          <div class="auth-field">
+            <label>Email</label>
+            <input class="auth-input" id="auth-reg-email" type="email" placeholder="you@example.com" autocomplete="email"/>
+          </div>
+          <div class="auth-field">
+            <label>Пароль</label>
+            <input class="auth-input" id="auth-reg-pass" type="password" placeholder="Минимум 6 символов" autocomplete="new-password"/>
+          </div>
+          <div class="auth-field">
+            <label>Повтори пароль</label>
+            <input class="auth-input" id="auth-reg-pass2" type="password" placeholder="••••••••" autocomplete="new-password"
+              onkeydown="if(event.key==='Enter')doAuthRegister()"/>
+          </div>
+          <button class="auth-btn" id="auth-reg-btn" onclick="doAuthRegister()">Создать аккаунт</button>
+          <div class="auth-note">Уже есть аккаунт? <a onclick="authSwitchTab('login')" style="color:var(--navy);font-weight:600;cursor:pointer;">Войти</a></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ОЖИДАНИЕ НАЗНАЧЕНИЯ РАНГА ══ -->
+  <div id="auth-pending-overlay">
+    <div class="auth-pending-card">
+      <div class="auth-pending-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <div class="auth-pending-title">Аккаунт создан</div>
+      <div class="auth-pending-text">
+        Твой аккаунт зарегистрирован. Ожидай назначения ранга от Министра — после этого тебе откроется полный доступ к порталу.
+      </div>
+      <div class="auth-pending-email" id="auth-pending-email-lbl">—</div>
+      <div class="auth-pending-text" style="font-size:12px;margin-bottom:16px;">
+        Как только Министр назначит ранг — страница обновится автоматически.
+      </div>
+      <button class="auth-pending-logout" onclick="doAuthLogout()">Выйти из аккаунта</button>
+    </div>
+  </div>
+
 
 <!-- ═══════════════════════════════════════
      HOME PAGE
@@ -3612,6 +3931,13 @@
         <button onclick="doLogout()" style="padding:5px 10px;background:transparent;border:1.5px solid var(--grey-light);border-radius:8px;font-size:11px;font-weight:600;color:var(--grey);cursor:pointer;white-space:nowrap;transition:all 0.15s;" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='var(--grey-light)';this.style.color='var(--grey)'">Выйти</button>
       </div>
       <button id="global-login-btn" onclick="openPasswordGate('login')" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:var(--navy);color:white;border:none;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="M21 2l-9.6 9.6"/><path d="M15.5 7.5l3 3L22 7l-3-3"/></svg> Войти</button>
+      <!-- Кнопка аккаунта Firebase -->
+      <button id="account-btn" onclick="openAuthOverlay()" title="Войти / Зарегистрироваться" style="display:inline-flex;align-items:center;gap:5px;padding:6px 11px;background:transparent;border:1.5px solid var(--grey-light);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--grey);cursor:pointer;transition:all .2s;white-space:nowrap;" onmouseover="this.style.borderColor='var(--navy)';this.style.color='var(--navy)'" onmouseout="this.style.borderColor='var(--grey-light)';this.style.color='var(--grey)'"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Аккаунт</button>
+      <!-- Бейдж Firebase аккаунта (когда вошёл) -->
+      <div id="fb-account-badge" style="display:none;align-items:center;gap:6px;">
+        <span id="fb-account-name" style="display:inline-flex;align-items:center;gap:5px;padding:5px 10px;background:var(--green-light);border:1.5px solid #A8D8B8;color:var(--green);font-size:11px;font-weight:700;border-radius:8px;white-space:nowrap;max-width:150px;overflow:hidden;text-overflow:ellipsis;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> <span id="fb-account-name-text"></span></span>
+        <button onclick="doAuthLogout()" style="padding:4px 8px;background:transparent;border:1.5px solid var(--grey-light);border-radius:7px;font-size:11px;font-weight:600;color:var(--grey);cursor:pointer;transition:all 0.15s;" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='var(--grey-light)';this.style.color='var(--grey)'">↪</button>
+      </div>
       <div class="notif-bell-wrap" id="notif-bell-wrap">
         <button class="notif-bell-btn" id="notif-bell-btn" onclick="toggleNotifPanel()" title="Уведомления">
           <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
@@ -3707,7 +4033,7 @@
         <div class="dept-body">
           <div class="dept-acronym">SFPD</div>
           <div class="dept-name">San Fierro Police Department</div>
-          <div class="dept-desc">Полицейское управление Сан-Фиерро. Обеспечивает безопасность жителей и гостей города.</div>
+          <div class="dept-desc">Порядок. Честь. Закон.</div>
           <span class="dept-cta">Перейти в раздел <span class="dept-cta-arrow">→</span></span>
         </div>
       </div>
@@ -3717,7 +4043,7 @@
         <div class="dept-body">
           <div class="dept-acronym">LVMPD</div>
           <div class="dept-name">Las Venturas Metropolitan Police Department</div>
-          <div class="dept-desc">Департамент полиции Лас-Вентурас. Обеспечивает правопорядок и безопасность на территории метрополии.</div>
+          <div class="dept-desc">Справедливость без исключений.</div>
           <span class="dept-cta">Перейти в раздел <span class="dept-cta-arrow">→</span></span>
         </div>
       </div>
@@ -3727,7 +4053,7 @@
         <div class="dept-body">
           <div class="dept-acronym">LSCSD</div>
           <div class="dept-name">Los Santos County Sheriff's Department</div>
-          <div class="dept-desc">Шерифский департамент округа Лос-Сантос. Охрана правопорядка в районах округа.</div>
+          <div class="dept-desc">Долг прежде всего.</div>
           <span class="dept-cta">Перейти в раздел <span class="dept-cta-arrow">→</span></span>
         </div>
       </div>
@@ -3737,7 +4063,7 @@
 
   <!-- MTF-7 — широкий баннер под департаментами -->
   <div class="mtf-wrap">
-    <a href="https://police-dep.github.io/mtf-7.portal/" target="_blank" class="mtf-banner">
+    <div class="mtf-banner" style="cursor:default;opacity:0.75;">
 
       <div class="mtf-left">
         <div class="mtf-label-pill">◆ Спецподразделение</div>
@@ -3746,14 +4072,14 @@
 
       <div class="mtf-center">
         <div class="mtf-sub">Группа тактического реагирования и расследований</div>
-        <div class="mtf-desc">Задачи особой важности. Официальный портал подразделения с оперативными данными и доступом к архивам.</div>
+        <div class="mtf-desc">Портал находится в разработке. Доступ будет открыт после завершения технических работ.</div>
       </div>
 
       <div class="mtf-right">
-        <div class="mtf-arrow">→</div>
+        <div style="background:rgba(200,168,75,0.2);border:1px solid rgba(200,168,75,0.5);border-radius:6px;padding:5px 12px;font-size:11px;font-weight:700;letter-spacing:0.1em;color:var(--accent);text-transform:uppercase;white-space:nowrap;">В разработке</div>
       </div>
 
-    </a>
+    </div>
   </div>
 
   <footer>
@@ -6032,6 +6358,60 @@
   const STATUS_LABELS     = { pending:'Рассматривается', approved:'Одобрено', rejected:'Отказано', review:'Доработка' };
   const STATUS_BADGE_CLASS = { pending:'ib-pending', approved:'ib-approved', rejected:'ib-rejected', review:'ib-review' };
 
+
+  /* ══════════════════════════════════════════════════════════════
+     RATE LIMITING — макс 7 отправок в час, обнуляется рангом 11
+  ══════════════════════════════════════════════════════════════ */
+  function checkRateLimit(key) {
+    // Ранг 11 — без ограничений
+    if (_auth && _auth.rank >= 11) return true;
+    const now = Date.now();
+    const windowMs = 60 * 60 * 1000; // 1 час
+    // Для отчётов — 10 в час на департамент, для жалоб — 7 в час
+    const isReport = key.startsWith('report');
+    const maxCount = isReport ? 10 : 7;
+    // Ключ для отчётов включает департамент
+    const storageKey = 'rl_' + key;
+    try {
+      const stored = JSON.parse(localStorage.getItem(storageKey) || '[]');
+      const recent = stored.filter(t => now - t < windowMs);
+      if (recent.length >= maxCount) {
+        const waitMin = Math.ceil((windowMs - (now - recent[0])) / 60000);
+        const deptLabel = isReport && currentDept ? ' (' + currentDept + ')' : '';
+        sysAlert(
+          'Превышен лимит отправок' + deptLabel + ' — <strong>' + maxCount + ' в час</strong>.<br>Попробуй через <strong>' + waitMin + ' мин.</strong>',
+          {type:'warn', title:'Лимит исчерпан'}
+        );
+        return false;
+      }
+      recent.push(now);
+      localStorage.setItem(storageKey, JSON.stringify(recent));
+      return true;
+    } catch(e) { return true; }
+  }
+
+  function resetRateLimit(key) {
+    if (!_auth || _auth.rank < 11) {
+      sysAlert('Сброс лимита доступен только для ранга 11.', {type:'error', title:'Нет прав'});
+      return;
+    }
+    try {
+      if (key === 'complaint') {
+        localStorage.removeItem('rl_complaint');
+      } else if (key === 'report') {
+        // Сбрасываем лимиты отчётов для всех департаментов
+        ['LVMPD','SFPD','LSCSD'].forEach(d => localStorage.removeItem('rl_report_' + d));
+        localStorage.removeItem('rl_report'); // на всякий случай
+      } else {
+        // Сброс всех лимитов
+        localStorage.removeItem('rl_complaint');
+        ['LVMPD','SFPD','LSCSD'].forEach(d => localStorage.removeItem('rl_report_' + d));
+        localStorage.removeItem('rl_report');
+      }
+      sysAlert('Счётчик сброшен.', {type:'success', title:'Готово'});
+    } catch(e) {}
+  }
+
   function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
   function esc(s) {
     if (!s) return '';
@@ -6457,21 +6837,62 @@
           break;
 
         case 'addReport': {
+          // Серверная валидация
+          if (!data.name || !String(data.name).trim()) { res.status(400).json({ok:false,error:'Missing name'}); return; }
+          if (!data.dept || !String(data.dept).trim()) { res.status(400).json({ok:false,error:'Missing dept'}); return; }
+          if (!data.type || !['promotion','leave','weekly'].includes(data.type)) { res.status(400).json({ok:false,error:'Invalid type'}); return; }
           const editCode = 'RPT-' + (data.dept||'MVD') + '-' + data.id.slice(-4).toUpperCase();
-          await fbSet('reports', data.id, { ...data, status:'pending', ts, edit_code: editCode });
+          await fbSet('reports', data.id, {
+            ...data,
+            name: String(data.name).trim().slice(0,100),
+            dept: String(data.dept).trim().slice(0,20),
+            status:'pending', ts, edit_code: editCode
+          });
           break;
         }
         case 'addSeniorReport': {
+          if (!data.name || !String(data.name).trim()) { res.status(400).json({ok:false,error:'Missing name'}); return; }
+          if (!data.dept || !String(data.dept).trim()) { res.status(400).json({ok:false,error:'Missing dept'}); return; }
           const editCode = 'RPT-' + (data.dept||'MVD') + '-' + data.id.slice(-4).toUpperCase();
-          await fbSet('senior_reports', data.id, { ...data, status:'pending', ts, edit_code: editCode });
+          await fbSet('senior_reports', data.id, {
+            ...data,
+            name: String(data.name).trim().slice(0,100),
+            dept: String(data.dept).trim().slice(0,20),
+            status:'pending', ts, edit_code: editCode
+          });
           break;
         }
-        case 'addComplaint':
-          await fbSet('complaints', data.id, { ...data, status:'pending', timestamp:ts });
+        case 'addComplaint': {
+          // Серверная валидация — блокируем пустые/битые жалобы
+          const reqC = ['your_name','officer_name','description'];
+          for (const f of reqC) {
+            if (!data[f] || !String(data[f]).trim()) {
+              res.status(400).json({ok:false, error:'Missing field: '+f}); return;
+            }
+          }
+          // Минимальная длина описания
+          if (String(data.description).trim().length < 10) {
+            res.status(400).json({ok:false, error:'Description too short'}); return;
+          }
+          await fbSet('complaints', data.id, {
+            ...data,
+            your_name:    String(data.your_name).trim().slice(0,100),
+            officer_name: String(data.officer_name).trim().slice(0,100),
+            description:  String(data.description).trim().slice(0,2000),
+            status:'pending', timestamp:ts
+          });
           break;
-        case 'addEmployment':
+        }
+        case 'addEmployment': {
+          const reqE = ['full_name','account_id','desired_dept'];
+          for (const f of reqE) {
+            if (!data[f] || !String(data[f]).trim()) {
+              res.status(400).json({ok:false, error:'Missing field: '+f}); return;
+            }
+          }
           await fbSet('employment', data.id, { ...data, status:'pending', timestamp:ts });
           break;
+        }
 
         case 'updateStatus': {
           const MAP = { Reports:'reports', SeniorReports:'senior_reports',
@@ -6527,17 +6948,27 @@
   document.getElementById('complaint-form').addEventListener('submit', async function(e) {
     e.preventDefault();
     const form = e.target, btn = form.querySelector('.submit-btn');
+
+    // Клиентская валидация
+    const yn = (form.your_name.value||'').trim();
+    const on = (form.officer_name.value||'').trim();
+    const ds = (form.description.value||'').trim();
+    if (!yn) { sysAlert('Укажите ваше имя.', {type:'warn', title:'Поле обязательно'}); return; }
+    if (!on) { sysAlert('Укажите имя офицера.', {type:'warn', title:'Поле обязательно'}); return; }
+    if (ds.length < 10) { sysAlert('Описание слишком короткое (минимум 10 символов).', {type:'warn', title:'Поле обязательно'}); return; }
+    if (!checkRateLimit('complaint')) return;
+
     btn.textContent = 'Отправка...'; btn.disabled = true;
 
     const record = {
       id:              genId(),
       timestamp:       fmtDate(),
-      your_name:       form.your_name.value,
-      officer_name:    form.officer_name.value,
-      officer_account: form.officer_account.value,
-      description:     form.description.value,
-      bank_account:    form.bank_account.value,
-      evidence_url:    form.evidence_url.value,
+      your_name:       yn,
+      officer_name:    on,
+      officer_account: (form.officer_account.value||'').trim(),
+      description:     ds,
+      bank_account:    (form.bank_account.value||'').trim(),
+      evidence_url:    (form.evidence_url.value||'').trim(),
       status:          'pending',
       note:            '',
     };
@@ -6754,6 +7185,8 @@
      COMPLAINTS INBOX — РЕНДЕР
   ══════════════════════════════════════════════════════════════ */
   function renderComplaintsList() {
+    // Фильтруем мусорные/пустые записи
+    complaintsList = complaintsList.filter(r => r && (r.your_name||'').trim() && (r.officer_name||'').trim());
     const filter = document.getElementById('complaints-filter').value;
     const sorted = [...complaintsList].sort((a,b) => {
       const pd = statusPriority(a.status) - statusPriority(b.status);
@@ -6823,7 +7256,7 @@
           <label style="font-size:12px;font-weight:600;color:var(--navy);margin-bottom:4px;display:block;">Вердикт <span style="color:var(--red);">*</span> <span style="font-weight:400;color:var(--grey);">(укажите наказание или причину отказа)</span></label>
           <textarea class="decision-note" id="complaint-note-${esc(r.id)}" placeholder="Укажите наказание для офицера или причину отказа..." required>${esc(r.note)}</textarea>
           <button class="decision-save-btn" id="complaint-save-${esc(r.id)}" onclick="saveDecision('complaint','${esc(r.id)}')">Сохранить решение</button>
-          ${canDo('deleteComplaint') ? `<button onclick="deleteComplaintRecord('${esc(r.id)}')" style="margin-top:8px;background:var(--red-light);border:1.5px solid var(--red);color:var(--red);padding:7px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;display:block;width:100%;">✕ Удалить жалобу</button>` : ''}
+          ${(canDo('deleteComplaint') || !(r.your_name||'').trim()) ? `<button onclick="deleteComplaintRecord('${esc(r.id)}')" style="margin-top:8px;background:var(--red-light);border:1.5px solid var(--red);color:var(--red);padding:7px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;display:block;width:100%;">✕ Удалить жалобу</button>` : ''}
         </div>`;
         if (!hasBase) return `
         <div class="decision-locked">
@@ -7622,17 +8055,17 @@
   const DEPT_META = {
     SFPD: {
       title: 'San Fierro Police Department',
-      desc:  'Полицейское управление Сан-Фиерро. Отвечает за правопорядок, безопасность дорожного движения и раскрытие преступлений в городе Сан-Фиерро.',
+      desc:  'Порядок. Честь. Закон.',
       color: 'dept-topbar-SFPD',
     },
     LVMPD: {
       title: 'Las Venturas Metropolitan Police Department',
-      desc:  'Департамент полиции Лас-Вентурас. Обеспечивает правопорядок и безопасность на территории метрополии Лас-Вентурас.',
+      desc:  'Справедливость без исключений.',
       color: 'dept-topbar-LVMPD',
     },
     LSCSD: {
       title: "Los Santos County Sheriff's Department",
-      desc:  'Шерифский департамент округа Лос-Сантос. Охрана правопорядка в пригородных районах и округе.',
+      desc:  'Долг прежде всего.',
       color: 'dept-topbar-LSCSD',
     },
   };
@@ -7749,6 +8182,9 @@
     return new Date(b.ts || b.timestamp || 0) - new Date(a.ts || a.timestamp || 0);
   }
   function renderAllReports() {
+    // Фильтруем пустые/битые записи без имени или департамента
+    allReports    = allReports.filter(r    => r && (r.name||'').trim() && (r.dept||'').trim());
+    seniorReports = seniorReports.filter(r => r && (r.name||'').trim() && (r.dept||'').trim());
     const el = document.getElementById('all-reports-list');
     if (!el) return;
     // Сохраняем мобильное состояние видимости списка
@@ -7971,7 +8407,9 @@
   }
 
   async function deleteComplaintRecord(id) {
-    if (!canDo('deleteComplaint')) { sysAlert('Нет прав на удаление жалобы.', {type:'error', title:'Доступ запрещён', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
+    const _cRec = complaintsList.find(x => x.id === id);
+    const _isEmpty = !_cRec || (!((_cRec.your_name||'').trim()) && !((_cRec.officer_name||'').trim()));
+    if (!_isEmpty && !canDo('deleteComplaint')) { sysAlert('Нет прав на удаление жалобы.', {type:'error', title:'Доступ запрещён', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
     if (!await sysConfirm('Удалить жалобу?<br><span style="font-size:12px;color:#888">Необратимо.</span>', {title:'Удаление жалобы', okText:'Удалить'})) return;
     complaintsList = complaintsList.filter(x => x.id !== id);
     try { await sheetsPost('deleteRecord', { sheet: 'Complaints', id, ...reviewerInfo() }); } catch(_) {}
@@ -8211,6 +8649,8 @@
         work: document.getElementById('wr-work').value.trim(),
         ts: new Date().toISOString(), type: 'weekly',
       };
+      if (!record.name) { sysAlert('Укажите имя.', {type:'warn', title:'Поле обязательно'}); return; }
+      if (!record.work || record.work.length < 5) { sysAlert('Заполните проделанную работу.', {type:'warn', title:'Поле обязательно'}); return; }
       seniorReports.unshift(record);
       renderSeniorList();
       try { await sheetsPost('addSeniorReport', record); } catch(_) {}
@@ -8229,6 +8669,17 @@
     const name = document.getElementById('rpt-name').value.trim();
     const rank = document.getElementById('rpt-rank').value.trim();
     const account = document.getElementById('rpt-account').value.trim();
+
+    // Клиентская валидация
+    if (!name) { sysAlert('Укажите имя и фамилию.', {type:'warn', title:'Поле обязательно'}); return; }
+    if (!rank) { sysAlert('Укажите текущее звание.', {type:'warn', title:'Поле обязательно'}); return; }
+    if (!account) { sysAlert('Укажите номер аккаунта.', {type:'warn', title:'Поле обязательно'}); return; }
+    if (!currentDept) { sysAlert('Откройте раздел департамента перед подачей отчёта.', {type:'warn', title:'Департамент не определён'}); return; }
+    if (currentRType === 'weekly') {
+      const work = (document.getElementById('rpt-sr-work') || {}).value || '';
+      if (!work.trim() || work.trim().length < 10) { sysAlert('Заполните поле «Проделанная работа».', {type:'warn', title:'Поле обязательно'}); return; }
+    }
+    if (!checkRateLimit('report_' + (currentDept || 'unknown'))) return;
 
     // Показываем кнопку "Отправка..."
     const submitBtn = this.querySelector('button[type="submit"]') || this.querySelector('.form-submit-btn');
@@ -14301,132 +14752,152 @@
       eyebrow: 'Справочные материалы',
       body: `
         <div class="article-highlight">
-          Обязательно к ознакомлению для всех офицеров звания <strong>Подполковник [8]</strong> и выше. Старший состав несёт повышенную ответственность за состояние департамента и обязан соблюдать все нормы, описанные в данном руководстве.
+          Все правила и рекомендации обязательны к соблюдению. В случае нарушений — наказание согласно уставу.
         </div>
 
-        <h2>Состав и звания</h2>
-        <p>Старший состав департамента включает три ранга:</p>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:16px 0;">
-          <div style="background:var(--cream);border:1.5px solid var(--grey-light);border-radius:12px;padding:16px 18px;text-align:center;">
-            <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;">Ранг 8</div>
-            <div style="font-size:16px;font-weight:700;color:var(--navy);">Подполковник</div>
-          </div>
-          <div style="background:var(--accent-light);border:1.5px solid #D4B870;border-radius:12px;padding:16px 18px;text-align:center;">
-            <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#8A6B20;margin-bottom:6px;">Ранг 9</div>
-            <div style="font-size:16px;font-weight:700;color:var(--navy);">Полковник</div>
-          </div>
-          <div style="background:var(--navy);border-radius:12px;padding:16px 18px;text-align:center;">
-            <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:6px;">Ранг 10</div>
-            <div style="font-size:16px;font-weight:700;color:var(--accent);">Генерал</div>
-          </div>
-        </div>
+        <p><strong>Старший состав</strong> — сотрудник в звании <strong>Подполковник [8]</strong> и выше. Прямые обязанности: принятие граждан на работу, повышения, понижения, увольнения, выдача наказаний, проверка отчётов, проведение блок-постов и спец. операций, присутствие на наборах и проверках от Министра.</p>
 
-        <h2>Обязанности старшего состава</h2>
-        <div style="display:flex;flex-direction:column;gap:8px;margin:16px 0;">
-          <div style="display:flex;align-items:flex-start;gap:12px;background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:13px 16px;">
-            <span style="width:24px;height:24px;background:var(--navy);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
-            <span style="font-size:13px;color:var(--text-soft);line-height:1.6;">Вести актуальные личные дела сотрудников департамента, своевременно вносить изменения.</span>
-          </div>
-          <div style="display:flex;align-items:flex-start;gap:12px;background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:13px 16px;">
-            <span style="width:24px;height:24px;background:var(--navy);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
-            <span style="font-size:13px;color:var(--text-soft);line-height:1.6;">Проверять заявления и жалобы от сотрудников — наравне с Генералом и Министром.</span>
-          </div>
-          <div style="display:flex;align-items:flex-start;gap:12px;background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:13px 16px;">
-            <span style="width:24px;height:24px;background:var(--navy);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
-            <span style="font-size:13px;color:var(--text-soft);line-height:1.6;">Проводить тренировки, спецоперации, блок-посты и другие активности с личным составом.</span>
-          </div>
-          <div style="display:flex;align-items:flex-start;gap:12px;background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:13px 16px;">
-            <span style="width:24px;height:24px;background:var(--navy);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
-            <span style="font-size:13px;color:var(--text-soft);line-height:1.6;">Отвечать в рацию в течение <strong>2 минут</strong> при вызове старшего по званию (если не AFK и не вне департамента).</span>
-          </div>
-          <div style="display:flex;align-items:flex-start;gap:12px;background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:13px 16px;">
-            <span style="width:24px;height:24px;background:var(--navy);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
-            <span style="font-size:13px;color:var(--text-soft);line-height:1.6;">Соблюдать систему наказаний, описанную в Уставе УМВД, и применять её к подчинённым.</span>
-          </div>
-          <div style="display:flex;align-items:flex-start;gap:12px;background:var(--white);border:1.5px solid var(--grey-light);border-radius:10px;padding:13px 16px;">
-            <span style="width:24px;height:24px;background:var(--navy);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
-            <span style="font-size:13px;color:var(--text-soft);line-height:1.6;">Подавать еженедельный отчёт на портале в разделе «Отчётность → Подать отчёт → Ст. состав».</span>
-          </div>
-        </div>
+        <p>Разрешённые тэги старшего состава: <strong>МВД, IAG, MT, РС</strong>. В должности начальника отдела — только тэг начальника отдела.<br>
+        Тэги лидера: <strong>CHIEF, ШЕФ, Sheriff</strong>. Генерал не может использовать Com. SWAT и подобные доп. тэги.</p>
 
-        <h2>Еженедельный отчёт</h2>
-        <p>Каждый сотрудник старшего состава обязан подавать еженедельный отчёт о проделанной работе. Минимальное количество баллов:</p>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;">
-          <div style="background:var(--white);border:1.5px solid var(--grey-light);border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:14px;">
-            <div style="width:42px;height:42px;background:var(--navy);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:var(--accent);font-family:'Playfair Display',serif;font-size:17px;font-weight:700;">8</span></div>
-            <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;font-weight:700;color:var(--grey);margin-bottom:2px;">Ранг 8</div><div style="font-size:20px;font-weight:700;color:var(--navy);">15 <span style="font-size:12px;font-weight:500;color:var(--text-soft);">баллов/нед.</span></div></div>
-          </div>
-          <div style="background:var(--white);border:1.5px solid var(--accent-light);border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:14px;">
-            <div style="width:42px;height:42px;background:var(--accent);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:var(--navy);font-family:'Playfair Display',serif;font-size:17px;font-weight:700;">9</span></div>
-            <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;font-weight:700;color:var(--grey);margin-bottom:2px;">Ранг 9</div><div style="font-size:20px;font-weight:700;color:var(--navy);">20 <span style="font-size:12px;font-weight:500;color:var(--text-soft);">баллов/нед.</span></div></div>
-          </div>
-        </div>
-        <div style="display:flex;align-items:flex-start;gap:12px;background:var(--red-light);border:1.5px solid #F5C0BC;border-radius:10px;padding:13px 16px;margin-bottom:8px;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          <span style="font-size:13px;color:#7A2020;line-height:1.55;">Отсутствие отчёта или невыполнение минимума баллов — <strong>выговор</strong>. Норма устанавливается Генералом. Таблицу баллов смотри во вкладке «Отчётность → Таблица баллов».</span>
-        </div>
+        <h2>1. Принятие игрока в департамент</h2>
+        <p>Игрок может трудоустроиться тремя способами: прийти на набор или день открытых дверей; подать резюме на форуме; подать резюме на месте (RP перед сотрудником).</p>
 
-        <h2>Запреты для старшего состава</h2>
-        <div style="background:var(--red-light);border:1.5px solid #F0BABA;border-radius:10px;padding:16px 20px;margin:16px 0;">
-          <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--red);margin-bottom:12px;">Запрещено</div>
-          <div style="display:flex;flex-direction:column;gap:9px;">
-            <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#7A2020;">
-              <span style="font-weight:700;flex-shrink:0;margin-top:1px;">✗</span>
-              <span>Быть участником спец. отряда (SWAT, MD и др.).</span>
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#7A2020;">
-              <span style="font-weight:700;flex-shrink:0;margin-top:1px;">✗</span>
-              <span>Обсуждать IC правомерные приказы старших по званию, а также вопросы о повышении в открытом чате.</span>
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#7A2020;">
-              <span style="font-weight:700;flex-shrink:0;margin-top:1px;">✗</span>
-              <span>Обманывать Генерала, Министра или представителей администрации.</span>
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#7A2020;">
-              <span style="font-weight:700;flex-shrink:0;margin-top:1px;">✗</span>
-              <span>Выдавать пропуск без причины или без согласования со старшим составом. В докладе обязательно указать причину.</span>
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#7A2020;">
-              <span style="font-weight:700;flex-shrink:0;margin-top:1px;">✗</span>
-              <span>Затягивать с редактированием личного дела или вносить неверную информацию — применяются дисциплинарные взыскания.</span>
+        <div style="display:flex;flex-direction:column;gap:8px;margin:14px 0;">
+          <div style="display:flex;align-items:flex-start;gap:10px;background:var(--cream);border-radius:9px;padding:12px 16px;">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:6px;"></span>
+            <span style="font-size:13px;color:var(--text-soft);line-height:1.6;">Проверить игрока — не состоит ли он в <strong>чёрном списке МВД</strong> или вашего департамента. Выйти из ЧС МВД невозможно; выход из ЧС департамента — с согласия Генерала.</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;background:var(--cream);border-radius:9px;padding:12px 16px;">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:6px;"></span>
+            <div style="font-size:13px;color:var(--text-soft);line-height:1.6;">Проверить паспорт. Минимальные требования: уровень <strong>4+</strong>, законопослушность <strong>30+</strong>, наличие телефона и сим-карты, не трудоустроен в другую фракцию (работа из мэрии не считается).</div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;background:var(--cream);border-radius:9px;padding:12px 16px;">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:6px;"></span>
+            <div style="font-size:13px;color:var(--text-soft);line-height:1.6;">Пригласить: <code style="background:var(--white);padding:2px 7px;border-radius:4px;font-size:12px;">/и [id] → Пригласить во фракцию</code> или <code style="background:var(--white);padding:2px 7px;border-radius:4px;font-size:12px;">/пригласить [id]</code>. Если показывает «не основной аккаунт» — нажать Далее.</div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;background:var(--cream);border-radius:9px;padding:12px 16px;">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:6px;"></span>
+            <div style="font-size:13px;color:var(--text-soft);line-height:1.6;">После принятия сделать доклад:<br>
+              <code style="background:var(--white);padding:2px 7px;border-radius:4px;font-size:12px;display:inline-block;margin-top:4px;">![IAG] Ник принят в департамент</code><br>
+              <code style="background:var(--white);padding:2px 7px;border-radius:4px;font-size:12px;display:inline-block;margin-top:3px;">![IAG] Ник прошел опрос и принят в ряды PA</code>
             </div>
           </div>
         </div>
 
-        <h2>Права старшего состава</h2>
-        <div style="display:flex;flex-direction:column;gap:8px;margin:16px 0;">
-          <div style="display:flex;align-items:flex-start;gap:10px;background:var(--green-light);border:1.5px solid #A8D8BC;border-radius:9px;padding:11px 14px;font-size:13px;color:var(--text-soft);">
-            <span style="color:var(--green);font-weight:700;flex-shrink:0;margin-top:1px;">✓</span>
-            <span>Переодеваться в форму PD для патрулирования и в форму спец. отряда для спецопераций.</span>
-          </div>
-          <div style="display:flex;align-items:flex-start;gap:10px;background:var(--green-light);border:1.5px solid #A8D8BC;border-radius:9px;padding:11px 14px;font-size:13px;color:var(--text-soft);">
-            <span style="color:var(--green);font-weight:700;flex-shrink:0;margin-top:1px;">✓</span>
-            <span>Изменять вид наказания в зависимости от ситуации (совместно с Генералом и Министром).</span>
-          </div>
-          <div style="display:flex;align-items:flex-start;gap:10px;background:var(--green-light);border:1.5px solid #A8D8BC;border-radius:9px;padding:11px 14px;font-size:13px;color:var(--text-soft);">
-            <span style="color:var(--green);font-weight:700;flex-shrink:0;margin-top:1px;">✓</span>
-            <span>Проводить собеседования и принимать новых сотрудников во фракцию.</span>
-          </div>
-          <div style="display:flex;align-items:flex-start;gap:10px;background:var(--green-light);border:1.5px solid #A8D8BC;border-radius:9px;padding:11px 14px;font-size:13px;color:var(--text-soft);">
-            <span style="color:var(--green);font-weight:700;flex-shrink:0;margin-top:1px;">✓</span>
-            <span>Редактировать личные дела сотрудников своего департамента на портале (лимит 5 дел в сутки для рангов 8–9).</span>
+        <div class="note-accordion" style="border:1.5px solid var(--grey-light);border-radius:10px;overflow:hidden;margin:12px 0 24px;">
+          <div class="note-acc-item" id="acc-sr-resume" style="border-bottom:none;">
+            <button class="note-acc-trigger" onclick="toggleAcc('acc-sr-resume')" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--cream);border:none;cursor:pointer;font-weight:600;font-size:13px;color:var(--navy);">
+              Пример подачи резюме на месте <span class="note-acc-arrow">▼</span>
+            </button>
+            <div class="note-acc-body">
+              <div style="padding:14px 0;">
+                <p style="font-family:monospace;background:var(--cream);padding:12px 16px;border-radius:8px;font-size:12.5px;line-height:2;margin:0;">
+                  Здравствуйте. Вы хотели заполнить резюме на месте?<br>
+                  <em style="color:var(--grey);">*после ответа*</em><br>
+                  Хорошо. Заполните бланк, после чего продолжим.<br>
+                  /me взял со стопки чистый бланк.<br>
+                  /me взял ручку с карандашницы.<br>
+                  /do Бланк и ручка в руках.<br>
+                  /me передал бланк и ручку "id.<br>
+                  <em style="color:var(--grey);">*Пишите /me взял бланк и ручку у "id. /do ... /me заполнил графы...*</em><br>
+                  /me взял бланк и ручку у "id.<br>
+                  /do Бланк и ручка в руках.<br>
+                  /me ознакомился с заполненным бланком и отложил его в сторону.<br>
+                  /todo У вас отличная биография, продолжим.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
-        <h2>Повышение в старшем составе</h2>
+        <h2>2. Повышение сотрудников</h2>
+        <p>Повысить: <code style="background:var(--cream);padding:2px 7px;border-radius:4px;font-size:12px;">/и [id] → Повысить</code> или <code style="background:var(--cream);padding:2px 7px;border-radius:4px;font-size:12px;">/ранг [id] [номер ранга]</code></p>
+        <p>Если повышали 1-го числа, а КД — 2 дня, повысить можно только 3-го в 00:00.</p>
+
+        <div style="display:flex;flex-direction:column;gap:8px;margin:14px 0 24px;">
+          <div style="display:flex;align-items:flex-start;gap:10px;background:var(--cream);border-radius:9px;padding:12px 16px;">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:6px;"></span>
+            <span style="font-size:13px;color:var(--text-soft);line-height:1.6;"><strong>Рядовой (ЗР в игре или на форуме)</strong> — повышение на 2-й ранг без отчёта. Доклад: <code style="background:var(--white);padding:1px 6px;border-radius:3px;font-size:12px;">![IAG] Ник сдал ЗР и был повышен в звании</code></span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;background:var(--cream);border-radius:9px;padding:12px 16px;">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:6px;"></span>
+            <span style="font-size:13px;color:var(--text-soft);line-height:1.6;"><strong>Сержант → Майор</strong> — одобренный отчёт + КД. Доклад: <code style="background:var(--white);padding:1px 6px;border-radius:3px;font-size:12px;">![IAG] Ник повышен в звании до ... за отчёт</code></span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;background:var(--cream);border-radius:9px;padding:12px 16px;">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:6px;"></span>
+            <span style="font-size:13px;color:var(--text-soft);line-height:1.6;"><strong>Старший состав</strong> — отчёт + 1 день в звании + нет активных наказаний. Полковник повышает Майора только по просьбе Генерала. Доклад: <code style="background:var(--white);padding:1px 6px;border-radius:3px;font-size:12px;">![IAG] Ник повышен в звании до ... за заслуги</code></span>
+          </div>
+        </div>
+
+        <h2>3. Перевод сотрудников</h2>
+        <h3>Перевод между департаментами МВД</h3>
+        <p>Экзамены не нужны — только проверка документов. Не должно быть незакрытых жалоб или действующих наказаний. После принятия сотрудник повышается до переводимого ранга.</p>
+        <p>Доклад: <code style="background:var(--cream);padding:2px 7px;border-radius:4px;font-size:12px;">![IAG] Ник переведен на должность ... из LS/SF/LVPD</code></p>
+
+        <h3>Перевод из Мэрии / Армии в МВД</h3>
+        <p>Перевод осуществляется <strong>с потерей двух рангов</strong>. После принятия: ЗР → Сержант [2] → УП → ЭСС → заявленный ранг.</p>
+        <p>Исключение: если в трудовой книге есть запись о работе в МВД в звании Лейтенант [4] за последние 2 месяца — ЗР, УП и ЭСС не нужны.</p>
+
+        <h2>4. Понижение сотрудников</h2>
+        <p>Понизить: <code style="background:var(--cream);padding:2px 7px;border-radius:4px;font-size:12px;">/и [id] → Понизить</code> или <code style="background:var(--cream);padding:2px 7px;border-radius:4px;font-size:12px;">/ранг [id] [номер ранга]</code></p>
+        <p>Основания: нарушение устава · частые/грубые нарушения · ошибочное повышение · 3-й действующий выговор.</p>
+        <p>Доклад: <code style="background:var(--cream);padding:2px 7px;border-radius:4px;font-size:12px;">![IAG] Ник понижен в звании. Причина: ...</code></p>
+
+        <h2>5. Увольнение сотрудников</h2>
+        <p>Уволить: <code style="background:var(--cream);padding:2px 7px;border-radius:4px;font-size:12px;">/и [id] → Выгнать</code> или <code style="background:var(--cream);padding:2px 7px;border-radius:4px;font-size:12px;">/уволить [id] [причина]</code></p>
+        <p>Основания: нарушение устава · частые/грубые нарушения · ошибочное принятие · 4-й действующий выговор.</p>
+        <div style="background:var(--red-light);border:1.5px solid #F0BABA;border-radius:9px;padding:11px 14px;font-size:13px;color:#A0281E;margin:10px 0;">
+          Сначала сделать доклад — только после доклада увольнять.<br>
+          <code style="background:rgba(0,0,0,0.06);padding:2px 7px;border-radius:4px;display:inline-block;margin-top:4px;">![IAG] Ник уволен из департамента. Причина: ...</code>
+        </div>
+
+        <h2>6. Выдача наказаний</h2>
+        <p>После выдачи наказания скриншоты доказательств и доклад загружаются в тему «Дисциплинарные взыскания» в разделе МВД. Затем Министр или Генерал одобряет/отказывает и вносит в таблицу.</p>
+        <p>Доклад: <code style="background:var(--cream);padding:2px 7px;border-radius:4px;font-size:12px;">![IAG] Ник получает наряд/выговор. Причина: ...</code></p>
+
+        <h2>7. Проверка отчётов</h2>
+
+        <h3>Патруль</h3>
+        <div style="display:flex;flex-direction:column;gap:6px;margin:10px 0 16px;">
+          <div style="display:flex;align-items:baseline;gap:8px;font-size:13px;color:var(--text-soft);"><span style="width:4px;height:4px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:7px;display:inline-block;"></span><span>Не может быть нарезками, минимум <strong>20 минут</strong>.</span></div>
+          <div style="display:flex;align-items:baseline;gap:8px;font-size:13px;color:var(--text-soft);"><span style="width:4px;height:4px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:7px;display:inline-block;"></span><span>Обязательны доклады: начало, промежуточные, окончание, заправка (если топливо &lt; 60).</span></div>
+          <div style="display:flex;align-items:baseline;gap:8px;font-size:13px;color:var(--text-soft);"><span style="width:4px;height:4px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:7px;display:inline-block;"></span><span>Интервал промежуточных докладов — не более <strong>10 минут</strong>. Задержка — от 1 до 3 минут.</span></div>
+          <div style="display:flex;align-items:baseline;gap:8px;font-size:13px;color:var(--text-soft);"><span style="width:4px;height:4px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:7px;display:inline-block;"></span><span>Доклад заправки может отсутствовать, если транспорт заправлен до доклада об окончании патруля. Иначе — наряд: заправка двух единиц транспорта с докладами.</span></div>
+        </div>
+
+        <h3>Экзамены</h3>
+        <p>Экзамены: <strong>ЗР</strong> (Зачёт Рядового), <strong>УП</strong> (Учебный патруль), <strong>ЭСС</strong> (Экзамен среднего состава). ЗР и ЭСС можно сдать электронно. В отчёт входят и проваленные экзамены, кроме ЗР. Обязательна ссылка на скриншоты докладов «Начал принимать» и «Закончил, сдал».</p>
+
+        <h3>Тренировки</h3>
+        <p>Все доклады обязательны, кроме построений. Для «Дуэлей» — только доклады начала и окончания. «Учебная стрельба» — не менее <strong>2 минут</strong>.</p>
+
+        <h3>Коды</h3>
         <table style="width:100%;">
-          <thead><tr><th style="width:auto;white-space:nowrap;">Переход</th><th style="width:60%;">Требования</th></tr></thead>
+          <thead><tr><th style="width:1%;white-space:nowrap;">Код</th><th>Доклад и системная строка</th></tr></thead>
           <tbody>
-            <tr><td style="white-space:nowrap;"><strong>Майор [7] → Подполковник [8]</strong></td><td>1 сутки с момента последнего повышения · Еженедельный отчёт старшего состава на портале штата</td></tr>
-            <tr><td style="white-space:nowrap;"><strong>Подполковник [8] → Полковник [9]</strong></td><td>1 сутки с момента последнего повышения · Еженедельный отчёт старшего состава на портале штата</td></tr>
+            <tr><td><strong>Код 6</strong></td><td>Преступник посажен в тюрьму. В чате: «Звание Ник посадить в тюрьму Ник» или «Игрок посажен в тюрьму».</td></tr>
+            <tr><td><strong>Код 7</strong></td><td>Преступник ликвидирован. В чате: «Звание Ник ликвидировать преступника Ник».</td></tr>
+            <tr><td><strong>Код 8</strong></td><td>Нарушитель оплатил штраф. В чате: «Ник оплатил штраф на сумму $сумма».</td></tr>
+            <tr><td><strong>Код 9</strong></td><td>В чате — гражданин с предупреждением и отыгровка выписки.</td></tr>
           </tbody>
         </table>
-        <div style="display:flex;align-items:flex-start;gap:12px;background:var(--accent-light);border:1.5px solid #D4B870;border-radius:10px;padding:13px 16px;margin-top:12px;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8A6B20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:2px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          <span style="font-size:13px;color:#8A6B20;line-height:1.6;">Отчёт подаётся через портал: <strong>Вкладка «Отчётность» → «Подать отчёт» → тип «Ст. состав»</strong>. Без поданного отчёта повышение не рассматривается.</span>
+
+        <h3>RP задания</h3>
+        <div style="display:flex;flex-direction:column;gap:6px;margin:10px 0 16px;">
+          <div style="display:flex;align-items:baseline;gap:8px;font-size:13px;color:var(--text-soft);"><span style="width:4px;height:4px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:7px;display:inline-block;"></span><span>В ответе на отчёт обязательно писать какое задание выполнено.</span></div>
+          <div style="display:flex;align-items:baseline;gap:8px;font-size:13px;color:var(--text-soft);"><span style="width:4px;height:4px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:7px;display:inline-block;"></span><span>RP задания должны соответствовать отделу. Сотрудники спец. отряда не выписывают штрафы, и наоборот.</span></div>
+          <div style="display:flex;align-items:baseline;gap:8px;font-size:13px;color:var(--text-soft);"><span style="width:4px;height:4px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:7px;display:inline-block;"></span><span>Задания не могут повторяться у одного сотрудника.</span></div>
         </div>
+
+        <h3>Опрос на трудоустройство</h3>
+        <p>В отчёте обязательны доклады: <code style="background:var(--cream);padding:2px 7px;border-radius:4px;font-size:12px;">Начал опрос Ник по ...</code> и <code style="background:var(--cream);padding:2px 7px;border-radius:4px;font-size:12px;">Ник прошел/не прошел опрос, причина ...</code></p>
+
+        <h3>Спец. операции и блок-посты</h3>
+        <p>Все доклады для отчёта обязательны, кроме построений и выездов из департамента.</p>
       `
     },
+
     allpd: {
       title: '[МВД] AllPD [биндер]',
       meta: 'Автор: meow zanetti · 29 марта 2022',
@@ -15140,30 +15611,18 @@
   }
 
   function doLogout() {
+    // Используем Firebase Auth logout
+    if (typeof firebase !== 'undefined' && firebase.auth) {
+      firebase.auth().signOut().catch(() => {});
+    }
     _auth = null;
     officerAuthed = false;
     sessionStorage.removeItem('_mvd_slot');
     updateAuthBadge();
   }
 
-  /* ── Восстановление сессии при перезагрузке ─────────────────── */
-  (async function restoreSession() {
-    const slot = sessionStorage.getItem('_mvd_slot');
-    if (!slot) return;
-    try {
-      const rows = await fbFind('passwords', 'slot', slot);
-      const match = rows.find(r => r.active !== false && r.active !== 'false');
-      if (match) {
-        _auth = { rank: parseInt(match.rank), dept: match.dept, name: match.label, slot: match.slot };
-        officerAuthed = true;
-        updateAuthBadge();
-        _toastsShown = false;
-        setTimeout(() => loadNotifications(), 300);
-      } else {
-        sessionStorage.removeItem('_mvd_slot');
-      }
-    } catch(_) {}
-  })();
+  /* ── Восстановление сессии — теперь через Firebase Auth onAuthStateChanged ── */
+  // (см. auth-system.js внизу страницы)
 
   /* ══════════════════════════════════════════════════════════════
      ВРЕМЯ ОЖИДАНИЯ (для уведомлений)
@@ -15296,7 +15755,7 @@
               </tr></thead>
               <tbody id="admin-table-body"><tr><td colspan="7" style="text-align:center;color:var(--grey);padding:20px;">Загрузка...</td></tr></tbody>
             </table>
-            <div class="admin-add-form">
+              <div class="admin-add-form">
               <div class="admin-add-form-title">+ Добавить слот</div>
               <div class="admin-add-row">
                 <input type="text" id="admin-new-label" placeholder="Имя / Метка"/>
@@ -15313,6 +15772,30 @@
               <div style="margin-top:8px;font-size:12px;color:var(--grey);">
                 <a href="#" onclick="event.preventDefault();document.getElementById('admin-new-code').value=genAdminCode();"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg> Сгенерировать код</a>
               </div>
+            </div>
+
+            <!-- Сброс лимитов -->
+            <div class="admin-add-form" style="margin-top:16px;">
+              <div class="admin-add-form-title">Сброс счётчика отправок</div>
+              <div style="font-size:12px;color:var(--grey);margin-bottom:12px;">Жалобы: 7 в час. Отчёты: 10 в час на каждый ПД отдельно.</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+                <button class="admin-save-btn" onclick="resetRateLimit('complaint')" style="background:var(--red);flex:1;">Сбросить лимит жалоб</button>
+              </div>
+              <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;">Отчёты по департаментам</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button class="admin-save-btn" onclick="resetRateLimit('report_LVMPD')" style="flex:1;font-size:11px;">LVMPD</button>
+                <button class="admin-save-btn" onclick="resetRateLimit('report_SFPD')" style="flex:1;font-size:11px;">SFPD</button>
+                <button class="admin-save-btn" onclick="resetRateLimit('report_LSCSD')" style="flex:1;font-size:11px;">LSCSD</button>
+                <button class="admin-save-btn" onclick="resetRateLimit('report')" style="flex:1;font-size:11px;">Все ПД</button>
+              </div>
+              <button onclick="resetRateLimit(null)" style="margin-top:8px;width:100%;padding:8px;background:var(--cream);border:1.5px solid var(--grey-light);border-radius:8px;font-size:12px;font-weight:600;color:var(--navy);cursor:pointer;font-family:inherit;">Сбросить все лимиты</button>
+            </div>
+            <!-- Управление пользователями -->
+            <div class="admin-add-form" style="margin-top:16px;">
+              <div class="admin-add-form-title">Пользователи портала</div>
+              <div style="font-size:12px;color:var(--grey);margin-bottom:12px;">Назначь ранг и департамент зарегистрированным сотрудникам.</div>
+              <button class="admin-save-btn" onclick="adminLoadUsers()" style="margin-bottom:12px;">Загрузить список</button>
+              <div id="admin-users-list" style="display:flex;flex-direction:column;gap:8px;"></div>
             </div>
           </div>
         </div>
@@ -15800,6 +16283,775 @@ document.addEventListener('DOMContentLoaded', () => {
     }).observe(articleBody, { childList: true, subtree: true });
   }
 });
+</script>
+
+
+
+<!-- ══ GUIDE MODAL + BUTTON ══ -->
+<style>
+  /* Кнопка вызова гайда */
+  #guide-fab {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    width: 34px;
+    height: 34px;
+    background: var(--white);
+    border: 1.5px solid var(--grey-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 8900;
+    box-shadow: 0 2px 10px rgba(26,35,64,0.08);
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+    color: var(--grey);
+  }
+  #guide-fab:hover {
+    border-color: var(--navy);
+    color: var(--navy);
+    transform: scale(1.1);
+    box-shadow: 0 4px 16px rgba(26,35,64,0.14);
+  }
+
+  /* Снекбар-уведомление */
+  #guide-snack {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(0);
+    background: var(--navy);
+    color: white;
+    padding: 0;
+    border-radius: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 6px 28px rgba(26,35,64,0.28);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    z-index: 999990;
+    min-width: 280px;
+    max-width: 360px;
+    overflow: hidden;
+    animation: snackIn 0.28s cubic-bezier(.4,0,.2,1);
+    white-space: nowrap;
+  }
+  #guide-snack.hiding {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  #guide-snack-inner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 16px;
+  }
+  #guide-snack-text { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #guide-snack-btn {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: white;
+    border-radius: 7px;
+    padding: 4px 11px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+    transition: background 0.15s;
+    flex-shrink: 0;
+  }
+  #guide-snack-btn:hover { background: rgba(255,255,255,0.25); }
+  #guide-snack-close {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0 2px;
+    font-family: inherit;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+  #guide-snack-close:hover { color: white; }
+  /* Прогресс-бар */
+  #guide-snack-progress {
+    height: 3px;
+    background: rgba(255,255,255,0.15);
+  }
+  #guide-snack-bar {
+    height: 100%;
+    background: var(--accent);
+    width: 100%;
+    transform-origin: left;
+  }
+
+  /* Модальное окно гайда */
+  #guide-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10,15,30,0.55);
+    z-index: 999995;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.22s;
+  }
+  #guide-modal-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+  #guide-modal {
+    background: var(--white);
+    border-radius: 18px;
+    width: 100%;
+    max-width: 560px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 24px 80px rgba(10,15,30,0.3);
+    transform: translateY(16px) scale(0.97);
+    transition: transform 0.25s cubic-bezier(.4,0,.2,1);
+  }
+  #guide-modal-overlay.open #guide-modal {
+    transform: translateY(0) scale(1);
+  }
+  #guide-modal-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 22px 16px;
+    border-bottom: 1px solid var(--grey-light);
+    flex-shrink: 0;
+  }
+  #guide-modal-icon-wrap {
+    width: 38px;
+    height: 38px;
+    background: var(--navy);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--accent);
+  }
+  #guide-modal-header-text { flex: 1; }
+  #guide-modal-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    font-family: 'Playfair Display', serif;
+  }
+  #guide-modal-sub {
+    font-size: 12px;
+    color: var(--grey);
+    margin-top: 1px;
+  }
+  #guide-modal-close {
+    width: 30px;
+    height: 30px;
+    border: 1.5px solid var(--grey-light);
+    background: var(--cream);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--grey);
+    transition: all 0.15s;
+    font-family: inherit;
+    flex-shrink: 0;
+  }
+  #guide-modal-close:hover { border-color: var(--navy); color: var(--navy); background: var(--white); }
+  #guide-modal-body {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 20px 22px 24px;
+    flex: 1;
+  }
+  .gm-section { margin-bottom: 22px; }
+  .gm-section:last-child { margin-bottom: 0; }
+  .gm-section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .gm-section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--grey-light);
+  }
+  .gm-card {
+    background: var(--cream);
+    border: 1.5px solid var(--grey-light);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .gm-card:last-child { margin-bottom: 0; }
+  .gm-card-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--white);
+    border-bottom: 1px solid var(--grey-light);
+  }
+  .gm-card-icon {
+    width: 28px;
+    height: 28px;
+    background: var(--navy);
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--accent);
+  }
+  .gm-card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .gm-card-body {
+    padding: 10px 14px;
+  }
+  .gm-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--grey-light);
+    font-size: 12.5px;
+    color: var(--text-soft);
+    line-height: 1.5;
+  }
+  .gm-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .gm-row:first-child { padding-top: 0; }
+  .gm-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    margin-top: 6px;
+  }
+  .gm-row strong { color: var(--navy); }
+  .gm-tag {
+    display: inline-block;
+    background: var(--navy);
+    color: var(--accent);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 7px;
+    border-radius: 4px;
+    letter-spacing: .05em;
+    vertical-align: middle;
+    margin: 0 1px;
+  }
+  @media (max-width: 600px) {
+    #guide-modal { max-height: 92vh; border-radius: 14px; }
+    #guide-modal-header { padding: 14px 16px 12px; }
+    #guide-modal-body { padding: 14px 16px 20px; }
+    #guide-snack { min-width: calc(100vw - 32px); max-width: calc(100vw - 32px); }
+    #guide-fab { bottom: 16px; left: 16px; }
+  }
+</style>
+
+<!-- FAB кнопка -->
+<button id="guide-fab" onclick="openGuideModal()" title="Гид по порталу">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+</button>
+
+<!-- Модальное окно гайда -->
+<div id="guide-modal-overlay" onclick="if(event.target===this)closeGuideModal()">
+  <div id="guide-modal">
+    <div id="guide-modal-header">
+      <div id="guide-modal-icon-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div id="guide-modal-header-text">
+        <div id="guide-modal-title">Гид по порталу МВД</div>
+        <div id="guide-modal-sub">Что где находится и как всем пользоваться</div>
+      </div>
+      <button id="guide-modal-close" onclick="closeGuideModal()">✕</button>
+    </div>
+    <div id="guide-modal-body">
+
+      <!-- Главная страница -->
+      <div class="gm-section">
+        <div class="gm-section-label">Главная страница</div>
+        <div class="gm-card">
+          <div class="gm-card-head">
+            <div class="gm-card-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4a2 2 0 0 1 2-2h4l2 3h10a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg></div>
+            <div class="gm-card-title">Быстрые действия</div>
+          </div>
+          <div class="gm-card-body">
+            <div class="gm-row"><span class="gm-dot"></span><span><strong>Справочник МВД</strong> — уставы, инструкции, руководства для всего состава.</span></div>
+            <div class="gm-row"><span class="gm-dot"></span><span><strong>Трудоустройство</strong> — подать резюме на вступление, перевод или восстановление в департаменте.</span></div>
+            <div class="gm-row"><span class="gm-dot"></span><span><strong>Подать жалобу</strong> — жалоба на сотрудника. Обязательны доказательства. Рассматривается в течение 48 часов.</span></div>
+            <div class="gm-row"><span class="gm-dot"></span><span><strong>Личные дела</strong> — архив сотрудников. Создание и редактирование доступно с ранга 8.</span></div>
+            <div class="gm-row"><span class="gm-dot"></span><span><strong>Чёрный список</strong> — список лиц, которым запрещена служба в МВД.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Раздел департамента -->
+      <div class="gm-section">
+        <div class="gm-section-label">Раздел департамента</div>
+        <div class="gm-card">
+          <div class="gm-card-head">
+            <div class="gm-card-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-6 9 6v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
+            <div class="gm-card-title">Вкладки SFPD / LVMPD / LSCSD</div>
+          </div>
+          <div class="gm-card-body">
+            <div class="gm-row"><span class="gm-dot"></span><span><strong>Руководство</strong> — текущий командный состав и старшие офицеры департамента.</span></div>
+            <div class="gm-row"><span class="gm-dot"></span><span><strong>Повышение</strong> — требования для каждого звания: что сдать, сколько отслужить, кулдаун.</span></div>
+            <div class="gm-row"><span class="gm-dot"></span><span><strong>Отчётность → Подать отчёт</strong> — отчёт на повышение, заявление на отпуск или отчёт старшего состава.</span></div>
+            <div class="gm-row"><span class="gm-dot"></span><span><strong>Отчётность → Все отчёты</strong> — просмотр всех поданных отчётов, их статусов и решений.</span></div>
+            <div class="gm-row"><span class="gm-dot"></span><span><strong>Отчётность → Таблица баллов</strong> — нормы для старшего состава (ранги 8–9).</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Как подать отчёт -->
+      <div class="gm-section">
+        <div class="gm-section-label">Как подать отчёт</div>
+        <div class="gm-card">
+          <div class="gm-card-head">
+            <div class="gm-card-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <div class="gm-card-title">Пошагово</div>
+          </div>
+          <div class="gm-card-body">
+            <div class="gm-row"><span class="gm-dot"></span><span>Выбери свой департамент <span class="gm-tag">SFPD</span> <span class="gm-tag">LVMPD</span> <span class="gm-tag">LSCSD</span> на главной.</span></div>
+            <div class="gm-row"><span class="gm-dot"></span><span>Перейди во вкладку <strong>«Отчётность»</strong> → <strong>«Подать отчёт»</strong>.</span></div>
+            <div class="gm-row"><span class="gm-dot"></span><span>Выбери тип: <strong>Отчёт на повышение</strong>, <strong>Отпуск</strong> или <strong>Отчёт ст. состава</strong>.</span></div>
+            <div class="gm-row"><span class="gm-dot"></span><span>Заполни все поля и нажми <strong>«Отправить»</strong>. Сохрани код отчёта — он нужен при статусе «Доработка».</span></div>
+            <div class="gm-row"><span class="gm-dot"></span><span>Лимит: <strong>10 отчётов в час</strong> на каждый департамент отдельно.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Как подать жалобу -->
+      <div class="gm-section">
+        <div class="gm-section-label">Как подать жалобу</div>
+        <div class="gm-card">
+          <div class="gm-card-head">
+            <div class="gm-card-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></div>
+            <div class="gm-card-title">Жалоба на сотрудника</div>
+          </div>
+          <div class="gm-card-body">
+            <div class="gm-row"><span class="gm-dot"></span><span>Главная → <strong>«Подать жалобу»</strong> → заполни имя, ник офицера и описание нарушения.</span></div>
+            <div class="gm-row"><span class="gm-dot"></span><span>Обязательно прикрепи ссылку на <strong>доказательства</strong> — скриншоты или видео с командой /время.</span></div>
+            <div class="gm-row"><span class="gm-dot"></span><span>Жалобы старше <strong>48 часов</strong> не рассматриваются. Подавай сразу после инцидента.</span></div>
+            <div class="gm-row"><span class="gm-dot"></span><span>Лимит: <strong>7 жалоб в час</strong>. Проверяются Генералом и Министром.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Доступ и права -->
+      <div class="gm-section">
+        <div class="gm-section-label">Доступ и права</div>
+        <div class="gm-card">
+          <div class="gm-card-head">
+            <div class="gm-card-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+            <div class="gm-card-title">Авторизация</div>
+          </div>
+          <div class="gm-card-body">
+            <div class="gm-row"><span class="gm-dot"></span><span>Кнопка <strong>«Войти»</strong> в шапке — введи персональный код. Уровень прав определяется по рангу автоматически.</span></div>
+            <div class="gm-row"><span class="gm-dot"></span><span>Ранги <strong>1–7</strong> — просмотр, подача отчётов и жалоб.</span></div>
+            <div class="gm-row"><span class="gm-dot"></span><span>Ранги <strong>8–10</strong> — редактирование личных дел, проверка отчётов и жалоб своего департамента.</span></div>
+            <div class="gm-row"><span class="gm-dot"></span><span>Ранг <strong>11 (Министр)</strong> — полный доступ ко всем разделам и административная панель.</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const DURATION = 7000;
+  let _snackTimer = null;
+
+  function showGuideSnack() {
+    // Не показывать если уже открыто модальное
+    if (document.getElementById('guide-modal-overlay').classList.contains('open')) return;
+    // Создаём снекбар
+    let snack = document.getElementById('guide-snack');
+    if (snack) snack.remove();
+    snack = document.createElement('div');
+    snack.id = 'guide-snack';
+    snack.innerHTML = `
+      <div id="guide-snack-inner">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span id="guide-snack-text">Впервые на портале? Открой гайд</span>
+        <button id="guide-snack-btn" onclick="openGuideModal();dismissGuideSnack()">Открыть</button>
+        <button id="guide-snack-close" onclick="dismissGuideSnack()">✕</button>
+      </div>
+      <div id="guide-snack-progress"><div id="guide-snack-bar"></div></div>
+    `;
+    document.body.appendChild(snack);
+    // Запускаем прогресс-бар
+    const bar = snack.querySelector('#guide-snack-bar');
+    bar.style.transition = 'none';
+    bar.style.transform = 'scaleX(1)';
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      bar.style.transition = 'transform ' + DURATION + 'ms linear';
+      bar.style.transform = 'scaleX(0)';
+    }));
+    // Автоудаление
+    clearTimeout(_snackTimer);
+    _snackTimer = setTimeout(dismissGuideSnack, DURATION);
+  }
+
+  function dismissGuideSnack() {
+    clearTimeout(_snackTimer);
+    const snack = document.getElementById('guide-snack');
+    if (!snack) return;
+    snack.classList.add('hiding');
+    setTimeout(() => snack && snack.remove(), 320);
+  }
+
+  window.openGuideModal = function() {
+    dismissGuideSnack();
+    document.getElementById('guide-modal-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.closeGuideModal = function() {
+    document.getElementById('guide-modal-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  };
+
+  // Показать снекбар при первом посещении
+  window.addEventListener('load', function() {
+    try {
+      if (!localStorage.getItem('guide_seen_v2')) {
+        setTimeout(showGuideSnack, 1500);
+        localStorage.setItem('guide_seen_v2', '1');
+      }
+    } catch(e) { setTimeout(showGuideSnack, 1500); }
+  });
+
+  // Закрытие по Escape
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeGuideModal();
+  });
+})();
+</script>
+
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   FIREBASE AUTHENTICATION СИСТЕМА
+══════════════════════════════════════════════════════════════ */
+(function() {
+
+  const auth = firebase.auth();
+  const db   = firebase.firestore();
+
+  // ── UI helpers ────────────────────────────────────────────
+  function authShowErr(msg) {
+    const el = document.getElementById('auth-err');
+    el.textContent = msg; el.classList.add('show');
+    document.getElementById('auth-ok').classList.remove('show');
+  }
+  function authShowOk(msg) {
+    const el = document.getElementById('auth-ok');
+    el.textContent = msg; el.classList.add('show');
+    document.getElementById('auth-err').classList.remove('show');
+  }
+  function authClearMsgs() {
+    document.getElementById('auth-err').classList.remove('show');
+    document.getElementById('auth-ok').classList.remove('show');
+  }
+  function authSetLoading(btnId, loading) {
+    const btn = document.getElementById(btnId);
+    if (!btn) return;
+    btn.disabled = loading;
+    if (btnId === 'auth-login-btn')   btn.textContent = loading ? 'Вход...'              : 'Войти';
+    if (btnId === 'auth-reg-btn')     btn.textContent = loading ? 'Создание аккаунта...' : 'Создать аккаунт';
+  }
+
+  // ── Переключение вкладок ───────────────────────────────────
+  window.authSwitchTab = function(tab) {
+    authClearMsgs();
+    document.getElementById('auth-form-login').style.display    = tab === 'login'    ? '' : 'none';
+    document.getElementById('auth-form-register').style.display = tab === 'register' ? '' : 'none';
+    document.getElementById('tab-login').classList.toggle('active',    tab === 'login');
+    document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+  };
+
+  // ── Скрыть оверлей авторизации ─────────────────────────────
+  function hideAuthOverlay() {
+    const ov = document.getElementById('auth-overlay');
+    ov.classList.add('hiding');
+    setTimeout(() => { ov.style.display = 'none'; ov.classList.remove('hiding'); }, 350);
+  }
+
+  window.openAuthOverlay = function() {
+    const ov = document.getElementById('auth-overlay');
+    ov.style.display = 'flex';
+    ov.classList.remove('hiding');
+  };
+
+  // ── Показать/скрыть экран ожидания ─────────────────────────
+  function showPendingScreen(email) {
+    document.getElementById('auth-pending-email-lbl').textContent = email || '—';
+    document.getElementById('auth-pending-overlay').classList.add('show');
+    hideAuthOverlay();
+  }
+  function hidePendingScreen() {
+    document.getElementById('auth-pending-overlay').classList.remove('show');
+  }
+
+  // ── Обновить бейдж аккаунта в шапке ───────────────────────
+  function updateAccountBadge(user) {
+    const btn   = document.getElementById('account-btn');
+    const badge = document.getElementById('fb-account-badge');
+    const nameEl = document.getElementById('fb-account-name-text');
+    if (!btn || !badge) return;
+    if (user) {
+      const name = user.displayName || user.email.split('@')[0];
+      if (nameEl) nameEl.textContent = name;
+      btn.style.display = 'none';
+      badge.style.display = 'inline-flex';
+    } else {
+      btn.style.display = 'inline-flex';
+      badge.style.display = 'none';
+    }
+  }
+
+  // ── Применить профиль из Firestore ─────────────────────────
+  async function applyUserProfile(user) {
+    try {
+      const doc = await db.collection('user_profiles').doc(user.uid).get();
+      if (doc.exists) {
+        const data = doc.data();
+        const rank = parseInt(data.rank) || 0;
+        const dept = data.dept || 'МВД';
+        const name = data.display_name || user.displayName || user.email.split('@')[0];
+        if (rank > 0) {
+          // Ранг назначен — входим на сайт
+          _auth = { rank, dept, name, slot: user.uid, email: user.email, uid: user.uid };
+          officerAuthed = true;
+          hidePendingScreen();
+          hideAuthOverlay();
+          updateAuthBadge();
+          updateAccountBadge(user);
+          _toastsShown = false;
+          setTimeout(() => loadNotifications(), 300);
+          showToast('Добро пожаловать, ' + name + '!', 'ok');
+          return true;
+        }
+      }
+      // Ранг не назначен — экран ожидания
+      updateAccountBadge(user);
+      showPendingScreen(user.email);
+      return false;
+    } catch(e) {
+      showPendingScreen(user.email);
+      return false;
+    }
+  }
+
+  // ── Вход ───────────────────────────────────────────────────
+  window.doAuthLogin = async function() {
+    authClearMsgs();
+    const email = (document.getElementById('auth-login-email').value || '').trim();
+    const pass  = (document.getElementById('auth-login-pass').value  || '');
+    if (!email) { authShowErr('Введи email.'); return; }
+    if (!pass)  { authShowErr('Введи пароль.'); return; }
+    authSetLoading('auth-login-btn', true);
+    try {
+      const cred = await auth.signInWithEmailAndPassword(email, pass);
+      await applyUserProfile(cred.user);
+    } catch(e) {
+      const msgs = {
+        'auth/user-not-found':    'Аккаунт с таким email не найден.',
+        'auth/wrong-password':    'Неверный пароль.',
+        'auth/invalid-email':     'Некорректный email.',
+        'auth/too-many-requests': 'Слишком много попыток. Попробуй позже.',
+        'auth/invalid-credential':'Неверный email или пароль.',
+      };
+      authShowErr(msgs[e.code] || 'Ошибка входа: ' + e.message);
+    }
+    authSetLoading('auth-login-btn', false);
+  };
+
+  // ── Регистрация ────────────────────────────────────────────
+  window.doAuthRegister = async function() {
+    authClearMsgs();
+    const name  = (document.getElementById('auth-reg-name').value  || '').trim();
+    const email = (document.getElementById('auth-reg-email').value || '').trim();
+    const pass  = (document.getElementById('auth-reg-pass').value  || '');
+    const pass2 = (document.getElementById('auth-reg-pass2').value || '');
+    if (!name)          { authShowErr('Введи игровой ник.'); return; }
+    if (name.length < 3){ authShowErr('Ник слишком короткий.'); return; }
+    if (!email)         { authShowErr('Введи email.'); return; }
+    if (pass.length < 6){ authShowErr('Пароль должен быть минимум 6 символов.'); return; }
+    if (pass !== pass2) { authShowErr('Пароли не совпадают.'); return; }
+    authSetLoading('auth-reg-btn', true);
+    try {
+      const cred = await auth.createUserWithEmailAndPassword(email, pass);
+      // Обновить displayName
+      await cred.user.updateProfile({ displayName: name });
+      // Создать профиль в Firestore
+      await db.collection('user_profiles').doc(cred.user.uid).set({
+        uid:          cred.user.uid,
+        email:        email,
+        display_name: name,
+        rank:         0,
+        dept:         '',
+        registered_at: new Date().toISOString(),
+        active:       true,
+      });
+      // Показать экран ожидания
+      showPendingScreen(email);
+      authShowOk('Аккаунт создан! Ожидай назначения ранга от Министра.');
+    } catch(e) {
+      const msgs = {
+        'auth/email-already-in-use': 'Этот email уже зарегистрирован.',
+        'auth/invalid-email':        'Некорректный email.',
+        'auth/weak-password':        'Пароль слишком слабый.',
+      };
+      authShowErr(msgs[e.code] || 'Ошибка регистрации: ' + e.message);
+    }
+    authSetLoading('auth-reg-btn', false);
+  };
+
+  // ── Восстановление пароля ──────────────────────────────────
+  window.doAuthForgot = async function() {
+    const email = (document.getElementById('auth-login-email').value || '').trim();
+    if (!email) { authShowErr('Введи email для восстановления пароля.'); return; }
+    try {
+      await auth.sendPasswordResetEmail(email);
+      authShowOk('Письмо для сброса пароля отправлено на ' + email);
+    } catch(e) {
+      authShowErr('Не удалось отправить письмо. Проверь email.');
+    }
+  };
+
+  // ── Выход ──────────────────────────────────────────────────
+  window.doAuthLogout = async function() {
+    await auth.signOut();
+    _auth = null;
+    officerAuthed = false;
+    hidePendingScreen();
+    updateAuthBadge();
+    showToast('Вы вышли из аккаунта.', 'info');
+  };
+
+  // ── Слушатель состояния авторизации ───────────────────────
+  auth.onAuthStateChanged(async (user) => {
+    if (user) {
+      // Пользователь вошёл — загружаем профиль
+      await applyUserProfile(user);
+      // Подписываемся на изменения профиля в реальном времени
+      // (когда Министр назначит ранг — страница обновится сама)
+      db.collection('user_profiles').doc(user.uid).onSnapshot(async (snap) => {
+        if (!snap.exists) return;
+        const data = snap.data();
+        const rank = parseInt(data.rank) || 0;
+        if (rank > 0 && (!_auth || _auth.rank !== rank)) {
+          await applyUserProfile(user);
+        }
+      });
+    } else {
+      // Не авторизован — сайт доступен как гость
+      _auth = null;
+      officerAuthed = false;
+      hidePendingScreen();
+      updateAuthBadge();
+      updateAccountBadge(null);
+    }
+  });
+
+})();
+</script>
+
+
+<script>
+/* ══ ADMIN: Управление пользователями ══ */
+const DEPT_OPTIONS = ['SFPD','LVMPD','LSCSD','МВД'];
+const RANK_OPTIONS = [1,2,3,4,5,6,7,8,9,10,11];
+
+window.adminLoadUsers = async function() {
+  const container = document.getElementById('admin-users-list');
+  container.innerHTML = '<div style="font-size:12px;color:var(--grey);text-align:center;padding:12px;">Загрузка...</div>';
+  try {
+    const snap = await firebase.firestore().collection('user_profiles').orderBy('registered_at','desc').get();
+    if (snap.empty) {
+      container.innerHTML = '<div style="font-size:12px;color:var(--grey);text-align:center;padding:12px;">Нет зарегистрированных пользователей.</div>';
+      return;
+    }
+    container.innerHTML = '';
+    snap.forEach(doc => {
+      const d = doc.data();
+      const el = document.createElement('div');
+      el.style.cssText = 'background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;padding:12px;';
+      el.innerHTML = `
+        <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px;">${d.display_name || '—'}</div>
+        <div style="font-size:11px;color:var(--grey);margin-bottom:10px;">${d.email} · ${d.registered_at ? new Date(d.registered_at).toLocaleDateString('ru') : '—'}</div>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+          <select id="usr-dept-${doc.id}" style="flex:1;min-width:80px;padding:6px 8px;border:1.5px solid var(--grey-light);border-radius:7px;font-size:12px;font-family:inherit;background:var(--white);color:var(--navy);">
+            ${DEPT_OPTIONS.map(dept => `<option value="${dept}" ${d.dept===dept?'selected':''}>${dept}</option>`).join('')}
+          </select>
+          <select id="usr-rank-${doc.id}" style="flex:1;min-width:70px;padding:6px 8px;border:1.5px solid var(--grey-light);border-radius:7px;font-size:12px;font-family:inherit;background:var(--white);color:var(--navy);">
+            <option value="0" ${!d.rank||d.rank===0?'selected':''}>Нет ранга</option>
+            ${RANK_OPTIONS.map(r => `<option value="${r}" ${d.rank===r?'selected':''}>Ранг ${r}</option>`).join('')}
+          </select>
+          <button onclick="adminSaveUser('${doc.id}')" style="padding:6px 12px;background:var(--navy);color:white;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;">Сохранить</button>
+          <button onclick="adminBlockUser('${doc.id}','${d.email}')" style="padding:6px 10px;background:var(--red-light);border:1.5px solid var(--red);color:var(--red);border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;" title="Заблокировать">${d.active===false?'Разблокировать':'Блок'}</button>
+        </div>
+      `;
+      container.appendChild(el);
+    });
+  } catch(e) {
+    container.innerHTML = '<div style="font-size:12px;color:var(--red);padding:8px;">Ошибка загрузки: ' + e.message + '</div>';
+  }
+};
+
+window.adminSaveUser = async function(uid) {
+  const dept = document.getElementById('usr-dept-' + uid)?.value || 'МВД';
+  const rank = parseInt(document.getElementById('usr-rank-' + uid)?.value) || 0;
+  try {
+    await firebase.firestore().collection('user_profiles').doc(uid).update({ rank, dept });
+    showToast('Ранг назначен.', 'ok');
+  } catch(e) {
+    showToast('Ошибка: ' + e.message, 'error');
+  }
+};
+
+window.adminBlockUser = async function(uid, email) {
+  const snap = await firebase.firestore().collection('user_profiles').doc(uid).get();
+  const current = snap.data()?.active !== false;
+  if (!await sysConfirm(current ? 'Заблокировать ' + email + '?' : 'Разблокировать ' + email + '?',
+    {title: current ? 'Блокировка' : 'Разблокировка', okText: current ? 'Заблокировать' : 'Разблокировать'})) return;
+  await firebase.firestore().collection('user_profiles').doc(uid).update({
+    active: !current,
+    rank: current ? 0 : (snap.data()?.rank || 0),
+  });
+  showToast(current ? 'Пользователь заблокирован.' : 'Разблокирован.', current ? 'warn' : 'ok');
+  adminLoadUsers();
+};
 </script>
 
 </body>
