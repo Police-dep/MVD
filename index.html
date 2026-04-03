@@ -3592,13 +3592,20 @@
     #auth-overlay {
       position: fixed;
       inset: 0;
-      background: var(--cream);
+      background: rgba(10,15,30,0.6);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
       z-index: 99999;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
-      transition: opacity 0.35s;
+      transition: opacity 0.3s;
+      animation: authOverlayIn 0.3s ease;
+    }
+    @keyframes authOverlayIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
     }
     #auth-overlay.hiding {
       opacity: 0;
@@ -3611,7 +3618,12 @@
       width: 100%;
       max-width: 400px;
       overflow: hidden;
-      box-shadow: 0 20px 60px rgba(26,35,64,0.12);
+      box-shadow: 0 32px 80px rgba(10,15,30,0.3);
+      animation: authCardIn 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes authCardIn {
+      from { opacity: 0; transform: translateY(24px) scale(0.96); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
     }
     .auth-card-header {
       background: var(--navy);
@@ -3654,7 +3666,7 @@
       background: var(--cream);
       border: none;
       font-family: inherit;
-      transition: all 0.15s;
+      transition: all 0.2s;
     }
     .auth-tab.active {
       background: var(--navy);
@@ -3662,6 +3674,15 @@
     }
     .auth-field {
       margin-bottom: 14px;
+      animation: authFieldIn 0.3s ease both;
+    }
+    .auth-field:nth-child(1) { animation-delay: 0.05s; }
+    .auth-field:nth-child(2) { animation-delay: 0.10s; }
+    .auth-field:nth-child(3) { animation-delay: 0.15s; }
+    .auth-field:nth-child(4) { animation-delay: 0.20s; }
+    @keyframes authFieldIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
     .auth-field label {
       display: block;
@@ -3682,13 +3703,25 @@
       color: var(--navy);
       background: var(--cream);
       outline: none;
-      transition: border-color 0.15s, background 0.15s;
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
     }
     .auth-input:focus {
       border-color: var(--navy);
       background: var(--white);
+      box-shadow: 0 0 0 3px rgba(26,35,64,0.08);
     }
-    .auth-input.error { border-color: var(--red); background: var(--red-light); }
+    .auth-input.error {
+      border-color: var(--red);
+      background: var(--red-light);
+      animation: authShake 0.4s ease;
+    }
+    @keyframes authShake {
+      0%,100% { transform: translateX(0); }
+      20%     { transform: translateX(-6px); }
+      40%     { transform: translateX(6px); }
+      60%     { transform: translateX(-4px); }
+      80%     { transform: translateX(4px); }
+    }
     .auth-btn {
       width: 100%;
       padding: 13px;
@@ -3701,35 +3734,81 @@
       font-family: inherit;
       cursor: pointer;
       margin-top: 6px;
-      transition: opacity 0.15s;
+      transition: opacity 0.15s, transform 0.15s;
       letter-spacing: 0.02em;
+      position: relative;
+      overflow: hidden;
     }
-    .auth-btn:hover { opacity: 0.88; }
-    .auth-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .auth-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0);
+      transition: background 0.2s;
+    }
+    .auth-btn:hover::after { background: rgba(255,255,255,0.06); }
+    .auth-btn:active { transform: scale(0.98); }
+    .auth-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
     .auth-err {
       background: var(--red-light);
       border: 1.5px solid #F0BABA;
       border-radius: 8px;
-      padding: 9px 12px;
-      font-size: 12px;
+      padding: 10px 12px;
+      font-size: 12.5px;
       color: var(--red);
       margin-bottom: 14px;
       display: none;
-      line-height: 1.5;
+      line-height: 1.6;
+      animation: authMsgIn 0.25s ease;
     }
-    .auth-err.show { display: block; }
+    .auth-err.show { display: flex; align-items: flex-start; gap: 8px; }
+    .auth-err.show::before {
+      content: '!';
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      background: var(--red);
+      color: white;
+      border-radius: 50%;
+      font-size: 10px;
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
     .auth-ok {
       background: var(--green-light);
       border: 1.5px solid #A8D8B8;
       border-radius: 8px;
-      padding: 9px 12px;
-      font-size: 12px;
+      padding: 10px 12px;
+      font-size: 12.5px;
       color: var(--green);
       margin-bottom: 14px;
       display: none;
-      line-height: 1.5;
+      line-height: 1.6;
+      animation: authMsgIn 0.25s ease;
     }
-    .auth-ok.show { display: block; }
+    .auth-ok.show { display: flex; align-items: flex-start; gap: 8px; }
+    .auth-ok.show::before {
+      content: '✓';
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      background: var(--green);
+      color: white;
+      border-radius: 50%;
+      font-size: 10px;
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    @keyframes authMsgIn {
+      from { opacity: 0; transform: translateY(-6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
     .auth-forgot {
       text-align: right;
       margin-bottom: 14px;
@@ -3739,14 +3818,9 @@
       color: var(--grey);
       text-decoration: none;
       cursor: pointer;
+      transition: color 0.15s;
     }
     .auth-forgot a:hover { color: var(--navy); }
-    .auth-divider {
-      text-align: center;
-      font-size: 11px;
-      color: var(--grey);
-      margin: 16px 0 4px;
-    }
     .auth-note {
       text-align: center;
       font-size: 11.5px;
@@ -3754,7 +3828,7 @@
       margin-top: 16px;
       line-height: 1.6;
     }
-    /* Страница ожидания (гость без ранга) */
+    /* Страница ожидания */
     #auth-pending-overlay {
       position: fixed;
       inset: 0;
@@ -3775,6 +3849,7 @@
       padding: 40px 32px;
       text-align: center;
       box-shadow: 0 20px 60px rgba(26,35,64,0.1);
+      animation: authCardIn 0.35s cubic-bezier(0.34,1.56,0.64,1);
     }
     .auth-pending-icon {
       width: 56px;
@@ -3819,6 +3894,7 @@
       border: none;
       font-family: inherit;
       text-decoration: underline;
+      transition: color 0.15s;
     }
     .auth-pending-logout:hover { color: var(--red); }
     @media (max-width: 480px) {
@@ -16878,14 +16954,14 @@ window.addEventListener('load', function() {
           updateAuthBadge();
           updateAccountBadge(user);
           _toastsShown = false;
+          showToast('Добро пожаловать, ' + name + ' [Ранг ' + rank + ']', 'ok');
           setTimeout(() => loadNotifications(), 300);
-          showToast('Добро пожаловать, ' + name + '!', 'ok');
           return true;
         }
       }
-      // Ранг не назначен — экран ожидания
+      // Ранг не назначен — просто скрываем оверлей, сайт доступен как гость
       updateAccountBadge(user);
-      showPendingScreen(user.email);
+      hideAuthOverlay();
       return false;
     } catch(e) {
       showPendingScreen(user.email);
@@ -16906,13 +16982,20 @@ window.addEventListener('load', function() {
       await applyUserProfile(cred.user);
     } catch(e) {
       const msgs = {
-        'auth/user-not-found':    'Аккаунт с таким email не найден.',
-        'auth/wrong-password':    'Неверный пароль.',
-        'auth/invalid-email':     'Некорректный email.',
-        'auth/too-many-requests': 'Слишком много попыток. Попробуй позже.',
-        'auth/invalid-credential':'Неверный email или пароль.',
+        'auth/user-not-found':     'Аккаунт с таким email не найден. Проверь email или зарегистрируйся.',
+        'auth/wrong-password':     'Неверный пароль. Попробуй ещё раз или восстанови пароль.',
+        'auth/invalid-email':      'Некорректный формат email. Проверь правильность ввода.',
+        'auth/too-many-requests':  'Слишком много неудачных попыток. Подожди несколько минут.',
+        'auth/invalid-credential': 'Неверный email или пароль. Проверь данные и попробуй снова.',
+        'auth/network-request-failed': 'Нет подключения к интернету. Проверь соединение.',
+        'auth/user-disabled':      'Этот аккаунт заблокирован. Обратись к Министру.',
       };
-      authShowErr(msgs[e.code] || 'Ошибка входа: ' + e.message);
+      authShowErr(msgs[e.code] || 'Не удалось войти. Попробуй ещё раз.');
+      // Тряска полей
+      ['auth-login-email','auth-login-pass'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) { el.classList.add('error'); setTimeout(() => el.classList.remove('error'), 500); }
+      });
     }
     authSetLoading('auth-login-btn', false);
   };
@@ -16944,16 +17027,19 @@ window.addEventListener('load', function() {
         registered_at: new Date().toISOString(),
         active:       true,
       });
-      // Показать экран ожидания
-      showPendingScreen(email);
-      authShowOk('Аккаунт создан! Ожидай назначения ранга от Министра.');
+      // Закрываем форму и показываем уведомление
+      hideAuthOverlay();
+      authShowOk('Аккаунт создан!');
+      showToast('Аккаунт создан. Пользуйся порталом — ранг назначит Министр.', 'ok');
     } catch(e) {
       const msgs = {
-        'auth/email-already-in-use': 'Этот email уже зарегистрирован.',
-        'auth/invalid-email':        'Некорректный email.',
-        'auth/weak-password':        'Пароль слишком слабый.',
+        'auth/email-already-in-use': 'Этот email уже используется. Попробуй войти или восстановить пароль.',
+        'auth/invalid-email':        'Некорректный формат email. Проверь правильность ввода.',
+        'auth/weak-password':        'Пароль слишком простой. Используй минимум 6 символов.',
+        'auth/network-request-failed': 'Нет подключения к интернету. Проверь соединение.',
+        'auth/operation-not-allowed': 'Регистрация временно недоступна. Обратись к администратору.',
       };
-      authShowErr(msgs[e.code] || 'Ошибка регистрации: ' + e.message);
+      authShowErr(msgs[e.code] || 'Не удалось создать аккаунт. Попробуй ещё раз.');
     }
     authSetLoading('auth-reg-btn', false);
   };
