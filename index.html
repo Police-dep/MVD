@@ -29,7 +29,11 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    /* Убрать стрелки у числовых полей */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    input[type=number] { -moz-appearance: textfield; appearance: textfield; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
     body {
       font-family: 'DM Sans', sans-serif;
       background: var(--cream);
@@ -37,6 +41,7 @@
       min-height: 100vh;
       overflow-x: hidden;
       max-width: 100vw;
+      overflow-y: scroll;
     }
     *, *::before, *::after { max-width: 100%; }
     img, svg, video, canvas { max-width: 100%; height: auto; }
@@ -59,6 +64,7 @@
       top: 0;
       z-index: 100;
       box-shadow: 0 1px 20px rgba(26,35,64,0.07);
+      max-width: 100vw;
     }
 
     .logo {
@@ -3906,8 +3912,9 @@
 <body>
 
   <!-- ══ СТРАНИЦА АВТОРИЗАЦИИ ══ -->
-  <div id="auth-overlay" style="display:none;">
-    <div class="auth-card">
+  <div id="auth-overlay" style="visibility:hidden;opacity:0;pointer-events:none;" onclick="if(event.target===this)hideAuthOverlay()">
+    <button onclick="hideAuthOverlay()" style="position:fixed;top:16px;right:16px;z-index:100000;width:32px;height:32px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);border-radius:8px;color:white;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;transition:background 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.28)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">✕</button>
+    <div class="auth-card" style="position:relative;">
       <div class="auth-card-header">
         <div class="auth-card-logo">МВД</div>
         <div class="auth-card-sub">Портал управления · Вход в систему</div>
@@ -3916,6 +3923,7 @@
         <div class="auth-tabs">
           <button class="auth-tab active" id="tab-login" onclick="authSwitchTab('login')">Вход</button>
           <button class="auth-tab" id="tab-register" onclick="authSwitchTab('register')">Регистрация</button>
+          <button class="auth-tab" id="tab-rename" onclick="authSwitchTab('rename')" title="Сменить ник"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
         </div>
 
         <div id="auth-err" class="auth-err"></div>
@@ -3937,23 +3945,38 @@
           <div class="auth-note">Нет аккаунта? <a onclick="authSwitchTab('register')" style="color:var(--navy);font-weight:600;cursor:pointer;">Зарегистрироваться</a></div>
         </div>
 
+        <!-- Форма смены ника -->
+        <div id="auth-form-rename" style="display:none;">
+          <div class="auth-field">
+            <label>Новый ник (Имя Фамилия)</label>
+            <input class="auth-input" id="auth-rename-name" type="text" placeholder="Ivan Ivanov" name="rename"/>
+          </div>
+          <div class="auth-field">
+            <label>Пароль для подтверждения</label>
+            <input class="auth-input" id="auth-rename-pass" type="password" placeholder="••••••••" autocomplete="current-password"
+              onkeydown="if(event.key==='Enter')doAuthRename()"/>
+          </div>
+          <button class="auth-btn" id="auth-rename-btn" onclick="doAuthRename()">Сменить ник</button>
+          <div class="auth-note"><a onclick="authSwitchTab('login')" style="color:var(--navy);font-weight:600;cursor:pointer;">← Назад</a></div>
+        </div>
+
         <!-- Форма регистрации -->
         <div id="auth-form-register" style="display:none;">
           <div class="auth-field">
             <label>Имя и фамилия (игровой ник)</label>
-            <input class="auth-input" id="auth-reg-name" type="text" placeholder="Ivan Ivanov" autocomplete="name"/>
+            <input class="auth-input" id="auth-reg-name" type="text" placeholder="Ivan Ivanov" autocomplete="name" name="name"/>
           </div>
           <div class="auth-field">
             <label>Email</label>
-            <input class="auth-input" id="auth-reg-email" type="email" placeholder="you@example.com" autocomplete="email"/>
+            <input class="auth-input" id="auth-reg-email" type="email" placeholder="you@example.com" autocomplete="email" name="email"/>
           </div>
           <div class="auth-field">
             <label>Пароль</label>
-            <input class="auth-input" id="auth-reg-pass" type="password" placeholder="Минимум 6 символов" autocomplete="new-password"/>
+            <input class="auth-input" id="auth-reg-pass" type="password" placeholder="Минимум 6 символов" autocomplete="new-password" name="new-password"/>
           </div>
           <div class="auth-field">
             <label>Повтори пароль</label>
-            <input class="auth-input" id="auth-reg-pass2" type="password" placeholder="••••••••" autocomplete="new-password"
+            <input class="auth-input" id="auth-reg-pass2" type="password" placeholder="••••••••" autocomplete="new-password" name="confirm-password"
               onkeydown="if(event.key==='Enter')doAuthRegister()"/>
           </div>
           <button class="auth-btn" id="auth-reg-btn" onclick="doAuthRegister()">Создать аккаунт</button>
@@ -4002,17 +4025,119 @@
       </div>
     </div>
     <div class="header-right">
-      <div id="officer-badge-wrap" style="display:none;align-items:center;gap:6px;">
-        <span id="officer-badge" style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:var(--navy);color:var(--accent);font-size:11px;font-weight:700;letter-spacing:0.06em;border-radius:8px;white-space:nowrap;max-width:160px;overflow:hidden;text-overflow:ellipsis;"></span>
-        <button onclick="doLogout()" style="padding:5px 10px;background:transparent;border:1.5px solid var(--grey-light);border-radius:8px;font-size:11px;font-weight:600;color:var(--grey);cursor:pointer;white-space:nowrap;transition:all 0.15s;" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='var(--grey-light)';this.style.color='var(--grey)'">Выйти</button>
+      <!-- ══ ШАПКА: иконки офицера и аккаунта ══ -->
+      <style>
+        .hdr-icon-btn {
+          position: relative;
+          width: 32px; height: 32px;
+          display: inline-flex; align-items: center; justify-content: center;
+          background: transparent;
+          border: 1.5px solid var(--grey-light);
+          border-radius: 9px;
+          cursor: pointer;
+          color: var(--grey);
+          transition: all 0.15s;
+          font-family: inherit;
+        }
+        .hdr-icon-btn:hover { border-color: var(--navy); color: var(--navy); }
+        .hdr-icon-btn.active-officer { background: var(--navy); border-color: var(--navy); color: var(--accent); }
+        .hdr-icon-btn.active-account { background: var(--green-light); border-color: #A8D8B8; color: var(--green); }
+        .hdr-dropdown {
+          position: absolute;
+          top: calc(100% + 8px);
+          right: 0;
+          width: 220px;
+          max-width: calc(100vw - 16px);
+          background: var(--white);
+          border: 1.5px solid var(--grey-light);
+          border-radius: 12px;
+          box-shadow: 0 8px 32px rgba(26,35,64,0.14);
+          z-index: 9999;
+          display: none;
+          overflow: hidden;
+          animation: dropIn 0.18s cubic-bezier(.4,0,.2,1);
+        }
+        @keyframes dropIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+        .hdr-dropdown.open { display: block; }
+        .hdr-drop-header {
+          padding: 11px 14px 8px;
+          border-bottom: 1px solid var(--grey-light);
+          font-size: 10px; font-weight: 700; letter-spacing: .1em;
+          text-transform: uppercase; color: var(--grey);
+        }
+        .hdr-drop-info {
+          padding: 10px 14px;
+          border-bottom: 1px solid var(--grey-light);
+        }
+        .hdr-drop-name {
+          font-size: 13px; font-weight: 700; color: var(--navy);
+          margin-bottom: 2px; word-break: break-word;
+        }
+        .hdr-drop-meta {
+          font-size: 11px; color: var(--grey); line-height: 1.5;
+        }
+        .hdr-drop-btn {
+          width: 100%; padding: 10px 14px;
+          display: flex; align-items: center; gap: 8px;
+          background: none; border: none; cursor: pointer;
+          font-size: 12.5px; font-weight: 600; color: var(--text-soft);
+          font-family: inherit; text-align: left; transition: background 0.12s;
+        }
+        .hdr-drop-btn:hover { background: var(--cream); }
+        .hdr-drop-btn.danger { color: var(--red); }
+        .hdr-drop-btn.danger:hover { background: var(--red-light); }
+        .hdr-drop-divider { height: 1px; background: var(--grey-light); }
+      </style>
+
+      <!-- Кнопка Войти (не авторизован как офицер) -->
+      <button id="global-login-btn" onclick="openPasswordGate('login')" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:var(--navy);color:white;border:none;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="M21 2l-9.6 9.6"/><path d="M15.5 7.5l3 3L22 7l-3-3"/></svg> Войти
+      </button>
+
+      <!-- Иконка офицера (авторизован как офицер) -->
+      <div id="officer-badge-wrap" style="display:none;position:relative;">
+        <button class="hdr-icon-btn active-officer" id="officer-badge-btn" onclick="toggleHdrDrop('officer-drop')" title="Офицер">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="M21 2l-9.6 9.6"/><path d="M15.5 7.5l3 3L22 7l-3-3"/></svg>
+        </button>
+        <div class="hdr-dropdown" id="officer-drop">
+          <div class="hdr-drop-header">Режим офицера</div>
+          <div class="hdr-drop-info">
+            <div class="hdr-drop-name" id="officer-badge"></div>
+            <div class="hdr-drop-meta" id="officer-drop-meta"></div>
+          </div>
+          <button class="hdr-drop-btn danger" onclick="doLogout();closeHdrDrops()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Выйти из режима офицера
+          </button>
+        </div>
       </div>
-      <button id="global-login-btn" onclick="openPasswordGate('login')" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:var(--navy);color:white;border:none;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="M21 2l-9.6 9.6"/><path d="M15.5 7.5l3 3L22 7l-3-3"/></svg> Войти</button>
-      <!-- Кнопка аккаунта Firebase -->
-      <button id="account-btn" onclick="openAuthOverlay()" title="Войти / Зарегистрироваться" style="display:inline-flex;align-items:center;gap:5px;padding:6px 11px;background:transparent;border:1.5px solid var(--grey-light);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--grey);cursor:pointer;transition:all .2s;white-space:nowrap;" onmouseover="this.style.borderColor='var(--navy)';this.style.color='var(--navy)'" onmouseout="this.style.borderColor='var(--grey-light)';this.style.color='var(--grey)'"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Аккаунт</button>
-      <!-- Бейдж Firebase аккаунта (когда вошёл) -->
-      <div id="fb-account-badge" style="display:none;align-items:center;gap:6px;">
-        <span id="fb-account-name" style="display:inline-flex;align-items:center;gap:5px;padding:5px 10px;background:var(--green-light);border:1.5px solid #A8D8B8;color:var(--green);font-size:11px;font-weight:700;border-radius:8px;white-space:nowrap;max-width:150px;overflow:hidden;text-overflow:ellipsis;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> <span id="fb-account-name-text"></span></span>
-        <button onclick="doAuthLogout()" style="padding:4px 8px;background:transparent;border:1.5px solid var(--grey-light);border-radius:7px;font-size:11px;font-weight:600;color:var(--grey);cursor:pointer;transition:all 0.15s;" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='var(--grey-light)';this.style.color='var(--grey)'">↪</button>
+
+      <!-- Иконка аккаунта Firebase -->
+      <div style="position:relative;">
+        <button class="hdr-icon-btn" id="account-btn" onclick="openAuthOverlay()" title="Войти в аккаунт">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </button>
+        <div id="fb-account-badge" style="display:none;position:relative;">
+          <button class="hdr-icon-btn active-account" id="fb-account-name" onclick="toggleHdrDrop('account-drop')" title="Аккаунт">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </button>
+          <div class="hdr-dropdown" id="account-drop">
+            <div class="hdr-drop-header">Мой аккаунт</div>
+            <div class="hdr-drop-info">
+              <div class="hdr-drop-name" id="fb-account-name-text"></div>
+              <div class="hdr-drop-meta" id="fb-account-email-text"></div>
+            </div>
+            <button class="hdr-drop-btn" onclick="authSwitchTab('rename');openAuthOverlay();closeHdrDrops()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              Сменить ник
+            </button>
+            <div class="hdr-drop-divider"></div>
+            <button class="hdr-drop-btn danger" onclick="doAuthLogout();closeHdrDrops()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Выйти из аккаунта
+            </button>
+          </div>
+        </div>
       </div>
       <div class="notif-bell-wrap" id="notif-bell-wrap">
         <button class="notif-bell-btn" id="notif-bell-btn" onclick="toggleNotifPanel()" title="Уведомления">
@@ -4068,8 +4193,8 @@
     <a href="#" class="action-card" id="go-complaints">
       <div class="action-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></div>
       <div class="action-info">
-        <div class="action-label">Подать жалобу</div>
-        <div class="action-hint">Обращения и заявления</div>
+        <div class="action-label">Жалобы на сотрудников</div>
+        <div class="action-hint">Подача жалоб на офицеров</div>
       </div>
     </a>
   </div>
@@ -6939,6 +7064,18 @@
           break;
         }
         case 'addComplaint': {
+          // Защита от флуда: проверяем uid если есть
+          if (data.uid) {
+            const recentSnap = await firebase.firestore()
+              .collection('complaints')
+              .where('uid','==',data.uid)
+              .orderBy('timestamp','desc')
+              .limit(7)
+              .get();
+            const cutoff = Date.now() - 3600000;
+            const recentCount = recentSnap.docs.filter(d => new Date(d.data().timestamp||0).getTime() > cutoff).length;
+            if (recentCount >= 7) { res.status(429).json({ok:false,error:'Rate limit'}); return; }
+          }
           // Серверная валидация — блокируем пустые/битые жалобы
           const reqC = ['your_name','officer_name','description'];
           for (const f of reqC) {
@@ -7265,8 +7402,6 @@
     complaintsList = complaintsList.filter(r => r && (r.your_name||'').trim() && (r.officer_name||'').trim());
     const filter = document.getElementById('complaints-filter').value;
     const sorted = [...complaintsList].sort((a,b) => {
-      const pd = statusPriority(a.status) - statusPriority(b.status);
-      if (pd !== 0) return pd;
       return new Date(b.timestamp||0) - new Date(a.timestamp||0);
     });
     const list   = sorted.filter(r => filter === 'all' || r.status === filter);
@@ -7275,10 +7410,10 @@
       el.innerHTML = '<div class="inbox-list-empty">Жалоб не найдено.</div>';
       return;
     }
-    el.innerHTML = list.map(r => `
+    el.innerHTML = list.map((r, idx) => `
       <div class="inbox-item ${selectedComplaintId===r.id?'active':''}" onclick="showComplaintDetail('${esc(r.id)}')">
         <div class="inbox-item-top">
-          <span class="inbox-item-name">${esc(r.your_name)}</span>
+          <span class="inbox-item-name"><span style="color:var(--grey);font-size:10px;font-weight:700;margin-right:5px;">#${list.length - idx}</span>${esc(r.your_name)}</span>
           <span class="inbox-item-date">${fmtTs(r.timestamp).split(' ')[0]}</span>
         </div>
         <div class="inbox-item-type">На: ${esc(r.officer_name)}</div>
@@ -7313,9 +7448,15 @@
         <div class="detail-field-row"><span class="detail-field-label">Описание ситуации</span><span class="detail-field-value" style="white-space:pre-wrap;">${esc(r.description)}</span></div>
         <div class="detail-field-row"><span class="detail-field-label">Доказательства</span><a class="detail-field-link" href="${esc(r.evidence_url)}" target="_blank" rel="noopener">${esc(r.evidence_url)||'—'}</a></div>
         ${r.bank_account ? `<div class="detail-field-row"><span class="detail-field-label">Банковский счёт</span><span class="detail-field-value">${esc(r.bank_account)}</span></div>` : ''}
-        ${r.note ? `<div class="detail-field-row"><span class="detail-field-label">Вердикт офицера</span><span class="detail-field-value">${esc(r.note)}</span></div>` : ''}
       </div>
-      ${r.reviewer ? `<div style="font-size:11px;color:var(--grey);margin-bottom:10px;padding:8px 12px;background:var(--cream);border-radius:8px;">Вердикт вынес: <strong>${esc(r.reviewer)}</strong> · ${esc(r.reviewer_ts||'')}</div>` : ''}
+      ${r.note ? `
+      <div style="margin:12px 0;border:1.5px solid ${r.status==='approved'?'#A8D8B8':r.status==='rejected'?'#F0BABA':'#D4B870'};border-radius:10px;overflow:hidden;">
+        <div style="padding:8px 14px;background:${r.status==='approved'?'var(--green)':r.status==='rejected'?'var(--red)':'#8A6B20'};display:flex;align-items:center;gap:8px;">
+          <span style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.9);">Вердикт</span>
+          ${r.reviewer ? `<span style="font-size:11px;color:rgba(255,255,255,0.6);">— ${esc(r.reviewer)}${r.reviewer_ts ? ' · ' + esc(r.reviewer_ts) : ''}</span>` : ''}
+        </div>
+        <div style="padding:10px 14px;background:${r.status==='approved'?'var(--green-light)':r.status==='rejected'?'var(--red-light)':'#FBF5E6'};font-size:13px;color:var(--text-soft);line-height:1.6;white-space:pre-wrap;">${esc(r.note)}</div>
+      </div>` : ''}
       ${(() => {
         const prevRank = parseInt(r.reviewer_rank) || 0;
         const myRank   = authRank();
@@ -7439,7 +7580,12 @@
 
     // Перерисовать
     if (type === 'emp') { showEmpDetail(id); renderEmpList(); }
-    else                { showComplaintDetail(id); renderComplaintsList(); }
+    else {
+      // Скрыть панель решения после сохранения
+      const panel = document.querySelector('.decision-panel');
+      if (panel) panel.style.display = 'none';
+      showComplaintDetail(id); renderComplaintsList();
+    }
   }
   /* ══════════════════════════════════════════════════════════════
      PERSONNEL — СОСТОЯНИЕ
@@ -15651,7 +15797,9 @@
     const loginBtn = document.getElementById('global-login-btn');
     if (!wrap || !badge) return;
     if (_auth) {
-      badge.textContent = _auth.name + ' [Ранг ' + _auth.rank + ' · ' + _auth.dept + ']';
+      badge.textContent = _auth.name;
+      const metaEl = document.getElementById('officer-drop-meta');
+      if (metaEl) metaEl.textContent = 'Ранг ' + _auth.rank + ' · ' + _auth.dept;
       wrap.style.display = 'inline-flex';
       if (loginBtn) loginBtn.style.display = 'none';
       document.body.classList.add('is-authed');
@@ -15687,14 +15835,12 @@
   }
 
   function doLogout() {
-    // Используем Firebase Auth logout
-    if (typeof firebase !== 'undefined' && firebase.auth) {
-      firebase.auth().signOut().catch(() => {});
-    }
+    // Выход только из модерки (не из Firebase аккаунта)
     _auth = null;
     officerAuthed = false;
     sessionStorage.removeItem('_mvd_slot');
     updateAuthBadge();
+    showToast('Вы вышли из режима офицера.', 'info');
   }
 
   /* ── Восстановление сессии — теперь через Firebase Auth onAuthStateChanged ── */
@@ -16841,8 +16987,45 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Глобальные функции — доступны сразу, до инициализации Firebase
 window.openAuthOverlay = function() {
+  closeHdrDrops();
   const ov = document.getElementById('auth-overlay');
-  if (ov) { ov.style.display = 'flex'; ov.classList.remove('hiding'); }
+  if (ov) {
+    ov.style.visibility = 'visible';
+    ov.style.opacity = '1';
+    ov.style.pointerEvents = 'all';
+    ov.classList.remove('hiding');
+  }
+};
+
+window.toggleHdrDrop = function(id) {
+  const drop = document.getElementById(id);
+  if (!drop) return;
+  const isOpen = drop.classList.contains('open');
+  closeHdrDrops();
+  if (!isOpen) drop.classList.add('open');
+};
+
+window.closeHdrDrops = function() {
+  document.querySelectorAll('.hdr-dropdown').forEach(d => d.classList.remove('open'));
+};
+
+// Закрывать при клике вне
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.hdr-icon-btn') && !e.target.closest('.hdr-dropdown')) {
+    closeHdrDrops();
+  }
+});
+
+window.hideAuthOverlay = function() {
+  const ov = document.getElementById('auth-overlay');
+  if (!ov) return;
+  ov.classList.add('hiding');
+  setTimeout(() => {
+    ov.style.visibility = 'hidden';
+    ov.style.opacity = '0';
+    ov.style.pointerEvents = 'none';
+    ov.classList.remove('hiding');
+  }, 300);
 };
 
 window.authSwitchTab = function(tab) {
@@ -16850,14 +17033,12 @@ window.authSwitchTab = function(tab) {
   const ok  = document.getElementById('auth-ok');
   if (err) err.classList.remove('show');
   if (ok)  ok.classList.remove('show');
-  const fl = document.getElementById('auth-form-login');
-  const fr = document.getElementById('auth-form-register');
-  const tl = document.getElementById('tab-login');
-  const tr = document.getElementById('tab-register');
-  if (fl) fl.style.display    = tab === 'login'    ? '' : 'none';
-  if (fr) fr.style.display    = tab === 'register' ? '' : 'none';
-  if (tl) tl.classList.toggle('active', tab === 'login');
-  if (tr) tr.classList.toggle('active', tab === 'register');
+  ['login','register','rename'].forEach(t => {
+    const form = document.getElementById('auth-form-' + t);
+    const btn  = document.getElementById('tab-' + t);
+    if (form) form.style.display = t === tab ? '' : 'none';
+    if (btn)  btn.classList.toggle('active', t === tab);
+  });
 };
 
 // Остальное — после загрузки страницы когда Firebase точно готов
@@ -16869,6 +17050,9 @@ window.addEventListener('load', function() {
 
   const auth = firebase.auth();
   const db   = firebase.firestore();
+
+  // Сохранять сессию между обновлениями страницы
+  auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(() => {});
 
   function authShowErr(msg) {
     const el = document.getElementById('auth-err');
@@ -16900,12 +17084,19 @@ window.addEventListener('load', function() {
   function hideAuthOverlay() {
     const ov = document.getElementById('auth-overlay');
     ov.classList.add('hiding');
-    setTimeout(() => { ov.style.display = 'none'; ov.classList.remove('hiding'); }, 350);
+    setTimeout(() => {
+      ov.style.visibility = 'hidden';
+      ov.style.opacity = '0';
+      ov.style.pointerEvents = 'none';
+      ov.classList.remove('hiding');
+    }, 350);
   }
 
   window.openAuthOverlay = function() {
     const ov = document.getElementById('auth-overlay');
-    ov.style.display = 'flex';
+    ov.style.visibility = 'visible';
+    ov.style.opacity = '1';
+    ov.style.pointerEvents = 'all';
     ov.classList.remove('hiding');
   };
 
@@ -16923,21 +17114,61 @@ window.addEventListener('load', function() {
   function updateAccountBadge(user) {
     const btn   = document.getElementById('account-btn');
     const badge = document.getElementById('fb-account-badge');
-    const nameEl = document.getElementById('fb-account-name-text');
-    if (!btn || !badge) return;
+    const nameEl  = document.getElementById('fb-account-name-text');
+    const emailEl = document.getElementById('fb-account-email-text');
+    if (!badge) return;
     if (user) {
       const name = user.displayName || user.email.split('@')[0];
-      if (nameEl) nameEl.textContent = name;
-      btn.style.display = 'none';
-      badge.style.display = 'inline-flex';
+      if (nameEl)  nameEl.textContent  = name;
+      if (emailEl) emailEl.textContent = user.email;
+      if (btn) btn.style.display = 'none';
+      badge.style.display = 'block';
     } else {
-      btn.style.display = 'inline-flex';
+      if (btn) btn.style.display = 'inline-flex';
       badge.style.display = 'none';
     }
   }
 
   // ── Применить профиль из Firestore ─────────────────────────
   async function applyUserProfile(user) {
+    // Строгая проверка подтверждения email
+    if (!user.emailVerified) {
+      hideAuthOverlay();
+      // Показываем плашку "подтверди почту" вместо доступа
+      let verifyBanner = document.getElementById('auth-verify-banner');
+      if (!verifyBanner) {
+        verifyBanner = document.createElement('div');
+        verifyBanner.id = 'auth-verify-banner';
+        verifyBanner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99990;background:#b8860b;color:white;padding:10px 16px;display:flex;align-items:center;justify-content:center;gap:12px;font-size:13px;font-weight:600;font-family:inherit;';
+        verifyBanner.innerHTML = `
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>Подтверди email — письмо отправлено на <strong>${user.email}</strong></span>
+          <button onclick="doAuthResendVerification()" style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.4);color:white;padding:4px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;">Отправить повторно</button>
+          <button onclick="doAuthLogout()" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:4px 10px;border-radius:6px;font-size:12px;cursor:pointer;font-family:inherit;">Выйти</button>
+        `;
+        document.body.appendChild(verifyBanner);
+      }
+      // Периодически проверяем — вдруг подтвердил
+      if (!window._verifyInterval) {
+        window._verifyInterval = setInterval(async () => {
+          await user.reload();
+          if (user.emailVerified) {
+            clearInterval(window._verifyInterval);
+            window._verifyInterval = null;
+            const banner = document.getElementById('auth-verify-banner');
+            if (banner) banner.remove();
+            await applyUserProfile(user);
+          }
+        }, 5000);
+      }
+      return false;
+    }
+
+    // Email подтверждён — убираем баннер если был
+    const verifyBanner = document.getElementById('auth-verify-banner');
+    if (verifyBanner) verifyBanner.remove();
+    if (window._verifyInterval) { clearInterval(window._verifyInterval); window._verifyInterval = null; }
+
     try {
       const doc = await db.collection('user_profiles').doc(user.uid).get();
       if (doc.exists) {
@@ -16946,7 +17177,6 @@ window.addEventListener('load', function() {
         const dept = data.dept || 'МВД';
         const name = data.display_name || user.displayName || user.email.split('@')[0];
         if (rank > 0) {
-          // Ранг назначен — входим на сайт
           _auth = { rank, dept, name, slot: user.uid, email: user.email, uid: user.uid };
           officerAuthed = true;
           hidePendingScreen();
@@ -16959,15 +17189,26 @@ window.addEventListener('load', function() {
           return true;
         }
       }
-      // Ранг не назначен — просто скрываем оверлей, сайт доступен как гость
       updateAccountBadge(user);
       hideAuthOverlay();
       return false;
     } catch(e) {
-      showPendingScreen(user.email);
+      hideAuthOverlay();
       return false;
     }
   }
+
+  // ── Повторная отправка письма ──────────────────────────────
+  window.doAuthResendVerification = async function() {
+    const user = auth.currentUser;
+    if (!user) return;
+    try {
+      await user.sendEmailVerification();
+      showToast('Письмо отправлено повторно на ' + user.email, 'ok');
+    } catch(e) {
+      showToast('Не удалось отправить. Подожди немного.', 'warn');
+    }
+  };
 
   // ── Вход ───────────────────────────────────────────────────
   window.doAuthLogin = async function() {
@@ -17009,6 +17250,10 @@ window.addEventListener('load', function() {
     const pass2 = (document.getElementById('auth-reg-pass2').value || '');
     if (!name)          { authShowErr('Введи игровой ник.'); return; }
     if (name.length < 3){ authShowErr('Ник слишком короткий.'); return; }
+    if (!/^[A-Za-zА-Яа-яЁёa-zA-Z0-9_\-]+ [A-Za-zА-Яа-яЁёa-zA-Z0-9_\-]+/.test(name)){
+      authShowErr('Введи ник в формате: Имя Фамилия (например: Ivan Ivanov).');
+      return;
+    }
     if (!email)         { authShowErr('Введи email.'); return; }
     if (pass.length < 6){ authShowErr('Пароль должен быть минимум 6 символов.'); return; }
     if (pass !== pass2) { authShowErr('Пароли не совпадают.'); return; }
@@ -17027,10 +17272,11 @@ window.addEventListener('load', function() {
         registered_at: new Date().toISOString(),
         active:       true,
       });
+      // Отправить письмо подтверждения
+      try { await cred.user.sendEmailVerification(); } catch(_) {}
       // Закрываем форму и показываем уведомление
       hideAuthOverlay();
-      authShowOk('Аккаунт создан!');
-      showToast('Аккаунт создан. Пользуйся порталом — ранг назначит Министр.', 'ok');
+      showToast('Аккаунт создан! Проверь почту для подтверждения email.', 'ok');
     } catch(e) {
       const msgs = {
         'auth/email-already-in-use': 'Этот email уже используется. Попробуй войти или восстановить пароль.',
@@ -17042,6 +17288,40 @@ window.addEventListener('load', function() {
       authShowErr(msgs[e.code] || 'Не удалось создать аккаунт. Попробуй ещё раз.');
     }
     authSetLoading('auth-reg-btn', false);
+  };
+
+  // ── Смена ника ────────────────────────────────────────────
+  window.doAuthRename = async function() {
+    authClearMsgs();
+    const newName = (document.getElementById('auth-rename-name')?.value || '').trim();
+    const pass    = (document.getElementById('auth-rename-pass')?.value || '');
+    const user    = auth.currentUser;
+    if (!user)    { authShowErr('Сначала войди в аккаунт.'); return; }
+    if (!newName) { authShowErr('Введи новый ник.'); return; }
+    if (!/^[A-Za-zА-Яа-яЁё\w\-]+ [A-Za-zА-Яа-яЁё\w\-]+/.test(newName)) {
+      authShowErr('Ник должен быть в формате: Имя Фамилия');
+      return;
+    }
+    if (!pass)    { authShowErr('Введи пароль для подтверждения.'); return; }
+    const btn = document.getElementById('auth-rename-btn');
+    if (btn) { btn.disabled = true; btn.textContent = 'Сохранение...'; }
+    try {
+      // Переавторизация для безопасности
+      const cred = firebase.auth.EmailAuthProvider.credential(user.email, pass);
+      await user.reauthenticateWithCredential(cred);
+      await user.updateProfile({ displayName: newName });
+      await db.collection('user_profiles').doc(user.uid).update({ display_name: newName });
+      updateAccountBadge(user);
+      hideAuthOverlay();
+      showToast('Ник успешно изменён на: ' + newName, 'ok');
+    } catch(e) {
+      const msgs = {
+        'auth/wrong-password':    'Неверный пароль.',
+        'auth/too-many-requests': 'Слишком много попыток. Подожди немного.',
+      };
+      authShowErr(msgs[e.code] || 'Не удалось сменить ник. Попробуй ещё раз.');
+    }
+    if (btn) { btn.disabled = false; btn.textContent = 'Сменить ник'; }
   };
 
   // ── Восстановление пароля ──────────────────────────────────
