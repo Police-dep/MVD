@@ -16994,6 +16994,24 @@ window.openAuthOverlay = function() {
     ov.style.opacity = '1';
     ov.style.pointerEvents = 'all';
     ov.classList.remove('hiding');
+    setTimeout(async () => {
+      // Пробуем автозаполнить через Credential Management API
+      if (window.PasswordCredential && navigator.credentials) {
+        try {
+          const cred = await navigator.credentials.get({ password: true, mediation: 'optional' });
+          if (cred) {
+            const emailEl = document.getElementById('auth-login-email');
+            const passEl  = document.getElementById('auth-login-pass');
+            if (emailEl) emailEl.value = cred.id;
+            if (passEl)  passEl.value  = cred.password;
+            return;
+          }
+        } catch(e) {}
+      }
+      // Fallback: просто ставим фокус чтобы Chrome показал выпадашку
+      const emailInput = document.getElementById('auth-login-email');
+      if (emailInput) emailInput.focus();
+    }, 80);
   }
 };
 
@@ -17098,6 +17116,22 @@ window.addEventListener('load', function() {
     ov.style.opacity = '1';
     ov.style.pointerEvents = 'all';
     ov.classList.remove('hiding');
+    setTimeout(async () => {
+      if (window.PasswordCredential && navigator.credentials) {
+        try {
+          const cred = await navigator.credentials.get({ password: true, mediation: 'optional' });
+          if (cred) {
+            const emailEl = document.getElementById('auth-login-email');
+            const passEl  = document.getElementById('auth-login-pass');
+            if (emailEl) emailEl.value = cred.id;
+            if (passEl)  passEl.value  = cred.password;
+            return;
+          }
+        } catch(e) {}
+      }
+      const emailInput = document.getElementById('auth-login-email');
+      if (emailInput) emailInput.focus();
+    }, 80);
   };
 
   // ── Показать/скрыть экран ожидания ─────────────────────────
@@ -17220,6 +17254,13 @@ window.addEventListener('load', function() {
     authSetLoading('auth-login-btn', true);
     try {
       const cred = await auth.signInWithEmailAndPassword(email, pass);
+      // Сообщаем браузеру об успешном входе — он запомнит этот аккаунт
+      if (window.PasswordCredential && navigator.credentials) {
+        try {
+          const pwCred = new PasswordCredential({ id: email, password: pass });
+          await navigator.credentials.store(pwCred);
+        } catch(e) {}
+      }
       await applyUserProfile(cred.user);
     } catch(e) {
       const msgs = {
