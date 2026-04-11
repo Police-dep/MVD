@@ -1163,7 +1163,10 @@
       .app-type-desc { font-size: 11px; }
       .form-card { padding: 16px; border-radius: 12px; }
       .form-row { grid-template-columns: 1fr; gap: 0; }
-      .rules-card { display: none; } /* Скрываем правила на мобильном — экономим место */
+      /* Скрываем правила в разделе отчётов/трудоустройства, но не в жалобах */
+      .req-sidebar .rules-card,
+      .reports-layout .rules-card,
+      .req-sidebar { display: none; }
 
       /* Subtab nav */
       /* ── Фикс переполнения текста в flex-блоках статей ── */
@@ -1412,6 +1415,7 @@
     }
     .app-type-card.selected .app-type-icon,
     .app-type-card.selected .app-type-name { color: white; }
+    .app-type-card.selected .app-type-icon svg { color: white; }
     .app-type-card.selected .app-type-desc { color: rgba(255,255,255,0.55); }
     .app-type-icon { font-size: 26px; margin-bottom: 10px; display:flex; align-items:center; justify-content:center; }
     .app-type-icon svg { width: 26px; height: 26px; color: var(--navy); }
@@ -1841,6 +1845,8 @@
       display: none; position: fixed; inset: 0; z-index: 400;
       background: rgba(26,35,64,0.7); backdrop-filter: blur(6px);
       justify-content: center; align-items: center;
+      padding: 20px 0;
+      overflow-y: auto;
     }
     .pw-overlay.open { display: flex; }
     .pw-box {
@@ -1885,6 +1891,33 @@
       font-family: 'DM Sans', sans-serif;
     }
     .pw-cancel:hover { color: var(--navy); }
+
+    @media (max-width: 480px) {
+      .pw-box {
+        padding: 28px 20px;
+        border-radius: 16px;
+        margin: 0 12px;
+        max-height: 90vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .pw-input {
+        font-size: 16px; /* prevents iOS zoom */
+        padding: 14px 12px;
+      }
+      .pw-btn {
+        padding: 14px;
+        font-size: 15px;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+      }
+      .pw-cancel {
+        padding: 12px;
+        font-size: 14px;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+      }
+    }
 
     /* Loading spinner in inbox */
     .inbox-loading {
@@ -4118,11 +4151,16 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </button>
         <div id="fb-account-badge" style="display:none;position:relative;">
-          <button class="hdr-icon-btn active-account" id="fb-account-name" onclick="toggleHdrDrop('account-drop')" title="Аккаунт">
+          <button class="hdr-icon-btn active-account" id="fb-account-name" onclick="toggleHdrDrop('account-drop')" title="Аккаунт" style="position:relative;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span id="account-unverified-dot" style="display:none;position:absolute;top:-4px;right:-4px;width:10px;height:10px;background:#b8860b;border-radius:50%;border:2px solid white;" title="Email не подтверждён"></span>
           </button>
           <div class="hdr-dropdown" id="account-drop">
             <div class="hdr-drop-header">Мой аккаунт</div>
+            <div id="account-unverified-banner" style="display:none;margin:6px 10px;padding:8px 10px;background:#FFF8E1;border:1px solid #FFD54F;border-radius:8px;font-size:11px;color:#7B5E00;line-height:1.4;">
+              ⚠ Email не подтверждён.<br/>Проверьте почту и перейдите по ссылке.
+              <button onclick="doAuthResendVerification();closeHdrDrops();" style="display:block;margin-top:6px;background:none;border:none;color:#7B5E00;font-size:11px;font-weight:700;cursor:pointer;padding:0;font-family:inherit;text-decoration:underline;">Отправить письмо повторно</button>
+            </div>
             <div class="hdr-drop-info">
               <div class="hdr-drop-name" id="fb-account-name-text"></div>
               <div class="hdr-drop-meta" id="fb-account-email-text"></div>
@@ -5129,7 +5167,6 @@
     <div class="reports-subtab-nav">
       <button class="reports-subtab active" data-stab="submit"  onclick="switchSubtab(this,'submit')">Подать отчёт</button>
       <button class="reports-subtab"        data-stab="all"     onclick="switchSubtab(this,'all')">Все отчёты</button>
-      <button class="reports-subtab"        data-stab="edit"    onclick="switchSubtab(this,'edit')">Редактировать отчёт</button>
       <button class="reports-subtab"        data-stab="points"  onclick="switchSubtab(this,'points')">Таблица баллов</button>
     </div>
 
@@ -5139,7 +5176,6 @@
         <select class="reports-mobile-select" id="reports-mobile-select" onchange="switchSubtabMobile(this.value)">
           <option value="submit">Подать отчёт</option>
           <option value="all">Все отчёты</option>
-          <option value="edit">Редактировать отчёт</option>
           <option value="points">Таблица баллов</option>
         </select>
       </div>
@@ -5185,23 +5221,19 @@
                   <label>Имя и Фамилия <span class="req">*</span></label>
                   <input type="text" id="rpt-name" required/>
                 </div>
-                <div class="form-group" id="rpt-rank-wrap">
-                  <label>Текущее звание <span class="req">*</span></label>
-                  <input type="text" id="rpt-rank"/>
+                <div class="form-group" id="rpt-account-wrap">
+                  <label>Номер аккаунта <span class="req">*</span></label>
+                  <input type="number" id="rpt-account"/>
                 </div>
               </div>
-              <div class="form-group" id="rpt-account-wrap">
-                <label>Номер аккаунта <span class="req">*</span></label>
-                <input type="number" id="rpt-account"/>
+              <div class="form-group" id="rpt-rank-wrap">
+                <label>Текущее звание <span class="req">*</span></label>
+                <input type="text" id="rpt-rank"/>
               </div>
               <div class="conditional-field" id="rpt-fields-promotion">
                 <div class="form-group">
-                  <label>Желаемое звание</label>
-                  <input type="text" id="rpt-target"/>
-                </div>
-                <div class="form-group">
-                  <label>Обоснование</label>
-                  <div style="font-size:11.5px;color:var(--grey);margin-bottom:6px;line-height:1.5;">Сданные экзамены, дни в звании, достижения, скриншоты</div>
+                  <label>Проделанная работа <span class="req">*</span></label>
+                  <div style="font-size:11.5px;color:var(--grey);margin-bottom:6px;line-height:1.5;">Патрули, блок-посты, тренировки, спецоперации, достижения, сданные экзамены</div>
                   <textarea id="rpt-promo-reason" style="min-height:100px;width:100%;padding:11px 14px;border:1.5px solid var(--grey-light);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:var(--cream);outline:none;resize:vertical;"></textarea>
                 </div>
               </div>
@@ -5222,17 +5254,19 @@
                 </div>
               </div>
               <div class="conditional-field" id="rpt-fields-weekly">
-                <div class="form-group">
-                  <label>Должность и звание <span class="req">*</span></label>
-                  <input type="text" id="rpt-sr-pos" placeholder="напр. Ст. лейтенант / Зам. начальника"/>
-                </div>
-                <div class="form-group">
-                  <label>Период отчёта</label>
-                  <input type="text" id="rpt-sr-period" placeholder="напр. 11.02 — 17.02.2026"/>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Должность и звание <span class="req">*</span></label>
+                    <input type="text" id="rpt-sr-pos" placeholder="Ст. лейтенант"/>
+                  </div>
+                  <div class="form-group">
+                    <label>Период отчёта</label>
+                    <input type="text" id="rpt-sr-period" placeholder="11.02 — 17.02.2026"/>
+                  </div>
                 </div>
                 <div class="form-group">
                   <label>Проделанная работа <span class="req">*</span></label>
-                  <div style="font-size:11.5px;color:var(--grey);margin-bottom:6px;line-height:1.5;">Патрулирования, спец. операции, тренировки и т.д.</div>
+                  <div style="font-size:11.5px;color:var(--grey);margin-bottom:6px;line-height:1.5;">Патрули, блок-посты, тренировки, спецоперации и прочее</div>
                   <textarea id="rpt-sr-work" style="min-height:130px;width:100%;padding:11px 14px;border:1.5px solid var(--grey-light);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:var(--cream);outline:none;resize:vertical;"></textarea>
                 </div>
               </div>
@@ -5254,11 +5288,10 @@
         </div>
 
         <!-- Правила справа -->
-        <div style="display:flex;flex-direction:column;gap:14px;position:sticky;top:96px;">
+        <div style="display:flex;flex-direction:column;gap:14px;position:sticky;top:96px;padding-top:52px;">
           <div class="rules-card" id="rules-promotion">
             <div class="rules-card-header"><div class="rules-icon navy"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></div><div class="rules-card-title">Отчёт на повышение</div></div>
             <div class="rules-body">
-              <div class="rule-item"><div class="rule-dot"></div><div>Укажите текущее звание и желаемое</div></div>
               <div class="rule-item"><div class="rule-dot"></div><div>Сданные экзамены — подтверждающий скриншот</div></div>
               <div class="rule-item"><div class="rule-dot"></div><div>Отсутствие активных взысканий обязательно</div></div>
             </div>
@@ -5871,7 +5904,7 @@
       </div>
     </div>
 
-    <!-- Правила справа (две карточки друг под другом, параллельно форме) -->
+    <!-- Правила справа -->
     <div class="rules-sidebar">
 
       <div class="rules-card">
@@ -5880,10 +5913,11 @@
           <div class="rules-card-title">Правила оформления</div>
         </div>
         <div class="rules-body">
-          <div class="rule-item"><div class="rule-dot"></div><div>Название темы — только номер: «Жалоба №23». Слова «ДМ», «ТК», «Беспредел» — запрещены.</div></div>
-          <div class="rule-item"><div class="rule-dot"></div><div>Если видео длиннее 1 минуты — обязательно указать временну́ю метку.</div></div>
-          <div class="rule-item"><div class="rule-dot"></div><div>Ник и номер аккаунта указываются раздельно.</div></div>
-          <div class="rule-item"><div class="rule-dot"></div><div>Если департамент известен — укажите: [LS/SF/LV] Жалоба №45.</div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div>Укажите точный ник нарушителя — он должен совпадать с ником на доказательствах.</div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div>Номер аккаунта нарушителя указывается отдельно от ника.</div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div>Если видео длиннее 1 минуты — обязательно указать временну́ю метку в описании.</div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div>Жалоба подаётся не позднее 48 часов с момента нарушения.</div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div>Описание должно быть конкретным и конструктивным — без мата и оскорблений.</div></div>
         </div>
       </div>
 
@@ -5893,12 +5927,11 @@
           <div class="rules-card-title">Не принимаются жалобы</div>
         </div>
         <div class="rules-body">
-          <div class="rule-item"><div class="rule-dot red"></div><div>Без доказательств или с доказательствами старше 2 дней.</div></div>
-          <div class="rule-item"><div class="rule-dot red"></div><div>Оформленные не по форме или от третьего лица.</div></div>
-          <div class="rule-item"><div class="rule-dot red"></div><div>Без команды /время на доказательствах.</div></div>
-          <div class="rule-item"><div class="rule-dot red"></div><div>С редактированными или замазанными материалами.</div></div>
-          <div class="rule-item"><div class="rule-dot red"></div><div>С видео без звука, если он необходим для понимания.</div></div>
-          <div class="rule-item"><div class="rule-dot red"></div><div>Если скриншот из КПЗ — нужен момент ликвидации (0 хп + таймер).</div></div>
+          <div class="rule-item"><div class="rule-dot red"></div><div>Без доказательств или с доказательствами старше 48 часов.</div></div>
+          <div class="rule-item"><div class="rule-dot red"></div><div>Ник в жалобе не совпадает с ником на видео/скриншоте.</div></div>
+          <div class="rule-item"><div class="rule-dot red"></div><div>Видео от третьего лица без чёткого доказательства нарушения.</div></div>
+          <div class="rule-item"><div class="rule-dot red"></div><div>Отредактированные или замазанные скриншоты и видео.</div></div>
+          <div class="rule-item"><div class="rule-dot red"></div><div>Жалобы с оскорблениями, матом или без нормального описания.</div></div>
         </div>
       </div>
 
@@ -6341,10 +6374,16 @@
     <div class="pw-title">Код доступа</div>
     <div class="pw-desc">Введите персональный код доступа. Уровень прав определяется автоматически.</div>
     <input type="password" class="pw-input" id="pw-input" placeholder="••••••••" maxlength="32"
-      onkeydown="if(event.key==='Enter')checkPassword()"/>
-    <button class="pw-btn" id="pw-submit-btn" onclick="checkPassword()">Войти</button>
+      autocomplete="current-password"
+      onkeyup="if(event.key==='Enter'||event.keyCode===13)checkPassword()"
+      onkeydown="if(event.key==='Enter'||event.keyCode===13){event.preventDefault();checkPassword();}"/>
+    <button type="button" class="pw-btn" id="pw-submit-btn"
+      onclick="if(!this._touched)checkPassword();this._touched=false;"
+      ontouchend="event.preventDefault();this._touched=true;checkPassword();">Войти</button>
     <div class="pw-error" id="pw-error"></div>
-    <button class="pw-cancel" onclick="cancelPassword()">Отмена</button>
+    <button type="button" class="pw-cancel"
+      onclick="cancelPassword()"
+      ontouchend="event.preventDefault();cancelPassword();">Отмена</button>
   </div>
 </div>
 
@@ -6580,7 +6619,7 @@
         const waitMin = Math.ceil((windowMs - (now - recent[0])) / 60000);
         const deptLabel = isReport && currentDept ? ' (' + currentDept + ')' : '';
         sysAlert(
-          'Превышен лимит отправок' + deptLabel + ' — <strong>' + maxCount + ' в час</strong>.<br>Попробуй через <strong>' + waitMin + ' мин.</strong>',
+          'Слишком много отправок' + deptLabel + '.<br>Попробуй через <strong>' + waitMin + ' мин.</strong>',
           {type:'warn', title:'Лимит исчерпан'}
         );
         return false;
@@ -6659,7 +6698,11 @@
     document.getElementById('pw-error').textContent = '';
     document.getElementById('pw-input').classList.remove('error');
     document.getElementById('modal-pw-gate').classList.add('open');
-    setTimeout(() => document.getElementById('pw-input').focus(), 100);
+    // На iOS focus() работает только в user-gesture контексте — небольшая задержка
+    setTimeout(() => {
+      const inp = document.getElementById('pw-input');
+      if (inp) inp.focus();
+    }, 150);
   }
 
   async function checkPassword() {
@@ -6686,8 +6729,11 @@
         document.getElementById('modal-complaints-inbox').classList.add('open');
         refreshInbox('complaints');
       } else if (pendingInboxTarget === 'login') {
-        // просто авторизация — ничего дополнительно не открываем
+        // просто авторизация — перерисовываем текущий открытый отчёт/жалобу если есть
         showToast('Добро пожаловать, ' + (_auth ? _auth.name : '') + ' [Ранг ' + (_auth ? _auth.rank : '') + ']');
+        if (_selAllId) showAllReportDetail(_selAllId);
+        if (selectedComplaintId) showComplaintDetail(selectedComplaintId);
+        if (selectedEmpId) showEmpDetail(selectedEmpId);
       } else if (pendingInboxTarget === 'unlock-emp') {
         if (selectedEmpId) showEmpDetail(selectedEmpId);
       } else if (pendingInboxTarget === 'unlock-complaints') {
@@ -6872,7 +6918,7 @@
   }
 
   function openBlacklistAdd() {
-    if (!_auth || _auth.rank < 11) { sysAlert('Добавлять в чёрный список могут только офицеры <b>ранга 11</b>.', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
+    if (!_auth || _auth.rank < 11) { sysAlert('Недостаточно прав для управления чёрным списком.', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
     const form = document.getElementById('bl-add-form');
     form.style.display = form.style.display === 'none' ? 'block' : 'none';
     if (form.style.display !== 'none') {
@@ -6900,7 +6946,7 @@
   }
 
   async function deleteBlacklistEntry(id) {
-    if (!_auth || _auth.rank < 11) { sysAlert('Удалять из чёрного списка могут только офицеры <b>ранга 11</b>.', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
+    if (!_auth || _auth.rank < 11) { sysAlert('Недостаточно прав для управления чёрным списком.', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
     if (!await sysConfirm('Удалить запись из чёрного списка?', {title:'Удаление из ЧС', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>', okText:'Удалить'})) return;
     try {
       await fbDelete('blacklist', id);
@@ -7118,13 +7164,44 @@
         case 'updateStatus': {
           const MAP = { Reports:'reports', SeniorReports:'senior_reports',
                         Complaints:'complaints', Employment:'employment' };
-          await fbUpdate(MAP[data.sheet]||data.sheet, data.id, {
-            status:       data.status,
-            note:         data.note||'',
-            reviewer:     data.reviewer     || authName(),
-            reviewer_pos: data.reviewer_pos || (authName()+' [Ранг '+authRank()+']'),
-            reviewer_ts:  data.reviewer_ts  || ts,
-          });
+          const col = MAP[data.sheet]||data.sheet;
+          // Для жалоб — дописываем в историю вердиктов
+          if (col === 'complaints') {
+            const docSnap = await getDb().collection(col).doc(data.id).get();
+            const existing = docSnap.exists ? (docSnap.data().verdict_history || []) : [];
+            const prevData = docSnap.exists ? docSnap.data() : {};
+            if (prevData.note && prevData.reviewer) {
+              existing.push({ status: prevData.status||'', note: prevData.note, reviewer: prevData.reviewer, reviewer_rank: prevData.reviewer_rank||0, ts: prevData.reviewer_ts||'' });
+            }
+            await fbUpdate(col, data.id, {
+              status:        data.status,
+              note:          data.note||'',
+              reviewer:      data.reviewer      || authName(),
+              reviewer_rank: data.reviewer_rank || authRank(),
+              reviewer_dept: data.reviewer_dept || authDept(),
+              reviewer_pos:  data.reviewer_pos  || (authName()+' [Ранг '+authRank()+']'),
+              reviewer_ts:   data.reviewer_ts   || ts,
+              verdict_history: existing,
+            });
+          } else {
+            // Для отчётов — тоже сохраняем историю вердиктов
+            const docSnap2 = await getDb().collection(col).doc(data.id).get();
+            const existing2 = docSnap2.exists ? (docSnap2.data().verdict_history || []) : [];
+            const prevData2 = docSnap2.exists ? docSnap2.data() : {};
+            if (prevData2.note && prevData2.reviewer) {
+              existing2.push({ status: prevData2.status||'', note: prevData2.note, reviewer: prevData2.reviewer, reviewer_rank: prevData2.reviewer_rank||0, ts: prevData2.reviewer_ts||'' });
+            }
+            await fbUpdate(col, data.id, {
+              status:        data.status,
+              note:          data.note||'',
+              reviewer:      data.reviewer      || authName(),
+              reviewer_rank: data.reviewer_rank || authRank(),
+              reviewer_dept: data.reviewer_dept || authDept(),
+              reviewer_pos:  data.reviewer_pos  || (authName()+' [Ранг '+authRank()+']'),
+              reviewer_ts:   data.reviewer_ts   || ts,
+              verdict_history: existing2,
+            });
+          }
           const lbl = {approved:'ОДОБРЕНИЕ',rejected:'ОТКАЗ',review:'ДОРАБОТКА'}[data.status]||'РЕШЕНИЕ';
           writeLog(lbl, data.sheet, data.id, data.note||'');
           break;
@@ -7164,6 +7241,305 @@
   }
 
   /* ══════════════════════════════════════════════════════════════
+     ФИЛЬТР НЕЦЕНЗУРНЫХ СЛОВ
+  ══════════════════════════════════════════════════════════════ */
+  const _PROFANITY = [
+    // ═══ ХУЙ и все формы ═══
+    'хуй','хуя','хую','хуе','хуём','хуёв','хуям','хуях','хуями',
+    'хуйня','хуйло','хуйлище','хуйнюшка',
+    'хуесос','хуесосы','хуесоска',
+    'хуеплёт','хуеплет','хуеплёты',
+    'хуеглот','хуеглоты',
+    'хуйня','хуёвый','хуёво','хуёвина',
+    'захуярить','похуярить','нахуй','нахуяри','похуй','похую','похуем',
+    'нахуярить','захуй','дохуя','дохуйища','дохуища',
+    'охуеть','охуел','охуела','охуели','охуевать','охуевший',
+    'охуенно','охуенный','охуительно','охуительный',
+    'выхуй','схуяли','схуя','сохуяли','ахуеть','ахуел','ахуела',
+    'хуйнуть','хуйнул','хуйнула',
+    'хуеверт','хуевёрт',
+    'хуесранец','хуила',
+    'нихуя','нихуёв','ничуяшеньки',
+
+    // ═══ ПИЗДА и все формы ═══
+    'пизда','пизды','пизде','пизду','пиздой','пизд',
+    'пёзда','пёзды','пёзде',
+    'пиздец','пиздецу','пиздецом',
+    'пиздёж','пиздёжа','пиздёжу','пиздёжом',
+    'пиздить','пиздит','пиздил','пиздила','пиздили',
+    'пиздун','пиздуны','пиздунья',
+    'пиздатый','пиздато','пиздатая','пиздатое',
+    'пиздоватый','пиздоват',
+    'пиздобол','пиздаболы','пиздабол','пиздоболы',
+    'пиздануть','пиздануло','пизданул','пизданула',
+    'пиздёнок','пиздёныш',
+    'пиздострадалец',
+    'отпиздить','отпиздил','отпиздили',
+    'запиздить','запиздил',
+    'напиздить','напиздил',
+    'выпиздить','выпиздил',
+    'попиздеть','попиздел',
+    'пиздиш','пиздишь',
+    'распиздяй','распиздяи','распиздяйство',
+    'распиздай','распиздаи',
+    'спиздить','спиздил','спиздила',
+
+    // ═══ ЕБАТЬ и все формы ═══
+    'ебать','ебёт','ебут','ебал','ебала','ебали',
+    'ебись','ебитесь','ебись',
+    'ёб','ёба','ёбаный','ёбаная','ёбаное','ёбаных','ёбаные',
+    'ёбнуть','ёбнул','ёбнула','ёбнули','ёбнуло',
+    'ёбнутый','ёбнутая','ёбнутые',
+    'еблан','ебланы','ебланка',
+    'еблище','ебло',
+    'ебало','ебалище',
+    'ебан','ебана','ебаный',
+    'заебал','заебала','заебали','заебись',
+    'заебать','заебут','заебёт',
+    'доебать','доебался','доебалась','доебались',
+    'отъебись','отъебись','отъебать',
+    'выеби','выебать','выебал','выебала','выебали',
+    'наебать','наебал','наебала','наебали',
+    'наёб','наёбка','наёбщик','наёбщики',
+    'поёб','поебень',
+    'проебать','проебал','проебала',
+    'съебать','съебал','съебала','съебались',
+    'ёбарь','ебарь',
+    'ебать-копать',
+    'разъебать','разъебал',
+    'вьебать','вьебал','вьебала',
+    'переебать','переебал',
+    'уебать','уебал','уебала',
+    'уёбище','уёбок','уёбки',
+    'еботня','еботой',
+    'ёбать','ёбают',
+    'ёбнуться','ёбнулся','ёбнулась',
+    'заёбывать','заёбывает',
+    'соёб','соёбка',
+    'хуеёб',
+
+    // ═══ БЛЯДЬ и все формы ═══
+    'блядь','бляди','блядей','блядям','блядьми','блядях',
+    'блядина','блядины','блядине',
+    'блядский','блядская','блядское',
+    'блядство','блядствовать',
+    'блядун','блядуны','блядунья','блядуньи',
+    'блядовать','блядует',
+    'бляха','бля',
+
+    // ═══ СУКА и все формы ═══
+    'сука','суки','суку','сукой','сукам','суках','суками',
+    'сученыш','сученыши',
+    'сучара','сучары','сучарой',
+    'сучка','сучки','сучку','сучкой',
+    'сукин','сукина',
+
+    // ═══ МУДАК и все формы ═══
+    'мудак','мудаки','мудака','мудаку','мудаком','мудаках',
+    'мудачьё','мудачина',
+    'мудила','мудилы','мудиле',
+    'мудило','мудилой',
+    'мудозвон','мудозвоны',
+    'мудофил',
+    'мудень',
+
+    // ═══ ЗАЛУПА и все формы ═══
+    'залупа','залупы','залупе','залупу','залупой',
+    'залупин','залупина','залупины',
+    'залупать','залупает','залупался',
+
+    // ═══ ГАНДОН и все формы ═══
+    'гандон','гандоны','гандона','гандону','гандоном',
+    'гондон','гондоны','гондона',
+
+    // ═══ ДОЛБОЁБ и все формы ═══
+    'долбоёб','долбоеб','долбоёбы','долбоёба','долбоёбу','долбоёбом',
+    'долбоёбина','долбанутый','долбанутая','долбанутые',
+    'долбанько','долбак','долбаки',
+    'долбить','долбится',
+
+    // ═══ ШЛЮХА и все формы ═══
+    'шлюха','шлюхи','шлюхе','шлюху','шлюхой','шлюхам','шлюхами',
+    'шлюхоподобный',
+
+    // ═══ ПРОСТИТУТКА и все формы ═══
+    'проститутка','проститутки','проституткой','проституткам',
+    'проститут','проститутки',
+    'проституция',
+
+    // ═══ МРАЗЬ и все формы ═══
+    'мразь','мрази','мразью','мразей',
+    'мразота','мразотный','мразотная',
+
+    // ═══ УБЛЮДОК и все формы ═══
+    'ублюдок','ублюдки','ублюдка','ублюдку','ублюдком','ублюдках',
+    'ублюдочный','ублюдочная','ублюдочное',
+
+    // ═══ ВЫБЛЯДОК и все формы ═══
+    'выблядок','выблядки','выблядка','выблядком',
+    'выблядина','выблядины',
+
+    // ═══ ПИЗДЮК, ПИЗДЁНОК ═══
+    'пиздюк','пиздюки','пиздюка',
+    'пиздёнок','пиздёныш','пиздюлина',
+    'пиздюли','пиздюлей','пиздюлями',
+
+    // ═══ ХУЙ-производные сленг ═══
+    'хуёвый','хуёво','хуёвина','захуел','захуела',
+
+    // ═══ ПИЗДАНУТЬ / ЁБНУТЬ сленг ═══
+    'пиздануть','пизданул','ёбнуться','ёбнулся',
+
+    // ═══ ЕБЛИЩЕ / РОЖА-производные ═══
+    'морда','рожа', // только в сочетании — нет, оставим отдельно если надо
+
+    // ═══ КУРВА ═══
+    'курва','курвы','курве','курву','курвой',
+    'курвёныш',
+
+    // ═══ ПЕДЕРАСТ / ГОМОФОБ. ОСКОРБЛЕНИЯ ═══
+    'педераст','педерасты','педераста','педерасту','педерастом',
+    'педик','педики','педика',
+    'пидор','пидоры','пидора','пидору','пидором','пидорас','пидарас',
+    'пидарасы','пидарасов',
+    'гей', // не блокируем само по себе
+    'гомик','гомики',
+    'лесба','лесбиянка', // не блокируем — нейтральные
+
+    // ═══ ЁБАНЫЙ ПРОИЗВОДНЫЕ ═══
+    'ёбаный','ёбаная','ёбаные','ёбаного','ёбаному',
+    'блёваный', // нет
+    'бздёж','бздеть','бздун','бзднул',
+
+    // ═══ СРАТЬ / ДРОЧить ═══
+    'срать','срёт','срал','срала','срали',
+    'сранец','сракА','срака','сраки','сраку','сракой',
+    'засранец','засранцы','засранка',
+    'посранец',
+    'дрочить','дрочит','дрочил','дрочила','дрочат',
+    'дрочер','дрочеры','дрочила','дрочун',
+    'залупой',
+    'дрочилово',
+
+    // ═══ ЁБАНАЯ СТРАНА / ВЛАСТЬ производные ═══
+    'хуесранец','хуесосина','хуйнюшка',
+
+    // ═══ НЕЦЕНЗУРНЫЕ ПРОЗВИЩА ═══
+    'конченый','конченная','конченые','конченого',
+    'тупорылый','тупорылая','тупорылые','тупорылая',
+    'придурок','придурки','придурка','придурком',
+    'дебил','дебилы','дебила','дебилом','дебилоид','дебилоиды',
+    'идиот','идиоты','идиота','идиотом', // оставим — слабее
+    'кретин','кретины','кретина','кретином',
+    'имбецил','имбецилы',
+    'даун','дауны','дауна','дауном',
+    'урод','уроды','урода','уродом','уродина','уродины',
+
+    // ═══ БЛЯТИНА / БЛЯТСКАЯ ═══
+    'блятина','блятский','блятская',
+    'блять','бля',
+
+    // ═══ СЕКСУАЛЬНЫЕ ОСКОРБЛЕНИЯ ═══
+    'ёбаное','ёбаный',
+    'еблан','ебланы',
+
+    // ═══ ТРАНСЛИТ / LEET-варианты ═══
+    'xuj','xuy','xyu','xuya','xuem','xuynya','xuylo',
+    'pizda','pizdy','pizde','pizdets','pizdec','pizdezh','pizdit','pizdun',
+    'yebat','yebot','yoban','yebalo','yeblya','yeban',
+    'blyad','blyadi','blyads','blyadina',
+    'suka','suki','suku',
+    'mudak','mudila','mudozvo',
+    'gandоn','gandon','gondon',
+    'dolboyob','dolboyob','dolboyoby',
+    'ublyudok','vyblyad',
+    'kurva',
+    'pidor','pidoras','pedik','pederast',
+    'srat','sranets','drochat','drochit',
+
+    // ═══ АНГЛИЙСКИЙ МАТ ═══
+    'fuck','fucked','fucker','fuckers','fucking','fucks','fuckin',
+    'fuk','fukk','phuck','phuk','f u c k',
+    'shit','shits','shitty','bullshit','horseshit','dipshit',
+    'bitch','bitches','bitching','bitchy','son of a bitch',
+    'cunt','cunts','cunting',
+    'asshole','assholes','ass hole',
+    'dickhead','dickheads','dick head',
+    'motherfucker','motherfuckers','motherfuckin',
+    'bastard','bastards',
+    'whore','whores','whorish',
+    'slut','sluts','slutty',
+    'cock','cocks','cocksucker','cocksuckers',
+    'pussy','pussies',
+    'nigger','nigga','niggas','niggers',
+    'faggot','faggots','fag',
+    'retard','retards','retarded',
+    'twat','twats',
+    'prick','pricks',
+    'wanker','wankers','wank',
+    'dumbass','dumb ass','dumbasses',
+    'jackass','jack ass',
+    'shithead','shit head',
+    'arsehole','arseholes',
+    'bollocks',
+    'tosser','tossers',
+    'crap','crappy',
+    'damn','dammit',
+    'hell', // слабое, оставим без блокировки отдельно
+    'ass','asses','assy',
+    'tits','titties',
+    'boobs',
+    'penis','penises',
+    'vagina',
+    'boner',
+    'horny',
+    'rape','raped','raping','rapist',
+    'kill yourself','kys','kms',
+  ];
+
+  function containsProfanity(text) {
+    if (!text) return false;
+    const normalized = text.toLowerCase()
+      .replace(/ё/g,'е')
+      .replace(/[аa@4]/g,'а')
+      .replace(/[оo0]/g,'о')
+      .replace(/[еe3]/g,'е')
+      .replace(/[иi1!|]/g,'и')
+      .replace(/[уy]/g,'у')
+      .replace(/[хhx]/g,'х')
+      .replace(/[пp]/g,'п')
+      .replace(/[сcs$]/g,'с')
+      .replace(/[бb6]/g,'б')
+      .replace(/[дd]/g,'д')
+      .replace(/[тt7]/g,'т')
+      .replace(/[зz]/g,'з')
+      .replace(/[\s\-_.,!?*#%^&()\[\]{}'"`~\\/]+/g,'');
+    return _PROFANITY.some(w => {
+      const nw = w.toLowerCase()
+        .replace(/ё/g,'е')
+        .replace(/[аa@4]/g,'а')
+        .replace(/[оo0]/g,'о')
+        .replace(/[еe3]/g,'е')
+        .replace(/[иi1!|]/g,'и')
+        .replace(/[уy]/g,'у')
+        .replace(/[хhx]/g,'х')
+        .replace(/[пp]/g,'п')
+        .replace(/[сcs$]/g,'с')
+        .replace(/[бb6]/g,'б')
+        .replace(/[дd]/g,'д')
+        .replace(/[тt7]/g,'т')
+        .replace(/[зz]/g,'з')
+        .replace(/[\s\-_.,!?*#%^&()\[\]{}'"`~\\/]+/g,'');
+      return normalized.includes(nw);
+    });
+  }
+
+  function checkProfanity(...fields) {
+    const combined = fields.join(' ');
+    return containsProfanity(combined);
+  }
+
+  /* ══════════════════════════════════════════════════════════════
      ФОРМА ЖАЛОБЫ
   ══════════════════════════════════════════════════════════════ */
   document.getElementById('complaint-form').addEventListener('submit', async function(e) {
@@ -7177,6 +7553,10 @@
     if (!yn) { sysAlert('Укажите ваше имя.', {type:'warn', title:'Поле обязательно'}); return; }
     if (!on) { sysAlert('Укажите имя офицера.', {type:'warn', title:'Поле обязательно'}); return; }
     if (ds.length < 10) { sysAlert('Описание слишком короткое (минимум 10 символов).', {type:'warn', title:'Поле обязательно'}); return; }
+    if (checkProfanity(yn, on, ds)) {
+      sysAlert('Жалоба содержит нецензурную лексику или оскорбления.<br><small>Жалоба должна быть составлена конструктивно и без мата.</small>', {type:'error', title:'Недопустимый текст'});
+      return;
+    }
     if (!checkRateLimit('complaint')) return;
 
     btn.textContent = 'Отправка...'; btn.disabled = true;
@@ -7415,11 +7795,14 @@
       return new Date(a.timestamp||0) - new Date(b.timestamp||0);
     });
 
-    // Фильтруем по статусу
-    const filtered = chronological.filter(r => filter === 'all' || r.status === filter);
-    const total = filtered.length;
+    // Глобальная нумерация — номер = позиция в полном хронологическом списке (без фильтра)
+    const globalNumMap = new Map();
+    chronological.forEach((r, i) => globalNumMap.set(r.id, i + 1));
 
-    // Отображаем в обратном порядке (новые сверху), но номер соответствует хронологии
+    // Фильтруем по статусу (но номера берём из глобального)
+    const filtered = chronological.filter(r => filter === 'all' || r.status === filter);
+
+    // Отображаем в обратном порядке (новые сверху)
     const displayList = [...filtered].reverse();
 
     const el = document.getElementById('complaints-inbox-list');
@@ -7428,8 +7811,8 @@
       return;
     }
     el.innerHTML = displayList.map((r) => {
-      // Номер = позиция в хронологическом порядке (1 = самая старая)
-      const num = filtered.indexOf(r) + 1;
+      // Номер = глобальная позиция в хронологии (не меняется при фильтрации)
+      const num = globalNumMap.get(r.id) || '?';
       return `
       <div class="inbox-item ${selectedComplaintId===r.id?'active':''}" onclick="showComplaintDetail('${esc(r.id)}')">
         <div class="inbox-item-top">
@@ -7478,12 +7861,34 @@
         </div>
         <div style="padding:10px 14px;background:${r.status==='approved'?'var(--green-light)':r.status==='rejected'?'var(--red-light)':'#FBF5E6'};font-size:13px;color:var(--text-soft);line-height:1.6;white-space:pre-wrap;">${esc(r.note)}</div>
       </div>` : ''}
+      ${(r.verdict_history && r.verdict_history.length > 0) ? `
+      <details style="margin:8px 0 12px;">
+        <summary style="font-size:11px;font-weight:700;color:var(--grey);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;user-select:none;padding:4px 0;">
+          История вердиктов (${r.verdict_history.length})
+        </summary>
+        <div style="margin-top:8px;display:flex;flex-direction:column;gap:6px;">
+          ${r.verdict_history.map(h => {
+            const sc = h.status==='approved' ? {bg:'var(--green)',light:'var(--green-light)',lbl:'Одобрено'} :
+                       h.status==='rejected' ? {bg:'var(--red)',light:'var(--red-light)',lbl:'Отказано'} :
+                       {bg:'#6D28D9',light:'#F5F0FF',lbl:'Доработка'};
+            return `<div style="border:1px solid #e0e0e0;border-radius:8px;overflow:hidden;opacity:.8;">
+              <div style="padding:5px 12px;background:${sc.bg};display:flex;align-items:center;justify-content:space-between;gap:8px;">
+                <span style="font-size:10px;font-weight:700;color:rgba(255,255,255,.9);text-transform:uppercase;">${sc.lbl}</span>
+                <span style="font-size:10px;color:rgba(255,255,255,.65);">${esc(h.reviewer||'—')}${h.ts?' · '+esc(h.ts):''}</span>
+              </div>
+              <div style="padding:6px 12px;background:${sc.light};font-size:12px;color:var(--text-soft);white-space:pre-wrap;">${esc(h.note||'—')}</div>
+            </div>`;
+          }).join('')}
+        </div>
+      </details>` : ''}
       ${(() => {
         const prevRank = parseInt(r.reviewer_rank) || 0;
         const myRank   = authRank();
         const hasBase  = canDo('approveComplaint');
-        // Может менять вердикт: ранг 11 всегда, иначе — только если ранг выше предыдущего проверяющего
-        const canChange = hasBase && (myRank >= 11 || prevRank === 0 || myRank > prevRank);
+        // Если reviewer_rank не сохранён но reviewer есть — считаем минимальный ранг = 9
+        const effectivePrevRank = (prevRank === 0 && r.reviewer) ? 10 : prevRank;
+        // Может менять вердикт: ранг 11 всегда, иначе — только СТРОГО выше предыдущего
+        const canChange = hasBase && (myRank >= 11 || effectivePrevRank === 0 || myRank > effectivePrevRank);
         if (canChange) return `
         <div class="decision-panel">
           <div class="decision-panel-title">Решение по жалобе</div>
@@ -7499,14 +7904,14 @@
         if (!hasBase) return `
         <div class="decision-locked">
           <div class="decision-locked-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg></div>
-          <div class="decision-locked-text">Вынесение решений доступно только офицерам 9 ранга и выше.<br/>Войдите с кодом доступа чтобы продолжить.</div>
+          <div class="decision-locked-text">Вынесение решений доступно только уполномоченным офицерам.<br/>Войдите с кодом доступа чтобы продолжить.</div>
           <button class="decision-unlock-btn" onclick="openPasswordGate('unlock-complaints')">Войти как офицер</button>
         </div>`;
         // Имеет базовый доступ, но ранг недостаточен для изменения
         return `
         <div class="decision-locked">
           <div class="decision-locked-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-          <div class="decision-locked-text">Вердикт уже вынес офицер <strong>ранга ${prevRank}</strong>.<br/>Изменить его может только офицер более высокого ранга или ранга 11.</div>
+          <div class="decision-locked-text">Вердикт уже вынесен старшим составом.<br/>Изменить его может только вышестоящее руководство.</div>
         </div>`;
       })()}
       <div class="mobile-back-to-list" style="display:none;margin-top:14px;border-top:1px solid var(--grey-light);padding-top:14px;">
@@ -7551,12 +7956,14 @@
       const cItem = complaintsList.find(x => x.id === id);
       const cDept = cItem ? (cItem.dept || cItem.desired_dept || '') : '';
       if (cDept && !canModifyDept(cDept)) { sysAlert('Вы можете проверять жалобы только своего департамента (<b>' + (_auth ? _auth.dept : '') + '</b>).', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
-      // Запрет изменения вердикта: ранг проверяющего должен быть выше предыдущего (исключение — ранг 11)
+      // Запрет изменения вердикта: ранг проверяющего должен быть СТРОГО выше предыдущего (исключение — ранг 11)
       const prevRank = cItem ? (parseInt(cItem.reviewer_rank) || 0) : 0;
       const myRank   = authRank();
-      if (prevRank > 0 && myRank < 11 && myRank <= prevRank) {
+      // Если reviewer_rank не сохранён (старые жалобы) — считаем что вердикт вынес кто-то с рангом = 9 (минимальный)
+      const effectivePrevRank = (prevRank === 0 && cItem && cItem.reviewer) ? 10 : prevRank;
+      if (effectivePrevRank > 0 && myRank < 11 && myRank <= effectivePrevRank) {
         sysAlert(
-          'Этот вердикт вынес офицер <b>ранга ' + prevRank + '</b>.<br>Изменить его может только офицер <b>более высокого ранга</b> или ранга 11.',
+          'Вердикт уже вынесен старшим составом.<br>Изменить его может только вышестоящее руководство.',
           {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}
         );
         return;
@@ -7577,6 +7984,11 @@
       if (noteEl) { noteEl.focus(); noteEl.style.borderColor = 'var(--red)'; setTimeout(() => noteEl.style.borderColor = '', 2000); }
       return;
     }
+    if (type === 'complaint' && checkProfanity(note)) {
+      sysAlert('Вердикт содержит нецензурную лексику.<br><small>Вердикт должен быть конструктивным.</small>', {type:'error', title:'Недопустимый текст'});
+      if (noteEl) { noteEl.focus(); noteEl.style.borderColor = 'var(--red)'; setTimeout(() => noteEl.style.borderColor = '', 2000); }
+      return;
+    }
 
     if (saveBtn) { saveBtn.textContent = 'Сохранение...'; saveBtn.disabled = true; }
 
@@ -7586,7 +7998,23 @@
       if (r) { r.status = newStatus; r.note = note; }
     } else {
       const r = complaintsList.find(x => x.id === id);
-      if (r) { r.status = newStatus; r.note = note; }
+      const ri = reviewerInfo();
+      // Проверка лимита изменений вердикта для рангов 9-10 (макс 3)
+      if (ri.reviewer_rank >= 9 && ri.reviewer_rank <= 10) {
+        const history = r ? (r.verdict_history || []) : [];
+        const myChanges = history.filter(h => h.reviewer_rank === ri.reviewer_rank).length;
+        if (myChanges >= 3) {
+          sysAlert('Вы исчерпали лимит изменений вердикта по этой жалобе.', {type:'error', title:'Лимит достигнут'});
+          if (saveBtn) { saveBtn.textContent = 'Сохранить решение'; saveBtn.disabled = false; }
+          return;
+        }
+      }
+      // Добавляем запись в историю вердиктов
+      const history = r ? (r.verdict_history || []) : [];
+      if (r && r.note && r.reviewer) {
+        history.push({ status: r.status, note: r.note, reviewer: r.reviewer, reviewer_rank: r.reviewer_rank || 0, ts: r.reviewer_ts || '' });
+      }
+      if (r) { r.status = newStatus; r.note = note; r.reviewer_rank = ri.reviewer_rank; r.reviewer = ri.reviewer; r.reviewer_ts = ri.reviewer_ts; r.verdict_history = history; }
     }
 
     // Записать в Firebase
@@ -7776,7 +8204,7 @@
           if (!deptOk) {
             editBtn = '<button class="file-edit-btn locked" disabled style="opacity:.5;cursor:not-allowed;" title="Чужой департамент"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> ' + p.dept + '</button>';
           } else if (!rankEdit) {
-            editBtn = '<button class="file-edit-btn locked" disabled style="opacity:.5;cursor:not-allowed;" title="Только ранг 8 и выше"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Нет прав</button>';
+            editBtn = '<button class="file-edit-btn locked" disabled style="opacity:.5;cursor:not-allowed;" title="Нет прав доступа"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Нет прав</button>';
           } else if (!limitOk) {
             editBtn = '<button class="file-edit-btn locked" disabled style="opacity:.5;cursor:not-allowed;" title="Лимит 5 дел/сутки исчерпан"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Лимит</button>';
           } else {
@@ -7811,7 +8239,7 @@
 
   function openPersonnelAdd() {
     if (personnelUnlocked) {
-      if (_auth && _auth.rank < 8) { sysAlert('Создавать личные дела могут только офицеры рангов <b>8+</b>.', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
+      if (_auth && _auth.rank < 8) { sysAlert('Недостаточно прав для создания личных дел.', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
       showPersonnelForm(null);
     } else {
       requestPersonnelUnlock('add');
@@ -8230,8 +8658,8 @@
     const p = personnelList.find(x => x.id === id);
     if (!p) return;
     // Просмотр личных дел доступен для всех — редактирование ограничено через canDo
-    if (!_auth || _auth.rank < 8) { sysAlert('Редактировать личные дела могут только офицеры ранга <b>8 и выше</b>.', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
-    if (!canEditPersonnelFile(id)) { sysAlert('Лимит: <b>5 личных дел в сутки</b>.<br>Обратитесь к офицеру ранга 11 для сброса.', {type:'warn', title:'Лимит исчерпан', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'}); return; }
+    if (!_auth || _auth.rank < 8) { sysAlert('Недостаточно прав для редактирования личных дел.', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
+    if (!canEditPersonnelFile(id)) { sysAlert('Лимит редактирований временно исчерпан. Обратитесь к руководству.', {type:'warn', title:'Лимит исчерпан', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'}); return; }
     markPersonnelEdited(id);
     showPersonnelForm(p);
   }
@@ -8264,7 +8692,7 @@
       if (!canModifyDept(record.dept) || !_auth || _auth.rank < 8) { sysAlert('Нет прав редактировать это личное дело.', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
       if (!canEditPersonnelFile(editingId)) { sysAlert('Лимит редактирований (5 дел в сутки) исчерпан.', {type:'warn', title:'Лимит', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'}); return; }
     } else {
-      if (!_auth || _auth.rank < 8) { sysAlert('Создавать личные дела могут только офицеры ранга 8 и выше.', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
+      if (!_auth || _auth.rank < 8) { sysAlert('Недостаточно прав для создания личных дел.', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
     }
     const _ri = reviewerInfo(); record.reviewer = _ri.reviewer; record.reviewer_rank = _ri.reviewer_rank; record.reviewer_dept = _ri.reviewer_dept; record.reviewer_ts = _ri.reviewer_ts;
     if (isEdit) {
@@ -8289,7 +8717,7 @@
 
   /* ── Удаление ── */
   async function confirmDeletePersonnel(id) {
-    if (!_auth || _auth.rank < 11) { sysAlert('Удалять личные дела может только офицер <b>ранга 11</b>.', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
+    if (!_auth || _auth.rank < 11) { sysAlert('Недостаточно прав для удаления личных дел.', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
     const p = personnelList.find(x => x.id === id);
     if (!p) return;
     const ok = await sysConfirm('Удалить личное дело <b>«' + p.name + '»</b>?<br><span style="font-size:12px;color:#888">Необратимо.</span>', {title:'Удаление', okText:'Удалить'});
@@ -8392,6 +8820,60 @@
       switchSubtab(document.querySelector('.reports-subtab[data-stab="submit"]'), 'submit');
     }
   }
+
+  // Открывает панель редактирования отчёта по id напрямую (без кода)
+  window.openInlineEdit = async function(id, docId, sheet) {
+    // Ищем отчёт в памяти
+    const allMerged = [...allReports, ...seniorReports];
+    const r = allMerged.find(x => x.id === id);
+    if (!r) { sysAlert('Отчёт не найден.', {type:'error', title:'Ошибка'}); return; }
+    // Переключаемся на вкладку редактирования
+    const editBtn = document.querySelector('.reports-subtab[data-stab="edit"]');
+    switchSubtab(editBtn, 'edit');
+    // Подставляем код в поле поиска
+    const codeInput = document.getElementById('edit-rpt-code');
+    if (codeInput && r.edit_code) {
+      codeInput.value = r.edit_code;
+      loadReportByCode();
+    } else {
+      // Нет кода — рендерим форму напрямую через id
+      const resultEl = document.getElementById('edit-rpt-result');
+      if (resultEl) {
+        resultEl.style.display = 'block';
+        resultEl.innerHTML = '<div style="color:var(--grey);font-size:13px;">Загрузка...</div>';
+        // Загружаем из Firebase напрямую
+        try {
+          const col = sheet === 'SeniorReports' ? 'senior_reports' : 'reports';
+          const snap = await getDb().collection(col).where('id','==',id).get();
+          if (!snap.empty) {
+            const found = { ...snap.docs[0].data(), _docId: snap.docs[0].id };
+            if (codeInput) codeInput.value = found.edit_code || '';
+            loadReportByCode();
+          } else {
+            resultEl.innerHTML = '<div style="color:var(--red);">Отчёт не найден в базе.</div>';
+          }
+        } catch(e) {
+          resultEl.innerHTML = '<div style="color:var(--red);">Ошибка: ' + e.message + '</div>';
+        }
+      }
+    }
+    // Скролл к форме
+    const editPanel = document.getElementById('subpanel-edit');
+    if (editPanel) editPanel.scrollIntoView({ behavior:'smooth', block:'start' });
+  };
+
+  // Восстанавливаем вкладку edit в DOM (скрытая, нужна для работы)
+  (() => {
+    const nav = document.querySelector('.reports-subtab-nav');
+    if (nav && !document.querySelector('.reports-subtab[data-stab="edit"]')) {
+      const btn = document.createElement('button');
+      btn.className = 'reports-subtab';
+      btn.setAttribute('data-stab', 'edit');
+      btn.style.display = 'none';
+      btn.onclick = () => switchSubtab(btn, 'edit');
+      nav.appendChild(btn);
+    }
+  })();
 
   function switchSubtab(btn, stab) {
     document.querySelectorAll('.reports-subtab').forEach(t => t.classList.remove('active'));
@@ -8522,8 +9004,7 @@
     let specificFields = '';
     if (r.type === 'promotion') {
       specificFields = `
-        <div class="detail-field-row"><span class="detail-field-label">Желаемое звание</span><span class="detail-field-value">${esc(r.target||'—')}</span></div>
-        <div class="detail-field-row"><span class="detail-field-label">Обоснование</span><span class="detail-field-value" style="white-space:pre-wrap;">${esc(r.promoReason||'—')}</span></div>`;
+        <div class="detail-field-row"><span class="detail-field-label">Проделанная работа</span><span class="detail-field-value" style="white-space:pre-wrap;">${esc(r.promoReason||r.target||'—')}</span></div>`;
     } else if (r.type === 'leave') {
       specificFields = `
         <div class="detail-field-row"><span class="detail-field-label">Дата начала</span><span class="detail-field-value">${esc(r.leaveStart||'—')}</span></div>
@@ -8553,11 +9034,28 @@
           <div class="detail-field-row"><span class="detail-field-label">Звание</span><span class="detail-field-value">${esc(r.rank||r.pos||'—')}</span></div>
           ${r.type !== 'weekly' ? `<div class="detail-field-row"><span class="detail-field-label">Аккаунт</span><span class="detail-field-value">${esc(r.account||'—')}</span></div>` : ''}
           ${specificFields}
-          ${r.note ? `<div class="detail-field-row"><span class="detail-field-label">Вердикт</span><span class="detail-field-value">${esc(r.note)}</span></div>` : ''}
-          ${r.reviewer ? `<div class="detail-field-row"><span class="detail-field-label">Проверяющий</span><span class="detail-field-value">${esc(r.reviewer)} · ${esc(r.reviewer_ts||'')}</span></div>` : ''}
         </div>
 
-        ${canDo('approveReport', r.dept || currentDept) && r.type !== 'weekly' ? `
+        ${r.note ? (() => {
+          const sc = r.status === 'approved' ? {bg:'var(--green)',light:'var(--green-light)',border:'#A8D8B8',label:'Одобрено'} :
+                     r.status === 'rejected' ? {bg:'var(--red)',light:'var(--red-light)',border:'#F0BABA',label:'Отказано'} :
+                     {bg:'#6D28D9',light:'#F5F0FF',border:'#DDD6FE',label:'Доработка'};
+          return `
+          <div style="margin:14px 0;border:1.5px solid ${sc.border};border-radius:10px;overflow:hidden;">
+            <div style="padding:8px 14px;background:${sc.bg};display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              <span style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.9);">Вердикт · ${sc.label}</span>
+              ${r.reviewer ? `<span style="font-size:11px;color:rgba(255,255,255,0.65);">${esc(r.reviewer)}${r.reviewer_ts?' · '+esc(r.reviewer_ts):''}</span>` : ''}
+            </div>
+            <div style="padding:10px 14px;background:${sc.light};font-size:13px;color:var(--text-soft);line-height:1.6;white-space:pre-wrap;">${esc(r.note)}</div>
+          </div>`;
+        })() : ''}
+
+        ${(() => {
+          const isWeekly = r.type === 'weekly';
+          const canApproveRegular = canDo('approveReport', r.dept || currentDept) && !isWeekly;
+          const canApproveSenior  = canDo('approveSeniorReport', r.dept || currentDept) && isWeekly;
+
+          if (canApproveRegular) return `
           <div class="decision-panel" style="margin-top:18px;">
             <div class="decision-panel-title">Решение по отчёту</div>
             <div class="decision-btns">
@@ -8568,15 +9066,9 @@
             <label style="font-size:12px;font-weight:600;color:var(--navy);margin-bottom:4px;display:block;margin-top:10px;">Комментарий <span style="color:var(--red);">*</span></label>
             <textarea class="decision-note" id="rpt-note-${esc(r.id||listIdx)}" placeholder="Примечание (обязательно при «Доработке»)..." style="margin-bottom:10px;">${esc(r.note||'')}</textarea>
             <button class="decision-save-btn" onclick="saveAllReportDecision('${esc(r.id||'')}')">Сохранить решение</button>
-          </div>
-        ` : canDo('approveSeniorReport', r.dept || currentDept) && r.type === 'weekly' ? '' : !_auth ? `
-          <div class="decision-locked" style="margin-top:18px;">
-            <div class="decision-locked-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg></div>
-            <div class="decision-locked-text">Вынесение решений доступно только офицерам 8 ранга и выше.<br/>Войдите с кодом доступа чтобы продолжить.</div>
-            <button class="decision-unlock-btn" onclick="openPasswordGate('login')">Войти как офицер</button>
-          </div>
-        ` : ''}
-        ${canDo('approveSeniorReport', r.dept || currentDept) && r.type === 'weekly' ? `
+          </div>`;
+
+          if (canApproveSenior) return `
           <div class="decision-panel" style="margin-top:18px;">
             <div class="decision-panel-title">Решение по отчёту ст. состава</div>
             <div class="decision-btns">
@@ -8587,20 +9079,71 @@
             <label style="font-size:12px;font-weight:600;color:var(--navy);margin-bottom:4px;display:block;margin-top:10px;">Комментарий <span style="color:var(--red);">*</span></label>
             <textarea class="decision-note" id="rpt-note-${esc(r.id||listIdx)}" placeholder="Примечание (обязательно при «Доработке»)..." style="margin-bottom:10px;">${esc(r.note||'')}</textarea>
             <button class="decision-save-btn" onclick="saveSeniorReportDecision('${esc(r.id||'')}')">Сохранить решение</button>
-          </div>
-        ` : !_auth && r.type === 'weekly' ? `
+          </div>`;
+
+          // Не авторизован — показываем ОДИН замок с нужным рангом
+          if (!_auth) {
+            const minRank = isWeekly ? 10 : 8;
+            return `
           <div class="decision-locked" style="margin-top:18px;">
             <div class="decision-locked-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg></div>
-            <div class="decision-locked-text">Вынесение решений доступно только офицерам 10 ранга и выше.<br/>Войдите с кодом доступа чтобы продолжить.</div>
+            <div class="decision-locked-text">Вынесение решений доступно только офицерам ${minRank} ранга и выше${isWeekly ? ' своего департамента' : ''}.<br/>Войдите с кодом доступа чтобы продолжить.</div>
             <button class="decision-unlock-btn" onclick="openPasswordGate('login')">Войти как офицер</button>
-          </div>
-        ` : ''}
-        ${r.reviewer ? `<div style="margin-top:10px;font-size:11px;color:var(--grey);padding:8px 12px;background:var(--cream);border-radius:8px;">Вердикт вынес: <strong>${esc(r.reviewer)}</strong> · ${esc(r.reviewer_ts||'')}</div>` : ''}
+          </div>`;
+          }
+
+          // Авторизован, но недостаточно прав
+          if (isWeekly) {
+            return `
+          <div class="decision-locked" style="margin-top:18px;">
+            <div class="decision-locked-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+            <div class="decision-locked-text">Отчёты ст. состава проверяет только руководство департамента.</div>
+          </div>`;
+          }
+
+          return '';
+        })()}
+        ${r.reviewer ? '' : ''}
+        ${(() => {
+          if (r.status !== 'review') return '';
+          const fbUser = firebase.auth().currentUser;
+          const fbName = fbUser ? (fbUser.displayName || '').trim().replace(/_/g,' ').toLowerCase() : '';
+          const rName  = (r.name || '').trim().toLowerCase();
+          const canEdit = fbName && rName && (fbName === rName || fbName.replace(/\s/g,'_') === rName.replace(/\s/g,'_'));
+          if (!canEdit) return '';
+          const sheet = r.type === 'weekly' ? 'SeniorReports' : 'Reports';
+          return `
+          <div style="margin-top:14px;padding:14px;background:#EDE9FE;border:1.5px solid #DDD6FE;border-radius:10px;">
+            <div style="font-size:12px;font-weight:700;color:#5B21B6;margin-bottom:4px;">↩ Требуется доработка</div>
+            <div style="font-size:12px;color:#6D28D9;margin-bottom:10px;">Ознакомьтесь с комментарием проверяющего и исправьте отчёт.</div>
+            <button onclick="openInlineEdit('${esc(r.id||'')}','${esc(r._docId||r.id||'')}','${sheet}')" style="background:#6D28D9;color:white;border:none;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">✎ Исправить отчёт</button>
+          </div>`;
+        })()}
         ${canDo('deleteReport', r.dept || currentDept) ? `
           <div style="margin-top:12px;border-top:1px solid var(--grey-light);padding-top:12px;">
             <button onclick="deleteReportRecord('${esc(r.id||'')}','${r.type==='weekly'?'SeniorReports':'Reports'}')" style="background:var(--red-light);border:1.5px solid var(--red);color:var(--red);padding:7px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;">✕ Удалить запись</button>
           </div>
         ` : ''}
+        ${(r.verdict_history && r.verdict_history.length > 0) ? `
+        <details style="margin-top:10px;">
+          <summary style="font-size:11px;font-weight:700;color:var(--grey);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;user-select:none;padding:4px 0;">
+            История проверок (${r.verdict_history.length})
+          </summary>
+          <div style="margin-top:8px;display:flex;flex-direction:column;gap:6px;">
+            ${r.verdict_history.map(h => {
+              const sc = h.status==='approved' ? {bg:'var(--green)',light:'var(--green-light)',lbl:'Одобрено'} :
+                         h.status==='rejected' ? {bg:'var(--red)',light:'var(--red-light)',lbl:'Отказано'} :
+                         {bg:'#6D28D9',light:'#F5F0FF',lbl:'Доработка'};
+              return `<div style="border:1px solid #e0e0e0;border-radius:8px;overflow:hidden;opacity:.8;">
+                <div style="padding:5px 12px;background:${sc.bg};display:flex;align-items:center;justify-content:space-between;gap:8px;">
+                  <span style="font-size:10px;font-weight:700;color:rgba(255,255,255,.9);text-transform:uppercase;">${sc.lbl}</span>
+                  <span style="font-size:10px;color:rgba(255,255,255,.65);">${esc(h.reviewer||'—')}${h.ts?' · '+esc(h.ts):''}</span>
+                </div>
+                <div style="padding:6px 12px;background:${sc.light};font-size:12px;color:var(--text-soft);white-space:pre-wrap;">${esc(h.note||'—')}</div>
+              </div>`;
+            }).join('')}
+          </div>
+        </details>` : ''}
         <div class="mobile-back-to-list" onclick="mobileBackToList('all-reports-list','all-reports-detail')" style="display:none;margin-top:16px;border-top:1px solid var(--grey-light);padding-top:14px;">
           <button style="width:100%;padding:12px;background:var(--cream);border:1.5px solid var(--grey-light);border-radius:10px;font-size:13px;font-weight:600;color:var(--navy);cursor:pointer;font-family:inherit;">← Назад к списку</button>
         </div>
@@ -8622,8 +9165,19 @@
       if (noteEl) { noteEl.focus(); noteEl.style.borderColor = 'var(--red)'; setTimeout(() => { noteEl.style.borderColor = ''; }, 2000); }
       return;
     }
+    // Защита ранга: нельзя менять вердикт если твой ранг ≤ ранга предыдущего проверяющего
     const r = allReports.find(x => x.id === id);
-    if (r) { r.status = newStatus; r.note = note; }
+    const prevRank = r ? (parseInt(r.reviewer_rank) || 0) : 0;
+    const myRank = authRank();
+    if (prevRank > 0 && myRank < 11 && myRank <= prevRank) {
+      sysAlert('Вердикт уже вынесен старшим составом.<br>Изменить его может только вышестоящее руководство.', {type:'error', title:'Нет прав'});
+      return;
+    }
+    if (r) {
+      const history = r.verdict_history || [];
+      if (r.note && r.reviewer) history.push({ status: r.status, note: r.note, reviewer: r.reviewer, reviewer_rank: r.reviewer_rank||0, ts: r.reviewer_ts||'' });
+      r.status = newStatus; r.note = note; r.reviewer = authName(); r.reviewer_rank = myRank; r.reviewer_ts = fmtDate(); r.verdict_history = history;
+    }
     try {
       const res = await sheetsPost('updateStatus', { sheet: 'Reports', id, status: newStatus, note, ...reviewerInfo() });
       if (res && res.ok === false) throw new Error(res.error || 'Ошибка записи');
@@ -8632,8 +9186,11 @@
       return;
     }
     delete _pending['rpt_'+id];
+    showToast('Вердикт по отчёту сохранён.', 'ok');
+    const detEl = document.getElementById('all-reports-detail');
+    if (detEl) detEl.innerHTML = '<div class="inbox-detail-empty"><div class="inbox-detail-empty-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></div>Выберите отчёт из списка.</div>';
+    _selAllId = null;
     renderAllReports();
-    showAllReportDetail(id);
   }
 
   async function saveSeniorReportDecision(id) {
@@ -8647,7 +9204,11 @@
       return;
     }
     const r = seniorReports.find(x => x.id === id) || allReports.find(x => x.id === id);
-    if (r) { r.status = newStatus; r.note = note; r.reviewer = authName(); r.reviewer_ts = fmtDate(); }
+    if (r) {
+      const history = r.verdict_history || [];
+      if (r.note && r.reviewer) history.push({ status: r.status, note: r.note, reviewer: r.reviewer, reviewer_rank: r.reviewer_rank||0, ts: r.reviewer_ts||'' });
+      r.status = newStatus; r.note = note; r.reviewer = authName(); r.reviewer_ts = fmtDate(); r.verdict_history = history;
+    }
     try {
       const res = await sheetsPost('updateStatus', { sheet: 'SeniorReports', id, status: newStatus, note, ...reviewerInfo() });
       if (res && res.ok === false) throw new Error(res.error || 'Ошибка записи');
@@ -8834,8 +9395,7 @@
     let specificFields = '';
     if (r.type === 'promotion') {
       specificFields = `
-        <div class="detail-field-row"><span class="detail-field-label">Желаемое звание</span><span class="detail-field-value">${esc(r.target)||'—'}</span></div>
-        <div class="detail-field-row"><span class="detail-field-label">Обоснование</span><span class="detail-field-value" style="white-space:pre-wrap;">${esc(r.promoReason)||'—'}</span></div>`;
+        <div class="detail-field-row"><span class="detail-field-label">Проделанная работа</span><span class="detail-field-value" style="white-space:pre-wrap;">${esc(r.promoReason||r.target)||'—'}</span></div>`;
     } else if (r.type === 'leave') {
       specificFields = `
         <div class="detail-field-row"><span class="detail-field-label">Дата начала</span><span class="detail-field-value">${esc(r.leaveStart)||'—'}</span></div>
@@ -8989,6 +9549,15 @@
       const work = (document.getElementById('rpt-sr-work') || {}).value || '';
       if (!work.trim() || work.trim().length < 10) { sysAlert('Заполните поле «Проделанная работа».', {type:'warn', title:'Поле обязательно'}); return; }
     }
+
+    // Проверка нецензурных слов
+    const workVal = (document.getElementById('rpt-sr-work') || {}).value || '';
+    const promoVal = (document.getElementById('rpt-promo-reason') || {}).value || '';
+    if (checkProfanity(name, rank, workVal, promoVal)) {
+      sysAlert('Отчёт содержит нецензурную лексику или оскорбления.<br><small>Отчёт должен быть составлен конструктивно и без мата.</small>', {type:'error', title:'Недопустимый текст'});
+      return;
+    }
+
     if (!checkRateLimit('report_' + (currentDept || 'unknown'))) return;
 
     // Показываем кнопку "Отправка..."
@@ -9017,7 +9586,7 @@
           id: genId(), dept: currentDept, ts: fmtDate(),
           type: currentRType, label: typeLabels[currentRType],
           name, rank, account,
-          target:       (document.getElementById('rpt-target')       || {}).value || '',
+          target:       '',
           promoReason:  (document.getElementById('rpt-promo-reason') || {}).value || '',
           leaveStart:   (document.getElementById('rpt-leave-start')  || {}).value || '',
           leaveEnd:     (document.getElementById('rpt-leave-end')    || {}).value || '',
@@ -9187,8 +9756,7 @@
         <div class="detail-field-row"><span class="detail-field-label">Деятельность</span><span class="detail-field-value" style="white-space:pre-wrap;">${esc2(origWork)}</span></div>`;
     } else if (found.type === 'promotion') {
       origFields += `
-        <div class="detail-field-row"><span class="detail-field-label">Желаемое звание</span><span class="detail-field-value">${esc2(origTarget)}</span></div>
-        <div class="detail-field-row"><span class="detail-field-label">Обоснование</span><span class="detail-field-value" style="white-space:pre-wrap;">${esc2(origReason)}</span></div>`;
+        <div class="detail-field-row"><span class="detail-field-label">Проделанная работа</span><span class="detail-field-value" style="white-space:pre-wrap;">${esc2(origReason||origTarget)}</span></div>`;
     } else if (found.type === 'leave') {
       origFields += `
         <div class="detail-field-row"><span class="detail-field-label">Начало</span><span class="detail-field-value">${esc2(origLeaveStart)}</span></div>
@@ -9233,11 +9801,7 @@
         ` : `
           ${found.type === 'promotion' ? `
           <div class="form-group">
-            <label>Желаемое звание</label>
-            <input type="text" id="er-target" value="${esc(found.target||'')}"/>
-          </div>
-          <div class="form-group">
-            <label>Обоснование</label>
+            <label>Проделанная работа</label>
             <textarea id="er-reason" style="min-height:100px;width:100%;padding:11px 14px;border:1.5px solid var(--grey-light);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:var(--cream);outline:none;resize:vertical;">${esc(found.promoReason||'')}</textarea>
           </div>` : ''}
           ${found.type === 'leave' ? `
@@ -15432,14 +15996,15 @@
         <table style="width:100%;">
           <thead><tr><th style="width:1%;white-space:nowrap;">№</th><th>Критерий</th></tr></thead>
           <tbody>
-            <tr><td><strong>1</strong></td><td>Жалоба составлена строго по форме.</td></tr>
-            <tr><td><strong>2</strong></td><td>Скриншоты принимаются только если ситуация полностью понятна проверяющему.</td></tr>
-            <tr><td><strong>3</strong></td><td>Проверять ник на видео/скриншоте и ник в жалобе — они должны совпадать.</td></tr>
-            <tr><td><strong>4</strong></td><td>Видео о розыске/штрафе от 3-го лица без достаточных доказательств — отказ с причиной «Недостаточно доказательств».</td></tr>
+            <tr><td><strong>1</strong></td><td>Жалоба заполнена полностью: указаны ваш ник, ник нарушителя, номер аккаунта нарушителя, описание ситуации и ссылка на доказательства.</td></tr>
+            <tr><td><strong>2</strong></td><td>Ник в жалобе должен совпадать с ником на видео/скриншоте. Несовпадение — отказ.</td></tr>
+            <tr><td><strong>3</strong></td><td>Доказательства принимаются только в виде ссылки на видео или изображение. Скриншоты принимаются если ситуация полностью ясна проверяющему.</td></tr>
+            <tr><td><strong>4</strong></td><td>Видео от 3-го лица без явного подтверждения нарушения — отказ с причиной «Недостаточно доказательств».</td></tr>
             <tr><td><strong>5</strong></td><td>Если с момента нарушения прошло более 48 часов — жалоба не рассматривается.</td></tr>
-            <tr><td><strong>6</strong></td><td>Отредактированные скриншоты/видео не принимаются.</td></tr>
-            <tr><td><strong>7</strong></td><td>Жалобы с серьёзными оскорблениями не рассматриваются.</td></tr>
-            <tr><td><strong>8</strong></td><td>Жалобы без нормального описания ситуации не принимаются.</td></tr>
+            <tr><td><strong>6</strong></td><td>Отредактированные скриншоты и видео не принимаются.</td></tr>
+            <tr><td><strong>7</strong></td><td>Жалобы с оскорблениями, нецензурной лексикой или в неконструктивной форме не рассматриваются.</td></tr>
+            <tr><td><strong>8</strong></td><td>Описание ситуации должно быть конкретным и понятным. Жалобы без нормального описания не принимаются.</td></tr>
+            <tr><td><strong>9</strong></td><td>Жалобу рассматривает уполномоченный офицер. Изменить уже вынесенный вердикт может только вышестоящее руководство.</td></tr>
           </tbody>
         </table>
         <p>При нарушении хотя бы одного критерия — жалоба отказывается с указанием причины. После одобрения и закрытия жалобы выдаётся наказание в игре через доклад в рацию; беседа/наряд/выговор/увольнение заносится в таблицу с доказательствами и ссылкой на жалобу. Если сотрудник погасил наказание до того, как лидер или старший состав сделал доклад — делать доклад уже не нужно, доказательства погашения сохраняются. Если Полковник совершает много ошибок при проверке жалоб — выдаётся выговор.</p>
@@ -17110,7 +17675,25 @@ window.toggleHdrDrop = function(id) {
   if (!drop) return;
   const isOpen = drop.classList.contains('open');
   closeHdrDrops();
-  if (!isOpen) drop.classList.add('open');
+  if (!isOpen) {
+    drop.classList.add('open');
+    // При открытии дропдауна аккаунта — обновляем статус почты
+    if (id === 'account-drop') {
+      const user = firebase.auth().currentUser;
+      if (user) {
+        user.reload().then(() => {
+          const dot    = document.getElementById('account-unverified-dot');
+          const banner = document.getElementById('account-unverified-banner');
+          if (dot)    dot.style.display    = user.emailVerified ? 'none' : 'block';
+          if (banner) banner.style.display = user.emailVerified ? 'none' : 'block';
+          // Если только что подтвердил — обновляем Firestore
+          if (user.emailVerified) {
+            try { db.collection('user_profiles').doc(user.uid).update({ email_verified: true }); } catch(_) {}
+          }
+        }).catch(() => {});
+      }
+    }
+  }
 };
 
 window.closeHdrDrops = function() {
@@ -17240,6 +17823,8 @@ window.addEventListener('load', function() {
     const badge = document.getElementById('fb-account-badge');
     const nameEl  = document.getElementById('fb-account-name-text');
     const emailEl = document.getElementById('fb-account-email-text');
+    const dot     = document.getElementById('account-unverified-dot');
+    const banner  = document.getElementById('account-unverified-banner');
     if (!badge) return;
     if (user) {
       const name = user.displayName || user.email.split('@')[0];
@@ -17247,6 +17832,10 @@ window.addEventListener('load', function() {
       if (emailEl) emailEl.textContent = user.email;
       if (btn) btn.style.display = 'none';
       badge.style.display = 'block';
+      // Показываем индикатор если email не подтверждён
+      const isVerified = user.emailVerified;
+      if (dot)    dot.style.display    = isVerified ? 'none' : 'block';
+      if (banner) banner.style.display = isVerified ? 'none' : 'block';
     } else {
       if (btn) btn.style.display = 'inline-flex';
       badge.style.display = 'none';
@@ -17260,10 +17849,17 @@ window.addEventListener('load', function() {
     if (verifyBanner) verifyBanner.remove();
     if (window._verifyInterval) { clearInterval(window._verifyInterval); window._verifyInterval = null; }
 
+    // Обновляем данные пользователя — emailVerified кешируется и без reload не обновляется
+    try { await user.reload(); } catch(_) {}
+
     try {
       const doc = await db.collection('user_profiles').doc(user.uid).get();
       if (doc.exists) {
         const data = doc.data();
+        // Если email подтверждён в Firebase Auth — обновляем флаг в Firestore
+        if (user.emailVerified && !data.email_verified) {
+          try { await db.collection('user_profiles').doc(user.uid).update({ email_verified: true }); } catch(_) {}
+        }
         const rank = parseInt(data.rank) || 0;
         const dept = data.dept || 'МВД';
         const name = data.display_name || user.displayName || user.email.split('@')[0];
@@ -17375,13 +17971,14 @@ window.addEventListener('load', function() {
       await cred.user.updateProfile({ displayName: name });
       // Создать профиль в Firestore
       await db.collection('user_profiles').doc(cred.user.uid).set({
-        uid:          cred.user.uid,
-        email:        email,
-        display_name: name,
-        rank:         0,
-        dept:         '',
-        registered_at: new Date().toISOString(),
-        active:       true,
+        uid:            cred.user.uid,
+        email:          email,
+        display_name:   name,
+        rank:           0,
+        dept:           '',
+        registered_at:  new Date().toISOString(),
+        active:         true,
+        email_verified: false,
       });
       // Отправить письмо подтверждения
       try { await cred.user.sendEmailVerification(); } catch(_) {}
@@ -17517,48 +18114,79 @@ window.adminLoadUsers = async function() {
     container.innerHTML = '';
 
     const items = [];
-    snap.forEach(doc => { items.push({ id: doc.id, ...doc.data() }); });
-    const total   = items.length;
-    const full    = items.filter(d => d.display_name && d.email).length;
-    const partial = items.filter(d => !d.display_name || !d.email).length;
+    const seenUids = new Set();
+    snap.forEach(doc => {
+      const d = { id: doc.id, ...doc.data() };
+      const uid = d.uid || doc.id;
+      // Дедупликация — берём только первый документ для каждого uid
+      if (!seenUids.has(uid)) { seenUids.add(uid); items.push(d); }
+    });
 
-    // Статистика
+    const verified   = items.filter(d => d.email_verified === true);
+    const unverified = items.filter(d => d.email_verified !== true);
+
+    function renderUserCard(d) {
+      const isBlocked = d.active === false;
+      const el = document.createElement('div');
+      el.style.cssText = `background:var(--cream);border:1.5px solid ${isBlocked ? 'var(--red)' : 'var(--grey-light)'};border-radius:10px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;`;
+      el.innerHTML = `
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:13px;font-weight:700;color:var(--navy);">${d.display_name || '<span style="color:var(--grey);font-style:italic;font-weight:400;">Ник не указан</span>'}</div>
+          <div style="font-size:11px;color:var(--grey);margin-top:1px;">${d.email || '—'} · ${d.registered_at ? new Date(d.registered_at).toLocaleDateString('ru') : '—'}</div>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;flex-shrink:0;">
+          ${isBlocked ? '<span style="font-size:10px;font-weight:700;background:var(--red-light);color:var(--red);padding:2px 8px;border-radius:20px;white-space:nowrap;">Заблокирован</span>' : ''}
+          <button onclick="adminBlockUser('${d.uid || d.id}','${(d.email||'').replace(/'/g,"\\'")}',!${isBlocked})" style="padding:5px 10px;background:${isBlocked?'var(--green-light)':'var(--red-light)'};border:1.5px solid ${isBlocked?'#A8D8B8':'var(--red)'};color:${isBlocked?'var(--green)':'var(--red)'};border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;">${isBlocked?'Разблокировать':'Блок'}</button>
+        </div>
+      `;
+      return el;
+    }
+
+    function renderSection(title, color, icon, list) {
+      const section = document.createElement('div');
+      section.style.cssText = 'margin-bottom:16px;';
+      section.innerHTML = `
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:${color};">${icon} ${title}</span>
+          <span style="font-size:11px;font-weight:700;background:${color}22;color:${color};padding:1px 8px;border-radius:20px;">${list.length}</span>
+        </div>
+      `;
+      if (!list.length) {
+        const empty = document.createElement('div');
+        empty.style.cssText = 'font-size:12px;color:var(--grey);padding:10px 14px;background:var(--cream);border-radius:10px;text-align:center;';
+        empty.textContent = 'Нет пользователей в этой категории.';
+        section.appendChild(empty);
+      } else {
+        const listEl = document.createElement('div');
+        listEl.style.cssText = 'display:flex;flex-direction:column;gap:6px;';
+        list.forEach(d => listEl.appendChild(renderUserCard(d)));
+        section.appendChild(listEl);
+      }
+      return section;
+    }
+
+    // Счётчики сверху
     const statsEl = document.createElement('div');
-    statsEl.style.cssText = 'display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;';
+    statsEl.style.cssText = 'display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;';
     statsEl.innerHTML = `
       <div style="flex:1;min-width:70px;background:var(--navy);color:white;border-radius:8px;padding:8px 12px;text-align:center;">
-        <div style="font-size:20px;font-weight:700;">${total}</div>
+        <div style="font-size:20px;font-weight:700;">${items.length}</div>
         <div style="font-size:10px;opacity:.7;text-transform:uppercase;letter-spacing:.08em;">Всего</div>
       </div>
       <div style="flex:1;min-width:70px;background:var(--green-light);border:1.5px solid #A8D8B8;border-radius:8px;padding:8px 12px;text-align:center;">
-        <div style="font-size:20px;font-weight:700;color:var(--green);">${full}</div>
-        <div style="font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:.08em;">Полные</div>
+        <div style="font-size:20px;font-weight:700;color:var(--green);">${verified.length}</div>
+        <div style="font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:.08em;">Подтверждены</div>
       </div>
       <div style="flex:1;min-width:70px;background:var(--accent-light);border:1.5px solid #D4B870;border-radius:8px;padding:8px 12px;text-align:center;">
-        <div style="font-size:20px;font-weight:700;color:#7A5C18;">${partial}</div>
-        <div style="font-size:10px;color:#7A5C18;text-transform:uppercase;letter-spacing:.08em;">Частичные</div>
+        <div style="font-size:20px;font-weight:700;color:#7A5C18;">${unverified.length}</div>
+        <div style="font-size:10px;color:#7A5C18;text-transform:uppercase;letter-spacing:.08em;">Не подтверждены</div>
       </div>
     `;
     container.appendChild(statsEl);
 
-    items.forEach(d => {
-      const isPartial = !d.display_name || !d.email;
-      const isBlocked = d.active === false;
-      const el = document.createElement('div');
-      el.style.cssText = `background:var(--cream);border:1.5px solid ${isBlocked ? 'var(--red)' : isPartial ? '#D4B870' : 'var(--grey-light)'};border-radius:10px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;`;
-      el.innerHTML = `
-        <div style="flex:1;min-width:0;">
-          <div style="font-size:13px;font-weight:700;color:var(--navy);">${d.display_name || '<span style="color:var(--grey);font-style:italic;font-weight:400;">Ник не указан</span>'}</div>
-          <div style="font-size:11px;color:var(--grey);margin-top:1px;">${d.email || '<span style="font-style:italic;">email не указан</span>'} · ${d.registered_at ? new Date(d.registered_at).toLocaleDateString('ru') : '—'}</div>
-        </div>
-        <div style="display:flex;gap:6px;align-items:center;flex-shrink:0;">
-          ${isPartial ? '<span style="font-size:10px;font-weight:700;background:var(--accent-light);color:#7A5C18;padding:2px 8px;border-radius:20px;white-space:nowrap;">Частичная</span>' : '<span style="font-size:10px;font-weight:700;background:var(--green-light);color:var(--green);padding:2px 8px;border-radius:20px;white-space:nowrap;">Полная</span>'}
-          ${isBlocked ? '<span style="font-size:10px;font-weight:700;background:var(--red-light);color:var(--red);padding:2px 8px;border-radius:20px;white-space:nowrap;">Заблокирован</span>' : ''}
-          <button onclick="adminBlockUser('${d.uid || d.id}','${(d.email||'').replace(/'/g,"\\'")}',${!isBlocked})" style="padding:5px 10px;background:${isBlocked?'var(--green-light)':'var(--red-light)'};border:1.5px solid ${isBlocked?'#A8D8B8':'var(--red)'};color:${isBlocked?'var(--green)':'var(--red)'};border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;">${isBlocked?'Разблокировать':'Блок'}</button>
-        </div>
-      `;
-      container.appendChild(el);
-    });
+    container.appendChild(renderSection('Подтверждённые (email подтверждён)', 'var(--green)', '✓', verified));
+    container.appendChild(renderSection('Не подтверждённые (только зарегистрировались)', '#7A5C18', '○', unverified));
+
   } catch(e) {
     container.innerHTML = '<div style="font-size:12px;color:var(--red);padding:8px;">Ошибка загрузки: ' + e.message + '</div>';
   }
