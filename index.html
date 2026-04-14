@@ -43,6 +43,14 @@
       max-width: 100vw;
       overflow-y: scroll;
     }
+    /* Блокируем скролл фона при открытом модале */
+    body.modal-open {
+      overflow: hidden;
+    }
+    html.modal-open {
+      overflow: hidden;
+      padding-right: var(--scrollbar-width, 0px);
+    }
     *, *::before, *::after { max-width: 100%; }
     img, svg, video, canvas { max-width: 100%; height: auto; }
 
@@ -3945,7 +3953,7 @@
 <body>
 
   <!-- ══ СТРАНИЦА АВТОРИЗАЦИИ ══ -->
-  <div id="auth-overlay" style="visibility:hidden;opacity:0;pointer-events:none;" onclick="if(event.target===this)hideAuthOverlay()">
+  <div id="auth-overlay" style="visibility:hidden;opacity:0;pointer-events:none;">
     <button onclick="hideAuthOverlay()" style="position:fixed;top:16px;right:16px;z-index:100000;width:32px;height:32px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);border-radius:8px;color:white;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;transition:background 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.28)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">✕</button>
     <div class="auth-card" style="position:relative;">
       <div class="auth-card-header">
@@ -3981,23 +3989,31 @@
         <!-- Форма смены ника -->
         <div id="auth-form-rename" style="display:none;">
           <div class="auth-field">
-            <label>Новый ник <span style="font-weight:400;color:var(--grey);font-size:11px;">— формат: Имя_Фамилия (пример: Jacob_Anderson)</span></label>
-            <input class="auth-input" id="auth-rename-name" type="text" placeholder="Jacob_Anderson" name="rename"/>
+            <label>Новый ник <span style="font-weight:400;color:var(--grey);font-size:11px;">— формат: Имя Фамилия (пример: Jacob Anderson)</span></label>
+            <input class="auth-input" id="auth-rename-name" type="text" placeholder="Jacob Anderson" name="rename"/>
+          </div>
+          <div class="auth-field">
+            <label>Новый номер аккаунта <span style="font-weight:400;color:var(--grey);font-size:11px;">(необязательно — только если изменился)</span></label>
+            <input class="auth-input" id="auth-rename-account" type="number" placeholder="Например: 29487819" name="rename-account"/>
           </div>
           <div class="auth-field">
             <label>Пароль для подтверждения</label>
             <input class="auth-input" id="auth-rename-pass" type="password" placeholder="••••••••" autocomplete="current-password"
               onkeydown="if(event.key==='Enter')doAuthRename()"/>
           </div>
-          <button class="auth-btn" id="auth-rename-btn" onclick="doAuthRename()">Сменить ник</button>
+          <button class="auth-btn" id="auth-rename-btn" onclick="doAuthRename()">Сохранить изменения</button>
           <div class="auth-note"><a onclick="authSwitchTab('login')" style="color:var(--navy);font-weight:600;cursor:pointer;">← Назад</a></div>
         </div>
 
         <!-- Форма регистрации -->
         <div id="auth-form-register" style="display:none;">
           <div class="auth-field">
-            <label>Игровой ник <span style="font-weight:400;color:var(--grey);font-size:11px;">— формат: Имя_Фамилия (пример: Jacob_Anderson)</span></label>
-            <input class="auth-input" id="auth-reg-name" type="text" placeholder="Jacob_Anderson" autocomplete="name" name="name"/>
+            <label>Игровой ник <span style="font-weight:400;color:var(--grey);font-size:11px;">— формат: Имя Фамилия (пример: Jacob Anderson)</span></label>
+            <input class="auth-input" id="auth-reg-name" type="text" placeholder="Jacob Anderson" autocomplete="name" name="name"/>
+          </div>
+          <div class="auth-field">
+            <label>Номер игрового аккаунта <span style="font-weight:400;color:var(--grey);font-size:11px;">— с которого состоите в департаменте</span></label>
+            <input class="auth-input" id="auth-reg-account" type="number" placeholder="Например: 29487819" name="game-account"/>
           </div>
           <div class="auth-field">
             <label>Email</label>
@@ -5274,15 +5290,8 @@
               <button type="submit" class="submit-btn" id="rpt-submit-btn">Отправить отчёт</button>
             </form>
             <div id="rpt-success" style="display:none;margin-top:14px;background:var(--green-light);border:1.5px solid #A8D8BC;border-radius:10px;padding:16px 18px;color:var(--green);font-size:13px;">
-              <div style="font-weight:700;margin-bottom:8px;">✓ Отчёт успешно подан</div>
-              <div style="color:var(--text-soft);margin-bottom:10px;font-size:12px;">Сохраните ваш личный код — он нужен для редактирования отчёта при статусе «Доработка».</div>
-              <div style="background:var(--white);border:1.5px solid #A8D8BC;border-radius:8px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;">
-                <div>
-                  <div style="font-size:10px;color:var(--grey);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px;">Код отчёта</div>
-                  <div id="rpt-success-code" style="font-family:monospace;font-size:17px;font-weight:700;color:var(--navy);letter-spacing:.1em;"></div>
-                </div>
-                <button onclick="copyReportCode()" style="background:var(--navy);color:white;border:none;padding:8px 14px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;">Скопировать</button>
-              </div>
+              <div style="font-weight:700;margin-bottom:4px;">✓ Отчёт успешно подан</div>
+              <div style="color:var(--text-soft);font-size:12px;">Отчёт передан на рассмотрение уполномоченному офицеру.</div>
             </div>
           </div>
         </div>
@@ -5351,18 +5360,10 @@
 
     <!-- ──────────── SUB: РЕДАКТИРОВАТЬ ОТЧЁТ ──────────── -->
     <div class="reports-subpanel" id="subpanel-edit">
-      <div class="dept-section-title" style="margin-bottom:6px;">Редактировать отчёт</div>
-      <p class="dept-section-sub">Введите код отчёта, который вы получили при подаче. Редактирование доступно только если статус — «Доработка».</p>
-      <div class="form-card" style="max-width:520px;margin-top:18px;">
-        <div class="form-group">
-          <label>Код отчёта <span class="req">*</span></label>
-          <div style="display:flex;gap:8px;">
-            <input type="text" id="edit-rpt-code" placeholder="напр. RPT-LVMPD-4X2K" style="flex:1;text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()"/>
-            <button type="button" onclick="loadReportByCode()" style="white-space:nowrap;padding:10px 16px;background:var(--navy);color:white;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Найти</button>
-          </div>
-        </div>
-        <div id="edit-rpt-result" style="display:none;margin-top:14px;"></div>
-      </div>
+      <div class="dept-section-title" style="margin-bottom:6px;">Исправить отчёт</div>
+      <p class="dept-section-sub">Найдите отчёт в разделе «Все отчёты» со статусом «Доработка» и нажмите кнопку «Исправить отчёт».</p>
+      <div id="edit-rpt-result" style="margin-top:18px;"></div>
+      <input type="hidden" id="edit-rpt-code"/>
     </div>
 
     <!-- ──────────── SUB: ТАБЛИЦА БАЛЛОВ ──────────── -->
@@ -6820,6 +6821,44 @@
       document.getElementById(id).classList.remove('open');
   }
 
+  // ── Блокировка скролла фона при открытом модале ────────────
+  (function() {
+    // Измеряем ширину скроллбара один раз
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    document.documentElement.style.setProperty('--scrollbar-width', scrollbarWidth + 'px');
+
+    const MODAL_IDS = [
+      'modal-emp-inbox','modal-complaints-inbox','modal-pw-gate',
+      'modal-blacklist','modal-personnel-form','modal-archive-reports',
+      'modal-file-view','modal-lead-profile','guide-modal-overlay',
+      'auth-overlay','sys-modal-overlay'
+    ];
+
+    function updateBodyScroll() {
+      const anyOpen = MODAL_IDS.some(id => {
+        const el = document.getElementById(id);
+        if (!el) return false;
+        if (el.classList.contains('open')) return true;
+        // auth-overlay uses visibility instead of class
+        if (id === 'auth-overlay') return el.style.visibility === 'visible';
+        return false;
+      });
+      document.body.classList.toggle('modal-open', anyOpen);
+      document.documentElement.classList.toggle('modal-open', anyOpen);
+    }
+
+    // Наблюдаем за изменениями классов на модалах
+    const observer = new MutationObserver(updateBodyScroll);
+    MODAL_IDS.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el, { attributes: true, attributeFilter: ['class','style'] });
+    });
+
+    // Также следим за auth-overlay через его стиль
+    const authOverlay = document.getElementById('auth-overlay');
+    if (authOverlay) observer.observe(authOverlay, { attributes: true, attributeFilter: ['style'] });
+  })();
+
   /* ══════════════════════════════════════════════════════════════
      BLACKLIST MODAL
   ══════════════════════════════════════════════════════════════ */
@@ -7031,8 +7070,11 @@
 
   function writeLog(action, type, objId, detail) {
     try {
-      getDb().collection('logs').add({
-        ts: nowStr(), action, type, obj_id: String(objId),
+      // Используем timestamp-based ID для хронологической сортировки в Firebase
+      const ts = nowStr();
+      const tsId = new Date().toISOString().replace(/[:.]/g,'-') + '_' + Math.random().toString(36).slice(2,6);
+      getDb().collection('logs').doc(tsId).set({
+        ts, action, type, obj_id: String(objId),
         who: authName(), rank: authRank(), dept: authDept(),
         detail: String(detail||'')
       });
@@ -7867,7 +7909,7 @@
           История вердиктов (${r.verdict_history.length})
         </summary>
         <div style="margin-top:8px;display:flex;flex-direction:column;gap:6px;">
-          ${r.verdict_history.map(h => {
+          ${[...r.verdict_history].reverse().map(h => {
             const sc = h.status==='approved' ? {bg:'var(--green)',light:'var(--green-light)',lbl:'Одобрено'} :
                        h.status==='rejected' ? {bg:'var(--red)',light:'var(--red-light)',lbl:'Отказано'} :
                        {bg:'#6D28D9',light:'#F5F0FF',lbl:'Доработка'};
@@ -7887,11 +7929,14 @@
         const hasBase  = canDo('approveComplaint');
         // Если reviewer_rank не сохранён но reviewer есть — считаем минимальный ранг = 9
         const effectivePrevRank = (prevRank === 0 && r.reviewer) ? 10 : prevRank;
-        // Может менять вердикт: ранг 11 всегда, иначе — только СТРОГО выше предыдущего
-        const canChange = hasBase && (myRank >= 11 || effectivePrevRank === 0 || myRank > effectivePrevRank);
+        // Считаем сколько раз текущий ранг уже менял вердикт по этой жалобе
+        const myChangesUI = (r.verdict_history || []).filter(h => h.reviewer_rank === myRank).length;
+        const limitReached = myRank < 11 && myRank >= 9 && myRank <= 10 && myChangesUI >= 3;
+        // Может менять вердикт: ранг 11 всегда, тот же ранг если лимит не исчерпан, строго выше предыдущего
+        const canChange = hasBase && !limitReached && (myRank >= 11 || effectivePrevRank === 0 || myRank >= effectivePrevRank);
         if (canChange) return `
         <div class="decision-panel">
-          <div class="decision-panel-title">Решение по жалобе</div>
+          <div class="decision-panel-title">Решение по жалобе ${(myRank >= 9 && myRank <= 10 && !limitReached) ? `<span style="font-size:11px;font-weight:400;color:var(--grey);margin-left:8px;">Изменений осталось: ${3 - myChangesUI}</span>` : ''}</div>
           <div class="decision-btns">
             <button class="decision-btn d-approve ${r.status==='approved'?'selected':''}" onclick="setDecision('complaint','${esc(r.id)}','approved',this)">✓ Одобрить</button>
             <button class="decision-btn d-reject  ${r.status==='rejected'?'selected':''}" onclick="setDecision('complaint','${esc(r.id)}','rejected',this)">✗ Отказать</button>
@@ -7956,12 +8001,12 @@
       const cItem = complaintsList.find(x => x.id === id);
       const cDept = cItem ? (cItem.dept || cItem.desired_dept || '') : '';
       if (cDept && !canModifyDept(cDept)) { sysAlert('Вы можете проверять жалобы только своего департамента (<b>' + (_auth ? _auth.dept : '') + '</b>).', {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}); return; }
-      // Запрет изменения вердикта: ранг проверяющего должен быть СТРОГО выше предыдущего (исключение — ранг 11)
+      // Запрет изменения вердикта: ранг проверяющего должен быть >= предыдущего (исключение — ранг 11)
       const prevRank = cItem ? (parseInt(cItem.reviewer_rank) || 0) : 0;
       const myRank   = authRank();
-      // Если reviewer_rank не сохранён (старые жалобы) — считаем что вердикт вынес кто-то с рангом = 9 (минимальный)
       const effectivePrevRank = (prevRank === 0 && cItem && cItem.reviewer) ? 10 : prevRank;
-      if (effectivePrevRank > 0 && myRank < 11 && myRank <= effectivePrevRank) {
+      // Тот же ранг может менять до 3 раз, ниже — никогда
+      if (effectivePrevRank > 0 && myRank < 11 && myRank < effectivePrevRank) {
         sysAlert(
           'Вердикт уже вынесен старшим составом.<br>Изменить его может только вышестоящее руководство.',
           {type:'error', title:'Нет прав', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}
@@ -8823,43 +8868,50 @@
 
   // Открывает панель редактирования отчёта по id напрямую (без кода)
   window.openInlineEdit = async function(id, docId, sheet) {
-    // Ищем отчёт в памяти
     const allMerged = [...allReports, ...seniorReports];
     const r = allMerged.find(x => x.id === id);
     if (!r) { sysAlert('Отчёт не найден.', {type:'error', title:'Ошибка'}); return; }
+
+    // Проверяем что у автора отчёта ещё есть личное дело
+    const rName = (r.name || '').trim().toLowerCase();
+    const inPersonnel = personnelList.some(p => (p.name || '').trim().toLowerCase() === rName);
+    if (!inPersonnel) {
+      sysAlert(
+        'Личное дело автора отчёта не найдено в системе.<br>Редактирование недоступно.',
+        {type:'error', title:'Личное дело не найдено'}
+      );
+      return;
+    }
+
     // Переключаемся на вкладку редактирования
     const editBtn = document.querySelector('.reports-subtab[data-stab="edit"]');
     switchSubtab(editBtn, 'edit');
-    // Подставляем код в поле поиска
+
+    // Загружаем полные данные из Firebase для формы
+    const resultEl = document.getElementById('edit-rpt-result');
+    if (!resultEl) return;
+    resultEl.style.display = 'block';
+    resultEl.innerHTML = '<div style="color:var(--grey);font-size:13px;padding:12px 0;">Загрузка...</div>';
+
+    let found = null;
+    try {
+      const col = (r.type === 'weekly' || sheet === 'SeniorReports') ? 'senior_reports' : 'reports';
+      const snap = await getDb().collection(col).where('id','==',id).get();
+      if (!snap.empty) found = { ...snap.docs[0].data(), _docId: snap.docs[0].id };
+      else found = { ...r, _docId: docId };
+    } catch(e) { found = { ...r, _docId: docId }; }
+
+    // Ставим edit_code в скрытое поле для совместимости
     const codeInput = document.getElementById('edit-rpt-code');
-    if (codeInput && r.edit_code) {
-      codeInput.value = r.edit_code;
-      loadReportByCode();
-    } else {
-      // Нет кода — рендерим форму напрямую через id
-      const resultEl = document.getElementById('edit-rpt-result');
-      if (resultEl) {
-        resultEl.style.display = 'block';
-        resultEl.innerHTML = '<div style="color:var(--grey);font-size:13px;">Загрузка...</div>';
-        // Загружаем из Firebase напрямую
-        try {
-          const col = sheet === 'SeniorReports' ? 'senior_reports' : 'reports';
-          const snap = await getDb().collection(col).where('id','==',id).get();
-          if (!snap.empty) {
-            const found = { ...snap.docs[0].data(), _docId: snap.docs[0].id };
-            if (codeInput) codeInput.value = found.edit_code || '';
-            loadReportByCode();
-          } else {
-            resultEl.innerHTML = '<div style="color:var(--red);">Отчёт не найден в базе.</div>';
-          }
-        } catch(e) {
-          resultEl.innerHTML = '<div style="color:var(--red);">Ошибка: ' + e.message + '</div>';
-        }
-      }
-    }
+    if (codeInput) codeInput.value = found.edit_code || '';
+
+    // Рендерим форму напрямую (переиспользуем логику loadReportByCode)
+    const col2 = (r.type === 'weekly' || sheet === 'SeniorReports') ? 'senior_reports' : 'reports';
+    _renderEditForm(found, resultEl, col2);
+
     // Скролл к форме
     const editPanel = document.getElementById('subpanel-edit');
-    if (editPanel) editPanel.scrollIntoView({ behavior:'smooth', block:'start' });
+    if (editPanel) setTimeout(() => editPanel.scrollIntoView({ behavior:'smooth', block:'start' }), 100);
   };
 
   // Восстанавливаем вкладку edit в DOM (скрытая, нужна для работы)
@@ -8945,28 +8997,37 @@
       seen.add(r.id);
       return true;
     });
-    merged.sort(sortByStatusThenDate);
 
-    const list = merged.filter(r =>
+    // Хронологический порядок для глобальной нумерации
+    const chronological = [...merged].sort((a,b) => new Date(a.ts||a.timestamp||0) - new Date(b.ts||b.timestamp||0));
+    const globalNumMap = new Map();
+    chronological.forEach((r,i) => globalNumMap.set(r.id, i+1));
+
+    // Фильтрация
+    const list = chronological.filter(r =>
       (fType   === 'all' || r.type   === fType) &&
       (fStatus === 'all' || r.status === fStatus)
     );
 
-    if (!list.length) {
+    // Показываем в обратном порядке: новые сверху
+    const displayList = [...list].reverse();
+
+    if (!displayList.length) {
       el.innerHTML = '<div class="inbox-detail-empty"><div class="inbox-detail-empty-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></div>Отчётов не найдено.</div>';
       el.style.display = _listDisplay;
       return;
     }
 
-    el.innerHTML = list.map(r => {
+    el.innerHTML = displayList.map(r => {
       const icon  = TYPE_ICON[r.type]  || '≡';
       const label = TYPE_LABEL[r.type] || r.label || r.type;
       const color = TYPE_COLOR[r.type] || '#8A8F9E';
       const bg    = TYPE_BG[r.type]    || 'var(--cream)';
+      const num   = globalNumMap.get(r.id) || '';
       return `
         <div class="inbox-item ${_selAllId === r.id ? 'active' : ''}" onclick="showAllReportDetail('${esc(r.id)}')">
           <div class="inbox-item-top">
-            <span class="inbox-item-name">${esc(r.name)}</span>
+            <span class="inbox-item-name"><span style="color:var(--grey);font-size:10px;font-weight:700;margin-right:4px;">#${num}</span>${esc(r.name)}</span>
             <span class="inbox-item-date">${fmtTs(r.ts).split(' ')[0]}</span>
           </div>
           <div style="display:flex;align-items:center;gap:6px;margin-top:4px;">
@@ -9130,7 +9191,7 @@
             История проверок (${r.verdict_history.length})
           </summary>
           <div style="margin-top:8px;display:flex;flex-direction:column;gap:6px;">
-            ${r.verdict_history.map(h => {
+            ${[...r.verdict_history].reverse().map(h => {
               const sc = h.status==='approved' ? {bg:'var(--green)',light:'var(--green-light)',lbl:'Одобрено'} :
                          h.status==='rejected' ? {bg:'var(--red)',light:'var(--red-light)',lbl:'Отказано'} :
                          {bg:'#6D28D9',light:'#F5F0FF',lbl:'Доработка'};
@@ -9160,18 +9221,28 @@
     if (!newStatus) { sysAlert('Выберите решение.', {type:'warn', title:'Решение не выбрано', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"/><path d="M6 21h12"/><path d="M3 9l9-6 9 6"/><polyline points="3 9 7.5 17 3 17"/><polyline points="21 9 16.5 17 21 17"/></svg>'}); return; }
     const noteEl = document.getElementById('rpt-note-' + id);
     const note = noteEl ? noteEl.value.trim() : '';
-    if (newStatus === 'review' && !note) {
-      sysAlert('При «Доработке» заполните примечание.', {type:'warn', title:'Примечание обязательно', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>'});
+    // Примечание обязательно при доработке И при отказе
+    if ((newStatus === 'review' || newStatus === 'rejected') && !note) {
+      sysAlert('Укажите причину ' + (newStatus === 'rejected' ? 'отказа' : 'доработки') + '.', {type:'warn', title:'Комментарий обязателен'});
       if (noteEl) { noteEl.focus(); noteEl.style.borderColor = 'var(--red)'; setTimeout(() => { noteEl.style.borderColor = ''; }, 2000); }
       return;
     }
-    // Защита ранга: нельзя менять вердикт если твой ранг ≤ ранга предыдущего проверяющего
+    // Защита ранга: только строго НИЖЕ ранг не может менять
     const r = allReports.find(x => x.id === id);
     const prevRank = r ? (parseInt(r.reviewer_rank) || 0) : 0;
     const myRank = authRank();
-    if (prevRank > 0 && myRank < 11 && myRank <= prevRank) {
+    if (prevRank > 0 && myRank < 11 && myRank < prevRank) {
       sysAlert('Вердикт уже вынесен старшим составом.<br>Изменить его может только вышестоящее руководство.', {type:'error', title:'Нет прав'});
       return;
+    }
+    // Проверка на дублирующийся вердикт (одинаковый статус И почти одинаковый текст)
+    if (r && r.note && r.status === newStatus) {
+      const oldNorm = (r.note || '').toLowerCase().replace(/[^a-zа-яё0-9]/gi,'');
+      const newNorm = note.toLowerCase().replace(/[^a-zа-яё0-9]/gi,'');
+      if (oldNorm === newNorm) {
+        sysAlert('Вердикт идентичен предыдущему. Внесите изменения.', {type:'warn', title:'Дубликат вердикта'});
+        return;
+      }
     }
     if (r) {
       const history = r.verdict_history || [];
@@ -9198,8 +9269,8 @@
     if (!newStatus) { sysAlert('Выберите решение.', {type:'warn', title:'Решение не выбрано', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"/><path d="M6 21h12"/><path d="M3 9l9-6 9 6"/><polyline points="3 9 7.5 17 3 17"/><polyline points="21 9 16.5 17 21 17"/></svg>'}); return; }
     const noteEl = document.getElementById('rpt-note-' + id);
     const note = noteEl ? noteEl.value.trim() : '';
-    if (newStatus === 'review' && !note) {
-      sysAlert('При «Доработке» заполните примечание.', {type:'warn', title:'Примечание обязательно', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>'});
+    if ((newStatus === 'review' || newStatus === 'rejected') && !note) {
+      sysAlert('Укажите причину ' + (newStatus === 'rejected' ? 'отказа' : 'доработки') + '.', {type:'warn', title:'Комментарий обязателен'});
       if (noteEl) { noteEl.focus(); noteEl.style.borderColor = 'var(--red)'; setTimeout(() => { noteEl.style.borderColor = ''; }, 2000); }
       return;
     }
@@ -9521,26 +9592,105 @@
     if (!account) { sysAlert('Укажите номер аккаунта.', {type:'warn', title:'Поле обязательно'}); return; }
     if (!currentDept) { sysAlert('Откройте раздел департамента перед подачей отчёта.', {type:'warn', title:'Департамент не определён'}); return; }
 
-    // ── Проверка по личным делам ──────────────────────────────
-    // Если пользователь залогинен через Firebase — его ник должен совпадать с именем в личных делах
-    const fbUser = firebase.auth().currentUser;
-    if (fbUser) {
-      const fbName = (fbUser.displayName || '').trim();
-      if (fbName) {
-        // Нормализуем: Jacob_Anderson → Jacob Anderson для сравнения с personnelList
-        const normalizedFbName = fbName.replace(/_/g, ' ').toLowerCase();
-        const inPersonnel = personnelList.some(p => {
-          const pName = (p.name || '').trim().toLowerCase();
-          return pName === normalizedFbName || pName === fbName.toLowerCase();
-        });
-        if (!inPersonnel) {
+    // ── Проверка по личным делам (только для отчёта на повышение) ──────────
+    if (currentRType === 'promotion') {
+      const fbUser = firebase.auth().currentUser;
+      if (!fbUser) {
+        sysAlert(
+          'Для подачи отчёта на повышение необходимо войти в аккаунт портала.',
+          {type:'error', title:'Требуется авторизация', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg>'}
+        );
+        return;
+      }
+      // Получаем номер аккаунта из профиля Firebase
+      let gameAccount = '';
+      try {
+        const profileDoc = await db.collection('user_profiles').doc(fbUser.uid).get();
+        if (profileDoc.exists) gameAccount = String(profileDoc.data().game_account || '').trim();
+      } catch(_) {}
+
+      if (!gameAccount) {
+        // Для пользователей зарегавшихся до добавления поля — проверяем по нику из профиля
+        const fbName = (fbUser.displayName || '').trim();
+        const personnelByName = fbName ? personnelList.find(p => (p.name || '').trim().toLowerCase() === fbName.toLowerCase()) : null;
+        if (!personnelByName) {
           sysAlert(
-            'Ваш игровой ник <b>' + fbName + '</b> не найден в разделе «Личные дела».<br><br>' +
-            'Подача отчётов доступна только сотрудникам, состоящим на службе. ' +
-            'Обратитесь к Министру для добавления в личные дела.',
-            {type:'error', title:'Нет доступа', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg>'}
+            'Не удалось подтвердить вашу принадлежность к департаменту.<br><br>' +
+            'Возможные причины:<br>' +
+            '• Ваше личное дело не заведено в системе — обратитесь к руководству<br>' +
+            '• В профиле не указан номер аккаунта — откройте меню аккаунта → <b>Сменить ник</b> и укажите номер',
+            {type:'warn', title:'Доступ ограничен'}
           );
           return;
+        }
+        // Нашли по нику — проверяем департамент и пропускаем
+        const personnelDeptByName = (personnelByName.dept || '').trim();
+        if (personnelDeptByName && currentDept && personnelDeptByName !== currentDept) {
+          sysAlert(
+            'Ваше личное дело числится в департаменте <b>' + personnelDeptByName + '</b>.<br>' +
+            'Отчёт можно подавать только в разделе своего департамента.',
+            {type:'error', title:'Неверный департамент'}
+          );
+          return;
+        }
+        // Пропускаем без жёсткой блокировки — автоматически сохраняем найденный жетон
+        try {
+          gameAccount = String(personnelByName.badge || '').trim();
+          if (gameAccount) {
+            await db.collection('user_profiles').doc(fbUser.uid).update({ game_account: gameAccount });
+          }
+        } catch(_) {}
+      }
+
+      // Проверяем что в личных делах есть запись с этим жетоном (badge) — сравниваем как строки
+      const personnelRecord = personnelList.find(p => String(p.badge || '').trim() === gameAccount);
+      if (!personnelRecord) {
+        sysAlert(
+          'Личное дело с жетоном <b>' + gameAccount + '</b> не найдено.<br><br>' +
+          'Отчёт на повышение могут подавать только сотрудники, чьё личное дело заведено в системе. ' +
+          'Обратитесь к руководству.',
+          {type:'error', title:'Личное дело не найдено', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg>'}
+        );
+        return;
+      }
+
+      // Проверяем соответствие департамента: личное дело должно быть в том же департаменте
+      const personnelDept = (personnelRecord.dept || '').trim();
+      if (personnelDept && currentDept && personnelDept !== currentDept) {
+        sysAlert(
+          'Ваше личное дело числится в департаменте <b>' + personnelDept + '</b>.<br>' +
+          'Отчёт можно подавать только в разделе своего департамента.',
+          {type:'error', title:'Неверный департамент', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}
+        );
+        return;
+      }
+    } else {
+      // Для остальных отчётов — проверка по нику + департаменту
+      const fbUser = firebase.auth().currentUser;
+      if (fbUser) {
+        const fbName = (fbUser.displayName || '').trim();
+        if (fbName) {
+          const normalizedFbName = fbName.toLowerCase();
+          const personnelRecord = personnelList.find(p => (p.name || '').trim().toLowerCase() === normalizedFbName);
+          if (!personnelRecord) {
+            sysAlert(
+              'Ваш игровой ник <b>' + fbName + '</b> не найден в разделе «Личные дела».<br><br>' +
+              'Подача отчётов доступна только сотрудникам, состоящим на службе. ' +
+              'Обратитесь к руководству для добавления в личные дела.',
+              {type:'error', title:'Нет доступа', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg>'}
+            );
+            return;
+          }
+          // Проверяем департамент
+          const personnelDept = (personnelRecord.dept || '').trim();
+          if (personnelDept && currentDept && personnelDept !== currentDept) {
+            sysAlert(
+              'Ваше личное дело числится в департаменте <b>' + personnelDept + '</b>.<br>' +
+              'Отчёт можно подавать только в разделе своего департамента.',
+              {type:'error', title:'Неверный департамент'}
+            );
+            return;
+          }
         }
       }
     }
@@ -9727,7 +9877,10 @@
       return;
     }
 
-    // Показываем оригинальные данные + форму редактирования
+    _renderEditForm(found, resultEl, 'reports');
+  }
+
+  function _renderEditForm(found, resultEl, foundSheet = 'reports') {
     const isWeekly = found.type === 'weekly';
     // Оригинальный снимок данных (сохраняем при первом редактировании)
     const origName       = found._orig_name       || found.name       || '';
@@ -9816,9 +9969,11 @@
         `}
         <hr class="form-divider"/>
         <div id="er-msg" style="display:none;font-size:12px;margin-bottom:10px;padding:8px 12px;border-radius:8px;"></div>
-        <button type="button" onclick="submitEditedReport('${esc(found._docId)}','${foundSheet}')" class="submit-btn">Отправить исправленный отчёт</button>
+        <button type="button" onclick="submitEditedReport(this.closest('[data-doc-id]')?.dataset.docId||'','${foundSheet||'reports'}')" class="submit-btn">Отправить исправленный отчёт</button>
       </div>
     `;
+    // Store docId on the result container
+    resultEl.setAttribute('data-doc-id', found._docId || '');
   }
 
   async function submitEditedReport(docId, col) {
@@ -17670,6 +17825,15 @@ window.openAuthOverlay = function() {
   }
 };
 
+// Закрываем auth-overlay только если mousedown И mouseup оба были на фоне (не drag)
+(function() {
+  let _authMousedownOnBg = false;
+  const ov = document.getElementById('auth-overlay');
+  if (!ov) return;
+  ov.addEventListener('mousedown', function(e) { _authMousedownOnBg = e.target === ov; });
+  ov.addEventListener('mouseup',   function(e) { if (_authMousedownOnBg && e.target === ov) hideAuthOverlay(); _authMousedownOnBg = false; });
+})();
+
 window.toggleHdrDrop = function(id) {
   const drop = document.getElementById(id);
   if (!drop) return;
@@ -17940,17 +18104,22 @@ window.addEventListener('load', function() {
   // ── Регистрация ────────────────────────────────────────────
   window.doAuthRegister = async function() {
     authClearMsgs();
-    const name  = (document.getElementById('auth-reg-name').value  || '').trim();
-    const email = (document.getElementById('auth-reg-email').value || '').trim();
-    const pass  = (document.getElementById('auth-reg-pass').value  || '');
-    const pass2 = (document.getElementById('auth-reg-pass2').value || '');
+    const name    = (document.getElementById('auth-reg-name').value    || '').trim();
+    const account = (document.getElementById('auth-reg-account').value || '').trim();
+    const email   = (document.getElementById('auth-reg-email').value   || '').trim();
+    const pass    = (document.getElementById('auth-reg-pass').value    || '');
+    const pass2   = (document.getElementById('auth-reg-pass2').value   || '');
 
     // Валидация ника: Firstname_Lastname, только латиница, первые буквы большие
     if (!name) { authShowErr('Введи игровой ник.'); return; }
-    if (!/^[A-Z][a-zA-Z]+_[A-Z][a-zA-Z]+$/.test(name)) {
-      authShowErr('Ник должен быть в формате Имя_Фамилия на латинице с большой буквы (пример: Jacob_Anderson).');
+    if (!/^[A-Z][a-zA-Z]+ [A-Z][a-zA-Z]+$/.test(name)) {
+      authShowErr('Ник должен быть в формате Имя Фамилия на латинице с большой буквы (пример: Jacob Anderson).');
       return;
     }
+
+    // Валидация номера аккаунта
+    if (!account) { authShowErr('Введи номер игрового аккаунта.'); return; }
+    if (!/^\d{5,10}$/.test(account)) { authShowErr('Номер аккаунта должен содержать от 5 до 10 цифр.'); return; }
 
     if (!email) { authShowErr('Введи email.'); return; }
 
@@ -17974,6 +18143,7 @@ window.addEventListener('load', function() {
         uid:            cred.user.uid,
         email:          email,
         display_name:   name,
+        game_account:   account,
         rank:           0,
         dept:           '',
         registered_at:  new Date().toISOString(),
@@ -18001,35 +18171,49 @@ window.addEventListener('load', function() {
   // ── Смена ника ────────────────────────────────────────────
   window.doAuthRename = async function() {
     authClearMsgs();
-    const newName = (document.getElementById('auth-rename-name')?.value || '').trim();
-    const pass    = (document.getElementById('auth-rename-pass')?.value || '');
-    const user    = auth.currentUser;
+    const newName    = (document.getElementById('auth-rename-name')?.value    || '').trim();
+    const newAccount = (document.getElementById('auth-rename-account')?.value || '').trim();
+    const pass       = (document.getElementById('auth-rename-pass')?.value    || '');
+    const user       = auth.currentUser;
     if (!user)    { authShowErr('Сначала войди в аккаунт.'); return; }
-    if (!newName) { authShowErr('Введи новый ник.'); return; }
-    if (!/^[A-Z][a-zA-Z]+_[A-Z][a-zA-Z]+$/.test(newName)) {
-      authShowErr('Ник должен быть в формате Имя_Фамилия на латинице с большой буквы (пример: Jacob_Anderson).');
+    if (!newName && !newAccount) { authShowErr('Введи новый ник или номер аккаунта.'); return; }
+    if (newName && !/^[A-Z][a-zA-Z]+ [A-Z][a-zA-Z]+$/.test(newName)) {
+      authShowErr('Ник должен быть в формате Имя Фамилия на латинице с большой буквы (пример: Jacob Anderson).');
       return;
     }
-    if (!pass)    { authShowErr('Введи пароль для подтверждения.'); return; }
+    if (newAccount && !/^\d{5,10}$/.test(newAccount)) {
+      authShowErr('Номер аккаунта должен содержать от 5 до 10 цифр.');
+      return;
+    }
+    if (!pass) { authShowErr('Введи пароль для подтверждения.'); return; }
     const btn = document.getElementById('auth-rename-btn');
     if (btn) { btn.disabled = true; btn.textContent = 'Сохранение...'; }
     try {
-      // Переавторизация для безопасности
       const cred = firebase.auth.EmailAuthProvider.credential(user.email, pass);
       await user.reauthenticateWithCredential(cred);
-      await user.updateProfile({ displayName: newName });
-      await db.collection('user_profiles').doc(user.uid).update({ display_name: newName });
+      const updateData = {};
+      if (newName) {
+        await user.updateProfile({ displayName: newName });
+        updateData.display_name = newName;
+      }
+      if (newAccount) updateData.game_account = newAccount;
+      if (Object.keys(updateData).length > 0) {
+        await db.collection('user_profiles').doc(user.uid).update(updateData);
+      }
       updateAccountBadge(user);
       hideAuthOverlay();
-      showToast('Ник успешно изменён на: ' + newName, 'ok');
+      const parts = [];
+      if (newName) parts.push('ник: ' + newName);
+      if (newAccount) parts.push('аккаунт: ' + newAccount);
+      showToast('Успешно обновлено: ' + parts.join(', '), 'ok');
     } catch(e) {
       const msgs = {
         'auth/wrong-password':    'Неверный пароль.',
         'auth/too-many-requests': 'Слишком много попыток. Подожди немного.',
       };
-      authShowErr(msgs[e.code] || 'Не удалось сменить ник. Попробуй ещё раз.');
+      authShowErr(msgs[e.code] || 'Не удалось сохранить изменения.');
     }
-    if (btn) { btn.disabled = false; btn.textContent = 'Сменить ник'; }
+    if (btn) { btn.disabled = false; btn.textContent = 'Сохранить изменения'; }
   };
 
   // ── Восстановление пароля ──────────────────────────────────
@@ -18122,8 +18306,17 @@ window.adminLoadUsers = async function() {
       if (!seenUids.has(uid)) { seenUids.add(uid); items.push(d); }
     });
 
-    const verified   = items.filter(d => d.email_verified === true);
-    const unverified = items.filter(d => d.email_verified !== true);
+    // Проверяем какие uid ещё существуют в Firebase Auth
+    // Делаем это через попытку обновить профиль — но у нас нет Admin SDK.
+    // Вместо этого фильтруем "зомби" профили по признакам:
+    // - нет email (дефектные записи)
+    // - нет registered_at (очень старые/битые)
+    // Показываем все, но помечаем подозрительные
+    const validItems = items.filter(d => d.email && d.uid);
+    const orphaned = items.filter(d => !d.email || !d.uid);
+
+    const verified   = validItems.filter(d => d.email_verified === true);
+    const unverified = validItems.filter(d => d.email_verified !== true);
 
     function renderUserCard(d) {
       const isBlocked = d.active === false;
@@ -18170,7 +18363,7 @@ window.adminLoadUsers = async function() {
     statsEl.style.cssText = 'display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;';
     statsEl.innerHTML = `
       <div style="flex:1;min-width:70px;background:var(--navy);color:white;border-radius:8px;padding:8px 12px;text-align:center;">
-        <div style="font-size:20px;font-weight:700;">${items.length}</div>
+        <div style="font-size:20px;font-weight:700;">${validItems.length}</div>
         <div style="font-size:10px;opacity:.7;text-transform:uppercase;letter-spacing:.08em;">Всего</div>
       </div>
       <div style="flex:1;min-width:70px;background:var(--green-light);border:1.5px solid #A8D8B8;border-radius:8px;padding:8px 12px;text-align:center;">
@@ -18187,9 +18380,44 @@ window.adminLoadUsers = async function() {
     container.appendChild(renderSection('Подтверждённые (email подтверждён)', 'var(--green)', '✓', verified));
     container.appendChild(renderSection('Не подтверждённые (только зарегистрировались)', '#7A5C18', '○', unverified));
 
+    // Осиротевшие профили (удалены из Auth но остались в Firestore)
+    if (orphaned.length > 0) {
+      const orphanSection = document.createElement('div');
+      orphanSection.style.cssText = 'margin-top:12px;';
+      orphanSection.innerHTML = `
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--grey);">⚠ Битые записи (нет uid/email)</span>
+          <span style="font-size:11px;font-weight:700;background:#f0f0f0;color:var(--grey);padding:1px 8px;border-radius:20px;">${orphaned.length}</span>
+          <button onclick="adminCleanOrphaned()" style="margin-left:auto;font-size:11px;font-weight:600;padding:4px 10px;background:var(--red-light);border:1.5px solid var(--red);color:var(--red);border-radius:6px;cursor:pointer;font-family:inherit;">Удалить все</button>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          ${orphaned.map(d => `<div style="background:#f9f9f9;border:1px solid #ddd;border-radius:8px;padding:8px 12px;font-size:11px;color:var(--grey);">
+            ${d.display_name||'—'} · ${d.email||'нет email'} · id: ${d.id}
+          </div>`).join('')}
+        </div>
+      `;
+      container.appendChild(orphanSection);
+    }
+
+
   } catch(e) {
     container.innerHTML = '<div style="font-size:12px;color:var(--red);padding:8px;">Ошибка загрузки: ' + e.message + '</div>';
   }
+};
+
+window.adminCleanOrphaned = async function() {
+  if (!await sysConfirm('Удалить все битые записи без uid/email?', {title:'Очистка', okText:'Удалить'})) return;
+  try {
+    const snap = await firebase.firestore().collection('user_profiles').get();
+    const batch = firebase.firestore().batch();
+    let count = 0;
+    snap.forEach(doc => {
+      const d = doc.data();
+      if (!d.email || !d.uid) { batch.delete(doc.ref); count++; }
+    });
+    if (count > 0) { await batch.commit(); showToast('Удалено записей: ' + count, 'ok'); adminLoadUsers(); }
+    else showToast('Битых записей не найдено.', 'info');
+  } catch(e) { showToast('Ошибка: ' + e.message, 'error'); }
 };
 
 window.adminBlockUser = async function(uid, email, unblock) {
