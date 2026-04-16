@@ -8872,9 +8872,12 @@
     const r = allMerged.find(x => x.id === id);
     if (!r) { sysAlert('Отчёт не найден.', {type:'error', title:'Ошибка'}); return; }
 
-    // Проверяем что у автора отчёта ещё есть личное дело
+    // Проверяем что у автора отчёта есть личное дело — по аккаунту или по нику
+    const rAccount = String(r.account || '').trim();
     const rName = (r.name || '').trim().toLowerCase();
-    const inPersonnel = personnelList.some(p => (p.name || '').trim().toLowerCase() === rName);
+    const inPersonnel = rAccount
+      ? personnelList.some(p => String(p.badge || '').trim() === rAccount)
+      : personnelList.some(p => (p.name || '').trim().toLowerCase() === rName);
     if (!inPersonnel) {
       sysAlert(
         'Личное дело автора отчёта не найдено в системе.<br>Редактирование недоступно.',
@@ -8998,7 +9001,7 @@
       return true;
     });
 
-    // Хронологический порядок для глобальной нумерации
+    // Хронологический порядок для глобальной нумерации (всегда по дате создания)
     const chronological = [...merged].sort((a,b) => new Date(a.ts||a.timestamp||0) - new Date(b.ts||b.timestamp||0));
     const globalNumMap = new Map();
     chronological.forEach((r,i) => globalNumMap.set(r.id, i+1));
@@ -9009,8 +9012,18 @@
       (fStatus === 'all' || r.status === fStatus)
     );
 
-    // Показываем в обратном порядке: новые сверху
-    const displayList = [...list].reverse();
+    // Сортировка для отображения:
+    // 1. На рассмотрении (pending) — самые новые сверху
+    // 2. Доработка (review) — самые новые сверху
+    // 3. Остальные (одобрено/отказано) — самые новые сверху
+    const STATUS_ORDER = { pending: 0, review: 1, approved: 2, rejected: 2 };
+    const displayList = [...list].sort((a, b) => {
+      const oa = STATUS_ORDER[a.status] ?? 2;
+      const ob = STATUS_ORDER[b.status] ?? 2;
+      if (oa !== ob) return oa - ob;
+      // Внутри одной группы: новые сверху
+      return new Date(b.ts||b.timestamp||0) - new Date(a.ts||a.timestamp||0);
+    });
 
     if (!displayList.length) {
       el.innerHTML = '<div class="inbox-detail-empty"><div class="inbox-detail-empty-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></div>Отчётов не найдено.</div>';
@@ -9168,9 +9181,20 @@
         ${(() => {
           if (r.status !== 'review') return '';
           const fbUser = firebase.auth().currentUser;
-          const fbName = fbUser ? (fbUser.displayName || '').trim().replace(/_/g,' ').toLowerCase() : '';
+          if (!fbUser) return '';
+          const fbName = (fbUser.displayName || '').trim().toLowerCase();
           const rName  = (r.name || '').trim().toLowerCase();
-          const canEdit = fbName && rName && (fbName === rName || fbName.replace(/\s/g,'_') === rName.replace(/\s/g,'_'));
+          const rAccount = String(r.account || '').trim();
+          // Проверяем совпадение по номеру аккаунта (приоритет — ник меняется, аккаунт нет)
+          let canEdit = false;
+          if (rAccount) {
+            // Ищем game_account в personnelList по account из отчёта
+            canEdit = personnelList.some(p => String(p.badge||'').trim() === rAccount && (p.name||'').trim().toLowerCase() === fbName);
+            // Если не нашли по имени — проверяем только по аккаунту (ник мог смениться)
+            if (!canEdit) canEdit = personnelList.some(p => String(p.badge||'').trim() === rAccount);
+          }
+          // Фоллбэк — проверка по нику
+          if (!canEdit && fbName) canEdit = fbName === rName;
           if (!canEdit) return '';
           const sheet = r.type === 'weekly' ? 'SeniorReports' : 'Reports';
           return `
@@ -9360,11 +9384,35 @@
     const btn = document.getElementById('rpt-submit-btn');
     if (btn) btn.textContent = btnLabels[type] || 'Отправить отчёт';
 
-    // Для отчёта ст. состава скрываем поля "Текущее звание" и "Номер аккаунта" — они дублируются
+    // Для отчёта ст. состава скрываем поля "Текущее звание" и "Номер аккаунта"
     const rankWrap = document.getElementById('rpt-rank-wrap');
     const accWrap  = document.getElementById('rpt-account-wrap');
     if (rankWrap) rankWrap.style.display = (type === 'weekly') ? 'none' : '';
     if (accWrap)  accWrap.style.display  = (type === 'weekly') ? 'none' : '';
+
+    // Для отчёта на повышение — автоподставляем аккаунт из профиля Firebase и блокируем поле
+    const accInput = document.getElementById('rpt-account');
+    if (accInput) {
+      if (type === 'promotion') {
+        const fbUser = firebase.auth().currentUser;
+        if (fbUser) {
+          db.collection('user_profiles').doc(fbUser.uid).get().then(doc => {
+            if (doc.exists && doc.data().game_account) {
+              accInput.value = doc.data().game_account;
+              accInput.readOnly = true;
+              accInput.style.background = 'var(--cream)';
+              accInput.style.color = 'var(--grey)';
+              accInput.title = 'Номер аккаунта из вашего профиля';
+            }
+          }).catch(() => {});
+        }
+      } else {
+        accInput.readOnly = false;
+        accInput.style.background = '';
+        accInput.style.color = '';
+        accInput.title = '';
+      }
+    }
   }
 
 
@@ -9567,7 +9615,7 @@
       };
       if (!record.name) { sysAlert('Укажите имя.', {type:'warn', title:'Поле обязательно'}); return; }
       if (!record.work || record.work.length < 5) { sysAlert('Заполните проделанную работу.', {type:'warn', title:'Поле обязательно'}); return; }
-      seniorReports.unshift(record);
+      seniorReports.push(record);
       renderSeniorList();
       try { await sheetsPost('addSeniorReport', record); } catch(_) {}
       document.getElementById('wr-success').style.display = 'block';
@@ -9598,69 +9646,61 @@
       if (!fbUser) {
         sysAlert(
           'Для подачи отчёта на повышение необходимо войти в аккаунт портала.',
-          {type:'error', title:'Требуется авторизация', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg>'}
+          {type:'error', title:'Требуется авторизация'}
         );
         return;
       }
-      // Получаем номер аккаунта из профиля Firebase
+
+      // Принудительно загружаем личные дела если ещё не загружены
+      if (!personnelList || personnelList.length === 0) {
+        try {
+          const data = await sheetsGet('getPersonnel');
+          if (Array.isArray(data)) personnelList = data;
+        } catch(_) {}
+      }
+
+      // Получаем номер аккаунта строго из Firebase-профиля (не из поля формы)
       let gameAccount = '';
       try {
         const profileDoc = await db.collection('user_profiles').doc(fbUser.uid).get();
         if (profileDoc.exists) gameAccount = String(profileDoc.data().game_account || '').trim();
       } catch(_) {}
 
-      if (!gameAccount) {
-        // Для пользователей зарегавшихся до добавления поля — проверяем по нику из профиля
-        const fbName = (fbUser.displayName || '').trim();
-        const personnelByName = fbName ? personnelList.find(p => (p.name || '').trim().toLowerCase() === fbName.toLowerCase()) : null;
-        if (!personnelByName) {
-          sysAlert(
-            'Не удалось подтвердить вашу принадлежность к департаменту.<br><br>' +
-            'Возможные причины:<br>' +
-            '• Ваше личное дело не заведено в системе — обратитесь к руководству<br>' +
-            '• В профиле не указан номер аккаунта — откройте меню аккаунта → <b>Сменить ник</b> и укажите номер',
-            {type:'warn', title:'Доступ ограничен'}
-          );
-          return;
-        }
-        // Нашли по нику — проверяем департамент и пропускаем
-        const personnelDeptByName = (personnelByName.dept || '').trim();
-        if (personnelDeptByName && currentDept && personnelDeptByName !== currentDept) {
-          sysAlert(
-            'Ваше личное дело числится в департаменте <b>' + personnelDeptByName + '</b>.<br>' +
-            'Отчёт можно подавать только в разделе своего департамента.',
-            {type:'error', title:'Неверный департамент'}
-          );
-          return;
-        }
-        // Пропускаем без жёсткой блокировки — автоматически сохраняем найденный жетон
-        try {
-          gameAccount = String(personnelByName.badge || '').trim();
+      const fbName = (fbUser.displayName || '').trim();
+
+      // Ищем запись в личных делах: сначала по жетону, потом по нику
+      let personnelRecord = gameAccount
+        ? personnelList.find(p => String(p.badge || '').trim() === gameAccount)
+        : null;
+      if (!personnelRecord && fbName) {
+        personnelRecord = personnelList.find(p => (p.name || '').trim().toLowerCase() === fbName.toLowerCase());
+        // Нашли по нику — сохраняем жетон в профиль
+        if (personnelRecord) {
+          gameAccount = String(personnelRecord.badge || '').trim();
           if (gameAccount) {
-            await db.collection('user_profiles').doc(fbUser.uid).update({ game_account: gameAccount });
+            try { await db.collection('user_profiles').doc(fbUser.uid).update({ game_account: gameAccount }); } catch(_) {}
           }
-        } catch(_) {}
+        }
       }
 
-      // Проверяем что в личных делах есть запись с этим жетоном (badge) — сравниваем как строки
-      const personnelRecord = personnelList.find(p => String(p.badge || '').trim() === gameAccount);
       if (!personnelRecord) {
         sysAlert(
-          'Личное дело с жетоном <b>' + gameAccount + '</b> не найдено.<br><br>' +
-          'Отчёт на повышение могут подавать только сотрудники, чьё личное дело заведено в системе. ' +
-          'Обратитесь к руководству.',
-          {type:'error', title:'Личное дело не найдено', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg>'}
+          'Личное дело не найдено в системе.<br><br>' +
+          'Возможные причины:<br>' +
+          '• Ваше личное дело не заведено — обратитесь к руководству<br>' +
+          '• Указан неверный номер аккаунта в профиле портала',
+          {type:'error', title:'Нет доступа'}
         );
         return;
       }
 
-      // Проверяем соответствие департамента: личное дело должно быть в том же департаменте
+      // Проверяем соответствие департамента
       const personnelDept = (personnelRecord.dept || '').trim();
       if (personnelDept && currentDept && personnelDept !== currentDept) {
         sysAlert(
           'Ваше личное дело числится в департаменте <b>' + personnelDept + '</b>.<br>' +
           'Отчёт можно подавать только в разделе своего департамента.',
-          {type:'error', title:'Неверный департамент', icon:'<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}
+          {type:'error', title:'Неверный департамент'}
         );
         return;
       }
@@ -9708,6 +9748,18 @@
       return;
     }
 
+    // Для отчёта на повышение — принудительно берём аккаунт из Firebase профиля, форменное поле игнорируем
+    let trustedAccount = account;
+    if (currentRType === 'promotion') {
+      const fbUser2 = firebase.auth().currentUser;
+      if (fbUser2) {
+        try {
+          const pd = await db.collection('user_profiles').doc(fbUser2.uid).get();
+          if (pd.exists && pd.data().game_account) trustedAccount = String(pd.data().game_account).trim();
+        } catch(_) {}
+      }
+    }
+
     if (!checkRateLimit('report_' + (currentDept || 'unknown'))) return;
 
     // Показываем кнопку "Отправка..."
@@ -9720,7 +9772,7 @@
         const record = {
           id: genId(), dept: currentDept, ts: fmtDate(),
           type: 'weekly', label: 'Отчёт ст. состава',
-          name, rank, account,
+          name, rank, account: trustedAccount,
           pos: (document.getElementById('rpt-sr-pos') || {}).value || rank,
           position: (document.getElementById('rpt-sr-pos') || {}).value || rank,
           period: (document.getElementById('rpt-sr-period') || {}).value || '',
@@ -9729,13 +9781,13 @@
         };
         const res = await sheetsPost('addSeniorReport', record);
         if (res && res.ok === false) throw new Error(res.error || 'Ошибка Firebase');
-        seniorReports.unshift(record);
-        allReports.unshift(record);
+        seniorReports.push(record);
+        allReports.push(record);
       } else {
         const record = {
           id: genId(), dept: currentDept, ts: fmtDate(),
           type: currentRType, label: typeLabels[currentRType],
-          name, rank, account,
+          name, rank, account: trustedAccount,
           target:       '',
           promoReason:  (document.getElementById('rpt-promo-reason') || {}).value || '',
           leaveStart:   (document.getElementById('rpt-leave-start')  || {}).value || '',
@@ -9745,7 +9797,7 @@
         };
         const res = await sheetsPost('addReport', record);
         if (res && res.ok === false) throw new Error(res.error || 'Ошибка Firebase');
-        allReports.unshift(record);
+        allReports.push(record);
       }
       ok = true;
     } catch(err) {
@@ -10010,7 +10062,25 @@
     const lr = (document.getElementById('er-leave-reason')||{}).value; if (lr !== undefined) updates.leaveReason = lr;
     try {
       await getDb().collection(col).doc(docId).update(updates);
+      // Обновляем локальный массив чтобы не нужно было перезагружать страницу
+      const updateLocal = (arr) => {
+        const idx = arr.findIndex(r => r._docId === docId || r.id === docId);
+        if (idx !== -1) { arr[idx] = { ...arr[idx], ...updates }; return true; }
+        // Ищем по id из updates (если docId это Firestore id)
+        const idx2 = arr.findIndex(r => r.id && docId.includes(r.id));
+        if (idx2 !== -1) { arr[idx2] = { ...arr[idx2], ...updates }; return true; }
+        return false;
+      };
+      updateLocal(allReports);
+      updateLocal(seniorReports);
       if (msg) { msg.style.display='block'; msg.style.background='var(--green-light)'; msg.style.color='var(--green)'; msg.textContent='✓ Отчёт обновлён и возвращён на рассмотрение'; }
+      // Перерисовываем список отчётов
+      setTimeout(() => { try { renderAllReports(); } catch(_) {} }, 300);
+      // Переключаемся на вкладку «Все отчёты» через секунду
+      setTimeout(() => {
+        const allBtn = document.querySelector('.reports-subtab[data-stab="all"]');
+        if (allBtn) switchSubtab(allBtn, 'all');
+      }, 1500);
     } catch(e) {
       if (msg) { msg.style.display='block'; msg.style.background='var(--red-light)'; msg.style.color='var(--red)'; msg.textContent='Ошибка: ' + (e.message||e); }
     }
@@ -16649,6 +16719,10 @@
     sessionStorage.removeItem('_mvd_slot');
     updateAuthBadge();
     showToast('Вы вышли из режима офицера.', 'info');
+    // Перерисовываем открытый отчёт/жалобу чтобы убрать панель проверки
+    if (_selAllId) { try { showAllReportDetail(_selAllId); } catch(_) {} }
+    if (selectedComplaintId) { try { showComplaintDetail(selectedComplaintId); } catch(_) {} }
+    if (selectedEmpId) { try { showEmpDetail(selectedEmpId); } catch(_) {} }
   }
 
   /* ── Восстановление сессии — теперь через Firebase Auth onAuthStateChanged ── */
